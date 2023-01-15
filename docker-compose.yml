@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  pocketBase:
+    build:
+      context: .
+      dockerfile: pocketBase.Dockerfile
+    image: bennetrr/lego:pocketBase
+    container_name: lego-pocketBase
+    restart: always
+    ports:
+      - "8200:8080"
+    volumes:
+      - ./data:/pb
