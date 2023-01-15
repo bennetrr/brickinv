@@ -1,4 +1,5 @@
-import './app.css'
+import './app.scss'
+// @ts-ignore
 import App from './App.svelte'
 
 const app = new App({
