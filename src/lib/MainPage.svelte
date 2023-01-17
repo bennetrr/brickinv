@@ -2,9 +2,26 @@
     import {currentUser, pb} from "./PocketBase";
     import type {LegoSet, LegoPart} from "./DataStructures";
 
-    sets_
+    import { faAdd } from '@fortawesome/free-solid-svg-icons';
+    import {Icon} from 'svelte-fontawesome/main'
+    import axios from "axios";
 
-    let sets: LegoSet[];
+    // Get the initial sets from PocketBase
+    let sets: LegoSet[] = [];
+
+    // Add a set to the list
+    let newSetNumber: string;
+
+    function addSet() {
+        // Get the data from the rebrickable API
+
+
+        pb
+            .collection("lego_sets")
+            .create({
+
+            })
+    }
 
     function logout() {
         pb.authStore.clear();
@@ -15,12 +32,20 @@
     <section>
         <h1>Sets</h1>
         <div class="sets-list">
-            {#each sets as set}
-                <div class="set">
-                    <span>{set.name}</span>
-                </div>
-            {/each}
+            {#if sets.length > 0}
+                {#each sets as set}
+                    <div class="set">
+                        <span>{set.name}</span>
+                    </div>
+                {/each}
+            {:else}
+                <span>Keine Sets gefunden</span>
+            {/if}
         </div>
+        <form on:submit|preventDefault>
+            <input bind:value={newSetNumber} placeholder="Set hinzufügen" type="text"/>
+            <button on:click={addSet}><Icon icon={faAdd}/></button>
+        </form>
         <span class="logout">Angemeldet als {$currentUser.username}. <a on:click={logout}>Abmelden</a></span>
     </section>
 </aside>

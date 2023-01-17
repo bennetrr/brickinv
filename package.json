@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "axios": "^1.2.2",
     "pocketbase": "^0.10.0",
     "sass": "^1.57.1",
     "svelte-fontawesome": "^0.0.3"
