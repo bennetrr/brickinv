@@ -30,6 +30,13 @@ h1 {
     margin: 0;
 }
 
+// Svelte-Toast
+:root {
+    --toastBackground: rgba(161, 161, 161, 0.66);
+    --toastColor: #123456;
+    --toastWidth: 20rem;
+}
+
 /*
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
