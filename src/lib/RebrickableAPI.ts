@@ -79,6 +79,7 @@ export default class RebrickableApi {
             }
         });
     }
+
     async getLegoSet(setNumber: string): Promise<RebrickableSet> {
         const response = await this.ax.get(`sets/${setNumber}`);
         return response.data;

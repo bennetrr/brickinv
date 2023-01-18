@@ -27,7 +27,7 @@ async function getUserIdFromName(username: string): Promise<string> {
 }
 
 async function getUsernameFromUserId(userId: string): Promise<string> {
-    const user = await pb.collection('users').getOne(userId);
+    const user = await pb.collection("users").getOne(userId);
     return user.username;
 }
 

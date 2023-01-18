@@ -1,12 +1,12 @@
 <script lang="ts">
     import type {LegoSet} from "./DataStructures";
     import {selectedSetId} from "./stores";
+
     export let set: LegoSet;
 
     function selectSetHandler() {
-        selectedSetId.set(set.id)
+        selectedSetId.set(set.id);
     }
-
 </script>
 
 <div class={set.id === $selectedSetId ? "set-view-active" : "set-view"} on:click={selectSetHandler}>
@@ -29,43 +29,42 @@
 </div>
 
 <style lang="scss">
-    @import "vars";
-    $height: 100px;
+  @import "vars";
 
-    @mixin set-view($border-color) {
-      height: $height;
-      width: 100%;
-      display: flex;
-      flex-direction: row;
+  $height: 100px;
 
-      border: 2px solid $border-color;
-      border-radius: 15px;
-      padding: 5px;
-      cursor: pointer;
+  @mixin set-view($background-color) {
+    height: $height;
+    width: 100%;
 
-      &:hover {
-        background-color: $background-color3;
-      }
+    padding: $small-spacing;
+    margin-top: $base-spacing;
+    display: flex;
+    flex-direction: row;
+
+    background-color: $background-color;
+    border: $base-border;
+    border-radius: $card-border-radius;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $base-color-alt2;
     }
+  }
 
-    .set-view {
-        @include set-view(rgba(0, 0, 0, 0.42))
-    }
+  .set-view {
+    @include set-view($base-color)
+  }
 
-    .set-view-active {
-        @include set-view($highlight-color)
-    }
+  .set-view-active {
+    @include set-view($base-color-alt3)
+  }
 
-    .set-view-column-left {
-        width: 30%;
-        margin-right: 10px;
-    }
+  .set-view-column-left {
+    width: 30%;
+  }
 
-    .set-view-column-right {
-
-    }
-
-    .set-image {
-        height: 100%;
-    }
+  .set-image {
+    max-width: 110px;
+  }
 </style>

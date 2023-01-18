@@ -25,7 +25,6 @@
             const data = await mapPocketBaseToLegoSet(result);
             newSets.push(data);
         }
-        console.dir(newSets);
         sets.set(newSets);
     });
 
@@ -67,7 +66,6 @@
 
         // Get the ID and save the data to the store
         newSetData.id = createResult.id;
-        console.dir(newSetData);
         sets.update(oldSets => [...oldSets, newSetData]);
 
         // Set the default values for the inputs
@@ -82,7 +80,12 @@
 
 <aside>
     <section>
-        <h1>Sets</h1>
+        <form on:submit|preventDefault>
+            <input bind:value={newSetNumber} placeholder="Setnummer" type="text"/>
+            <input bind:value={newSetToSell} type="checkbox"/>
+            <label>Verkaufen</label>
+            <button on:click={addSet}><Icon icon={faAdd}/></button>
+        </form>
         <div class="sets-list">
             {#if $sets.length > 0}
                 {#each $sets as set}
@@ -92,15 +95,7 @@
                 <span>Keine Sets gefunden</span>
             {/if}
         </div>
-        <form on:submit|preventDefault>
-            <input bind:value={newSetNumber} placeholder="Set hinzufügen" type="text"/>
-            <button on:click={addSet}>
-                <Icon icon={faAdd}/>
-            </button>
-            <br />
-            <label>Zum Verkaufen</label>
-            <input bind:value={newSetToSell} type="checkbox"/>
-        </form>
+
         <span class="logout">Angemeldet als {$currentUser.username}. <a on:click={logout}>Abmelden</a></span>
     </section>
 </aside>
@@ -114,9 +109,9 @@
 
   aside {
     height: 100%;
-    width: $aside-width;
+    width: $sidebar-width;
 
-    background-color: $background-color1;
+    background-color: $base-color;
     padding: 20px;
   }
 
@@ -139,8 +134,8 @@
   }
 
   main {
-    width: calc(100vw - $aside-width);
+    width: calc(100vw - $sidebar-width);
     padding: 1em;
-    background-color: $background-color2;
+    background-color: $base-color-alt1;
   }
 </style>

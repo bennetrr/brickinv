@@ -1,6 +1,49 @@
+// Colors
+$text-primary-color: #16161a;
+$text-hint-color: #666f75;
+$text-disable-color: #a0a6ac;
+
+$base-color: #ffffff;
+$base-color-alt1: #ebeff2;
+$base-color-alt2: #dee3e8;
+$base-color-alt3: #a9b4bc;
+$base-color-alt4: #7c868d;
+
+$info-color: #3da9fc;
+$info-color-alt: #d8eefe;
+$success-color: #2cb67d;
+$success-color-alt: #d6f5e8;
+$error-color: #ef4565;
+$error-color-alt: #fcdee4;
+$warning-color: #ff8e3c;
+$warning-color-alt: #ffe7d6;
+
+$overlay-color: rgba(65, 80, 105, 0.25);
+$tooltip-color: rgba(0, 0, 0, 0.85);
+$shadow-color: rgba(0, 0, 0, 0.06);
+
+// Font sizes
+$base-font-size: 14.5px;
+$xs-font-size: 12px;
+$sm-font-size: 13px;
+$lg-font-size: 15px;
+$xl-font-size: 16px;
+
+// Dimensions
+$sidebar-width: 500px;
+$input-height: 34px;
+$button-height: 40px;
+$base-spacing: 15px;
+$small-spacing: 8px;
+
+// Borders
+$base-border: 1px solid $base-color-alt2;
+$base-radius: 3px;
+$card-border-radius: 15px;
+
+// Old
+$highlight-color: #ff6100;
+$aside-width: 400px;
 $background-color1: #ffffff;
 $background-color2: #f8f9fa;
 $background-color3: #ebeff2;
-
-$highlight-color: #ff6100;
-$aside-width: 400px;

@@ -34,7 +34,7 @@ h1 {
 
 // Svelte-Toast
 :root {
-    --toastBackground: transparentize($background-color3, 0.1);
+    --toastBackground: transparentize($base-color-alt2, 0.1);
     --toastColor: #123456;
     --toastWidth: 20rem;
 }
