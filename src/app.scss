@@ -1,3 +1,5 @@
+@import "lib/vars";
+
 * {
     box-sizing: border-box;
 }
@@ -32,7 +34,7 @@ h1 {
 
 // Svelte-Toast
 :root {
-    --toastBackground: rgba(161, 161, 161, 0.66);
+    --toastBackground: transparentize($background-color3, 0.1);
     --toastColor: #123456;
     --toastWidth: 20rem;
 }
