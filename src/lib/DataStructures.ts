@@ -1,7 +1,7 @@
 import {pb} from "./PocketBase";
 
 export interface LegoSet {
-    id: string;
+    id?: string;
     setNumber: string;
     setName: string;
     releaseYear: number;
@@ -42,7 +42,6 @@ export async function mapLegoSetToPocketBase(setData: LegoSet): Promise<any> {
         release_year: setData.releaseYear,
         parts: setData.parts
     };
-    console.log("data out", data);
     return data;
 }
 
@@ -58,6 +57,5 @@ export async function mapPocketBaseToLegoSet(setData: any): Promise<LegoSet> {
         releaseYear: setData.release_year,
         parts: setData.parts
     };
-    console.log("data in", data);
     return data;
 }

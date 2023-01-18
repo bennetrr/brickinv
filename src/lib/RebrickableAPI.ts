@@ -1,14 +1,5 @@
-import axios from "axios";
+import axios, {type AxiosInstance} from "axios";
 import type {LegoPart, LegoSet} from "./DataStructures";
-import {pb} from "./PocketBase";
-
-const rebrickableApi = axios.create({
-    baseURL: "https://rebrickable.com/api/v3/lego/",
-    headers: {
-        Authorization: `key ${pb.authStore.model.rebrickable_api_key}`,
-        Accept: "application/json"
-    }
-});
 
 interface RebrickableSet {
     set_num: string;
@@ -73,54 +64,69 @@ interface RebrickableMinifig {
     set_img_url: string;
 }
 
-async function getLegoSet(setNumber: string): Promise<RebrickableSet> {
-    const response = await rebrickableApi.get(`sets/${setNumber}`);
-    return response.data;
-}
+export default class RebrickableApi {
+    private readonly apiKey: string;
+    private ax: AxiosInstance;
 
-async function getLegoSetParts(setNumber: string): Promise<RebrickableSetParts> {
-    const response = await rebrickableApi.get(`sets/${setNumber}/parts?page_size=10000`);
-    return response.data;
-}
+    constructor(apiKey: string) {
+        this.apiKey = apiKey;
 
-async function getLegoSetMinifigs(setNumber: string): Promise<RebrickableSetMinifigs> {
-    const response = await rebrickableApi.get(`sets/${setNumber}/minifigs?page_size=10000`);
-    return response.data;
-}
+        this.ax = axios.create({
+            baseURL: "https://rebrickable.com/api/v3/lego/",
+            headers: {
+                Authorization: `key ${this.apiKey}`,
+                Accept: "application/json"
+            }
+        });
+    }
+    async getLegoSet(setNumber: string): Promise<RebrickableSet> {
+        const response = await this.ax.get(`sets/${setNumber}`);
+        return response.data;
+    }
 
-export default async function getLegoSetData(setNumber: string): Promise<LegoSet> {
-    const setData = await getLegoSet(setNumber);
-    const partData = await getLegoSetParts(setNumber);
-    const minifigData = await getLegoSetMinifigs(setNumber);
+    async getLegoSetParts(setNumber: string): Promise<RebrickableSetParts> {
+        const response = await this.ax.get(`sets/${setNumber}/parts?page_size=10000`);
+        return response.data;
+    }
 
-    const partList: LegoPart[] = partData.results.map<LegoPart>(part => ({
-        partNumber: part.part.part_num,
-        partName: part.part.name,
-        colorName: part.color.name,
-        imageUrl: part.part.part_img_url,
-        partCount: part.quantity,
-        presentPartCount: 0
-    }));
+    async getLegoSetMinifigs(setNumber: string): Promise<RebrickableSetMinifigs> {
+        const response = await this.ax.get(`sets/${setNumber}/minifigs?page_size=10000`);
+        return response.data;
+    }
 
-    const minifigList: LegoPart[] = minifigData.results.map<LegoPart>(part => ({
-        partNumber: part.set_num,
-        partName: part.set_name,
-        imageUrl: part.set_img_url,
-        partCount: part.quantity,
-        presentPartCount: 0
-    }));
+    async getLegoSetData(setNumber: string): Promise<LegoSet> {
+        const setData = await this.getLegoSet(setNumber);
+        const partData = await this.getLegoSetParts(setNumber);
+        const minifigData = await this.getLegoSetMinifigs(setNumber);
 
-    const data: LegoSet = {
-        id: null,
-        setNumber: setNumber,
-        setName: setData.name,
-        totalPartCount: setData.num_parts,
-        releaseYear: setData.year,
-        imageUrl: setData.set_img_url,
-        toSell: null,
-        addedByUserName: pb.authStore.model.username,
-        parts: [...minifigList, ...partList]
-    };
+        const partList: LegoPart[] = partData.results.map<LegoPart>(part => ({
+            partNumber: part.part.part_num,
+            partName: part.part.name,
+            colorName: part.color.name,
+            imageUrl: part.part.part_img_url,
+            partCount: part.quantity,
+            presentPartCount: 0
+        }));
 
-    return data;
+        const minifigList: LegoPart[] = minifigData.results.map<LegoPart>(part => ({
+            partNumber: part.set_num,
+            partName: part.set_name,
+            imageUrl: part.set_img_url,
+            partCount: part.quantity,
+            presentPartCount: 0
+        }));
+
+        const data: LegoSet = {
+            setNumber: setNumber,
+            setName: setData.name,
+            totalPartCount: setData.num_parts,
+            releaseYear: setData.year,
+            imageUrl: setData.set_img_url,
+            toSell: null,
+            addedByUserName: null,
+            parts: [...minifigList, ...partList]
+        };
+
+        return data;
+    }
 }

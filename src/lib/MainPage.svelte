@@ -2,26 +2,32 @@
     import {currentUser, pb} from "./PocketBase";
     import type {LegoSet} from "./DataStructures";
     import {mapLegoSetToPocketBase, mapPocketBaseToLegoSet} from "./DataStructures";
-    import getLegoSetData from "./RebrickableAPI";
-    import {writable} from "svelte/store";
-
     import {faAdd} from "@fortawesome/free-solid-svg-icons";
     import {Icon} from "svelte-fontawesome/main";
     import { toast } from '@zerodevx/svelte-toast'
+    import {onMount} from "svelte";
+    import {writable} from "svelte/store";
+    import RebrickableApi from "./RebrickableAPI";
+    import LegoSetView from "./LegoSetView.svelte";
+    import {selectedSetId} from "./stores";
+
+    // Initialize the Rebrickable API
+    const rebrickable = new RebrickableApi(pb.authStore.model.rebrickable_api_key);
 
     // Get the initial sets from PocketBase
     const sets = writable<LegoSet[]>([]);
 
-    pb.collection("lego_sets")
-        .getFullList()
-        .then(res => {
-            res.forEach(x => {
-                mapPocketBaseToLegoSet(x).then(
-                    y => sets.update(oldSets => [...oldSets, y])
-                )
-            })
+    onMount(async () => {
+        const newSets: LegoSet[] = [];
+        const resultList = await pb.collection("lego_sets").getFullList();
+
+        for (const result of resultList) {
+            const data = await mapPocketBaseToLegoSet(result);
+            newSets.push(data);
         }
-    )
+        console.dir(newSets);
+        sets.set(newSets);
+    });
 
     // Add a set to the list
     let newSetNumber: string;
@@ -36,19 +42,32 @@
         // Get the data from the Rebrickable API
         let newSetData: LegoSet;
         try {
-            newSetData = await getLegoSetData(newSetNumber);
+            newSetData = await rebrickable.getLegoSetData(newSetNumber);
         } catch (e) {
             // TODO: Add more precise error handling
             toast.push("Abrufen der LEGO-Daten fehlgeschlagen!", {theme: {"--toastBarBackground": "red"}});
+            console.error("Abrufen der LEGO-Daten von der Rebrickable API fehlgeschlagen!", e);
             return;
         }
 
+        // Get missing data
+        newSetData.toSell = newSetToSell || false;
+        newSetData.addedByUserName = pb.authStore.model.username;
+
         // Save the data into the collection
-        const createResult = await pb.collection("lego_sets").create(mapLegoSetToPocketBase(newSetData));
+        let createResult;
+        try {
+            createResult = await pb.collection("lego_sets").create(await mapLegoSetToPocketBase(newSetData));
+        } catch (e) {
+            // TODO: Add more precise error handling
+            toast.push("Eintragen der LEGO-Daten fehlgeschlagen!", {theme: {"--toastBarBackground": "red"}});
+            console.error("Eintragen der LEGO-Daten in PocketBase fehlgeschlagen!", e);
+            return;
+        }
 
         // Get the ID and save the data to the store
         newSetData.id = createResult.id;
-        newSetData.toSell = newSetToSell;
+        console.dir(newSetData);
         sets.update(oldSets => [...oldSets, newSetData]);
 
         // Set the default values for the inputs
@@ -67,9 +86,7 @@
         <div class="sets-list">
             {#if $sets.length > 0}
                 {#each $sets as set}
-                    <div class="set">
-                        <span>{set.name}</span>
-                    </div>
+                    <LegoSetView set={set}/>
                 {/each}
             {:else}
                 <span>Keine Sets gefunden</span>
@@ -97,9 +114,9 @@
 
   aside {
     height: 100%;
-    width: 300px;
+    width: $aside-width;
 
-    background-color: #eeeeee;
+    background-color: $background-color1;
     padding: 20px;
   }
 
@@ -122,7 +139,8 @@
   }
 
   main {
-    margin-left: 300px;
+    width: calc(100vw - $aside-width);
     padding: 1em;
+    background-color: $background-color2;
   }
 </style>
