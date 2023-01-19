@@ -9,6 +9,7 @@
     import LegoSetView from "./LegoSetView.svelte";
     import {selectedSetId, sets} from "./stores";
     import toast from "./toasts";
+    import LegoPartView from "./LegoPartView.svelte";
 
     // Initialize the Rebrickable API
     //@ts-ignore
@@ -119,7 +120,7 @@
     <div class="parts-list">
         {#if $selectedSetId}
             {#each $sets.filter(x => x.id === $selectedSetId)[0].parts.sort((a, b) => compareLegoParts(a, b)) as part}
-                <p>{part.partName}</p>
+                <LegoPartView part={part}/>
             {/each}
         {:else}
             <span>Set auswählen!</span>
@@ -159,11 +160,16 @@
   main {
     width: calc(100vw - $sidebar-width);
     background-color: $base-color-alt1;
+    border-left: $base-border;
   }
 
   .parts-list {
     padding: $base-spacing;
     height: 100vh;
     overflow: auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $base-spacing;
   }
 </style>

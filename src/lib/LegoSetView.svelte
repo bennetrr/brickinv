@@ -61,10 +61,15 @@
   }
 
   .set-view-column-left {
-    width: 30%;
+    margin: auto $small-spacing auto 0;
+  }
+
+  .set-view-column-right {
+    margin: auto 0;
   }
 
   .set-image {
+    max-height: 100%;
     max-width: 110px;
   }
 </style>
