@@ -46,18 +46,18 @@
     border: $base-border;
     border-radius: $card-border-radius;
     cursor: pointer;
+  }
+
+  .set-view {
+    @include set-view($base-color);
 
     &:hover {
       background-color: $base-color-alt2;
     }
   }
 
-  .set-view {
-    @include set-view($base-color)
-  }
-
   .set-view-active {
-    @include set-view($base-color-alt3)
+    @include set-view($base-color-alt3);
   }
 
   .set-view-column-left {

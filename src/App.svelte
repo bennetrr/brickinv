@@ -5,7 +5,7 @@
     import {SvelteToast} from "@zerodevx/svelte-toast";
 </script>
 
-<SvelteToast options={{pausable: true}}/>
+<SvelteToast/>
 
 {#if $currentUser}
     <MainPage/>

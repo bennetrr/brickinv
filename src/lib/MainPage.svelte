@@ -1,22 +1,20 @@
 <script lang="ts">
     import {currentUser, pb} from "./PocketBase";
-    import type {LegoSet} from "./DataStructures";
+    import type {LegoPart, LegoSet} from "./DataStructures";
     import {mapLegoSetToPocketBase, mapPocketBaseToLegoSet} from "./DataStructures";
     import {faAdd} from "@fortawesome/free-solid-svg-icons";
     import {Icon} from "svelte-fontawesome/main";
-    import { toast } from '@zerodevx/svelte-toast'
     import {onMount} from "svelte";
-    import {writable} from "svelte/store";
     import RebrickableApi from "./RebrickableAPI";
     import LegoSetView from "./LegoSetView.svelte";
-    import {selectedSetId} from "./stores";
+    import {selectedSetId, sets} from "./stores";
+    import toast from "./toasts";
 
     // Initialize the Rebrickable API
+    //@ts-ignore
     const rebrickable = new RebrickableApi(pb.authStore.model.rebrickable_api_key);
 
     // Get the initial sets from PocketBase
-    const sets = writable<LegoSet[]>([]);
-
     onMount(async () => {
         const newSets: LegoSet[] = [];
         const resultList = await pb.collection("lego_sets").getFullList();
@@ -34,7 +32,7 @@
 
     async function addSet() {
         if (newSetNumber === "" || newSetNumber === undefined) {
-            toast.push("Keine Set-Nummer gegeben!", {theme: {"--toastBarBackground": "red"}});
+            toast.pushError("Keine Set-Nummer gegeben!");
             return;
         }
 
@@ -44,13 +42,14 @@
             newSetData = await rebrickable.getLegoSetData(newSetNumber);
         } catch (e) {
             // TODO: Add more precise error handling
-            toast.push("Abrufen der LEGO-Daten fehlgeschlagen!", {theme: {"--toastBarBackground": "red"}});
+            toast.pushError("Abrufen der LEGO-Daten fehlgeschlagen!");
             console.error("Abrufen der LEGO-Daten von der Rebrickable API fehlgeschlagen!", e);
             return;
         }
 
         // Get missing data
         newSetData.toSell = newSetToSell || false;
+        //@ts-ignore
         newSetData.addedByUserName = pb.authStore.model.username;
 
         // Save the data into the collection
@@ -59,7 +58,7 @@
             createResult = await pb.collection("lego_sets").create(await mapLegoSetToPocketBase(newSetData));
         } catch (e) {
             // TODO: Add more precise error handling
-            toast.push("Eintragen der LEGO-Daten fehlgeschlagen!", {theme: {"--toastBarBackground": "red"}});
+            toast.pushError("Eintragen der LEGO-Daten fehlgeschlagen!");
             console.error("Eintragen der LEGO-Daten in PocketBase fehlgeschlagen!", e);
             return;
         }
@@ -76,6 +75,20 @@
     function logout() {
         pb.authStore.clear();
     }
+
+    function compareLegoParts(a: LegoPart, b: LegoPart): 1 | 0 | -1 {
+        // If one is already complete, it's "smaller"
+        const aComplete = a.partCount === a.presentPartCount;
+        const bComplete = b.partCount === b.presentPartCount;
+
+        if (aComplete && !bComplete) return 1;
+        if (!aComplete && bComplete) return -1;
+
+        // Compare the part number
+        if (a.partNumber > b.partNumber) return 1;
+        if (a.partNumber < b.partNumber) return -1;
+        return 0;
+    }
 </script>
 
 <aside>
@@ -84,7 +97,9 @@
             <input bind:value={newSetNumber} placeholder="Setnummer" type="text"/>
             <input bind:value={newSetToSell} type="checkbox"/>
             <label>Verkaufen</label>
-            <button on:click={addSet}><Icon icon={faAdd}/></button>
+            <button on:click={addSet}>
+                <Icon icon={faAdd}/>
+            </button>
         </form>
         <div class="sets-list">
             {#if $sets.length > 0}
@@ -101,7 +116,15 @@
 </aside>
 
 <main>
-    <h1>My App</h1>
+    <div class="parts-list">
+        {#if $selectedSetId}
+            {#each $sets.filter(x => x.id === $selectedSetId)[0].parts.sort((a, b) => compareLegoParts(a, b)) as part}
+                <p>{part.partName}</p>
+            {/each}
+        {:else}
+            <span>Set auswählen!</span>
+        {/if}
+    </div>
 </main>
 
 <style lang="scss">
@@ -112,16 +135,16 @@
     width: $sidebar-width;
 
     background-color: $base-color;
-    padding: 20px;
+    padding: $base-spacing;
   }
 
   .sets-list {
     overflow: auto;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 120px); // TODO: FIX
   }
 
   .logout {
-    font-size: 14px;
+    font-size: $sm-font-size;
 
     a {
       text-decoration: underline;
@@ -135,7 +158,12 @@
 
   main {
     width: calc(100vw - $sidebar-width);
-    padding: 1em;
     background-color: $base-color-alt1;
+  }
+
+  .parts-list {
+    padding: $base-spacing;
+    height: 100vh;
+    overflow: auto;
   }
 </style>

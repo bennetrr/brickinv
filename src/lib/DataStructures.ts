@@ -1,4 +1,4 @@
-import {pb} from "./PocketBase";
+import {getUserIdFromName, getUsernameFromUserId} from "./PocketBase";
 
 export interface LegoSet {
     id?: string;
@@ -19,16 +19,6 @@ export interface LegoPart {
     colorName?: string;
     partCount: number;
     presentPartCount: number;
-}
-
-async function getUserIdFromName(username: string): Promise<string> {
-    const user = await pb.collection("users").getFirstListItem(`username="${username}"`);
-    return user.id;
-}
-
-async function getUsernameFromUserId(userId: string): Promise<string> {
-    const user = await pb.collection("users").getOne(userId);
-    return user.username;
 }
 
 export async function mapLegoSetToPocketBase(setData: LegoSet): Promise<any> {
