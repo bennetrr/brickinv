@@ -4,7 +4,7 @@ import {writable} from "svelte/store";
 export const pb = new PocketBase("https://api.lego.bennetr.me");
 export const currentUser = writable(pb.authStore.model);
 
-pb.authStore.onChange((auth) => {
+pb.authStore.onChange(() => {
     currentUser.set(pb.authStore.model);
 });
 

@@ -5,20 +5,21 @@
     import {faCheck, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
     export let part: LegoPart;
+    export let partCountChanged: (partNumber: string, newCount: number) => void;
 
     function partPlusOne() {
         if (part.presentPartCount >= part.partCount) return;
-        part.presentPartCount++;
+        partCountChanged(part.partNumber, part.presentPartCount + 1);
     }
 
     function partMinusOne() {
         if (part.presentPartCount <= 0) return;
-        part.presentPartCount--;
+        partCountChanged(part.partNumber, part.presentPartCount - 1);
     }
 
     function partSetComplete() {
         if (part.presentPartCount >= part.partCount) return;
-        part.presentPartCount = part.partCount;
+        partCountChanged(part.partNumber, part.partCount);
     }
 
     const buttonStyleOverride = {
@@ -47,8 +48,10 @@
             <span class="part-name">{part.partName}</span>
             <br>
             <span class="part-number">{part.partNumber}</span>
-            <span class="part-dot">•</span>
-            <span class="part-color">{part.colorName}</span>
+            {#if part.colorName}
+                <span class="part-dot">•</span>
+                <span class="part-color">{part.colorName}</span>
+            {/if}
             <br>
             <Group noWrap>
                 <ActionIcon disabled={part.presentPartCount <= 0} on:click={partMinusOne}

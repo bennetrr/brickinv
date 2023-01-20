@@ -2,14 +2,15 @@
     import {currentUser, pb} from "./PocketBase";
     import type {LegoPart, LegoSet} from "./DataStructures";
     import {mapLegoSetToPocketBase, mapPocketBaseToLegoSet} from "./DataStructures";
-    import {faAdd} from "@fortawesome/free-solid-svg-icons";
+    import {faAdd, faLock} from "@fortawesome/free-solid-svg-icons";
     import {Icon} from "svelte-fontawesome/main";
     import {onMount} from "svelte";
     import RebrickableApi from "./RebrickableAPI";
     import LegoSetView from "./LegoSetView.svelte";
-    import {selectedSetId, sets} from "./stores";
-    import toast from "./toasts";
+    import {addSetActionRunning, selectedSetId, sets} from "./stores";
     import LegoPartView from "./LegoPartView.svelte";
+    import {ActionIcon, Checkbox, Group, Space, TextInput} from "@svelteuidev/core";
+    import {debug} from "svelte/internal";
 
     // Initialize the Rebrickable API
     //@ts-ignore
@@ -33,9 +34,12 @@
 
     async function addSet() {
         if (newSetNumber === "" || newSetNumber === undefined) {
-            toast.pushError("Keine Set-Nummer gegeben!");
+            //toast.pushError("Keine Set-Nummer gegeben!");
+            console.error("Keine Set-Nummer angegeben!");
             return;
         }
+
+        addSetActionRunning.set(true);
 
         // Get the data from the Rebrickable API
         let newSetData: LegoSet;
@@ -43,8 +47,9 @@
             newSetData = await rebrickable.getLegoSetData(newSetNumber);
         } catch (e) {
             // TODO: Add more precise error handling
-            toast.pushError("Abrufen der LEGO-Daten fehlgeschlagen!");
+            // toast.pushError("Abrufen der LEGO-Daten fehlgeschlagen!");
             console.error("Abrufen der LEGO-Daten von der Rebrickable API fehlgeschlagen!", e);
+            addSetActionRunning.set(false);
             return;
         }
 
@@ -59,8 +64,9 @@
             createResult = await pb.collection("lego_sets").create(await mapLegoSetToPocketBase(newSetData));
         } catch (e) {
             // TODO: Add more precise error handling
-            toast.pushError("Eintragen der LEGO-Daten fehlgeschlagen!");
+            // toast.pushError("Eintragen der LEGO-Daten fehlgeschlagen!");
             console.error("Eintragen der LEGO-Daten in PocketBase fehlgeschlagen!", e);
+            addSetActionRunning.set(false);
             return;
         }
 
@@ -71,6 +77,7 @@
         // Set the default values for the inputs
         newSetNumber = undefined;
         newSetToSell = false;
+        addSetActionRunning.set(false);
     }
 
     function logout() {
@@ -85,48 +92,73 @@
         if (aComplete && !bComplete) return 1;
         if (!aComplete && bComplete) return -1;
 
+        // Put minifigs to the top
+        const aMinifig = a.partNumber.startsWith("fig");
+        const bMinifig = b.partNumber.startsWith("fig");
+
+        if (aMinifig && !bMinifig) return -1;
+        if (!aMinifig && bMinifig) return 1;
+
         // Compare the part number
         if (a.partNumber > b.partNumber) return 1;
         if (a.partNumber < b.partNumber) return -1;
         return 0;
     }
+
+    async function onPartCountChanged(partNumber: string, newCount: number) {
+        const changedSetIndex = $sets.findIndex(x => x.id === $selectedSetId);
+        const changedPartIndex = $sets[changedSetIndex].parts.findIndex(x => x.partNumber === partNumber);
+
+        $sets[changedSetIndex].parts[changedPartIndex].presentPartCount = newCount;
+
+        const mappedLegoSet = await mapLegoSetToPocketBase($sets[changedSetIndex]);
+        try {
+            console.dir(await pb.collection("lego_sets").update($selectedSetId, mappedLegoSet));
+        } catch (e) {
+            console.error("Fehler beim schreiben in die Datenbank!", e);
+        }
+
+        sets.update(sets => sets);
+    }
 </script>
 
 <aside>
-    <section>
-        <form on:submit|preventDefault>
-            <input bind:value={newSetNumber} placeholder="Setnummer" type="text"/>
-            <input bind:value={newSetToSell} type="checkbox"/>
-            <label>Verkaufen</label>
-            <button on:click={addSet}>
-                <Icon icon={faAdd}/>
-            </button>
-        </form>
-        <div class="sets-list">
-            {#if $sets.length > 0}
-                {#each $sets as set}
-                    <LegoSetView set={set}/>
-                {/each}
-            {:else}
-                <span>Keine Sets gefunden</span>
-            {/if}
-        </div>
-
-        <span class="logout">Angemeldet als {$currentUser.username}. <a on:click={logout}>Abmelden</a></span>
-    </section>
+    <Group>
+        <TextInput bind:value={newSetNumber} placeholder="Set-Nummer" variant="filled"/>
+        <Checkbox bind:checked={newSetToSell} color="teal" label="Verkaufen"/>
+        <Space w={68}/>
+        <ActionIcon loading={$addSetActionRunning} on:click={addSet} size="xl" variant="outline">
+            <Icon icon={faAdd}/>
+        </ActionIcon>
+    </Group>
+    <div class="sets-list">
+        {#if $sets.length > 0}
+            {#each $sets as set}
+                <LegoSetView set={set}/>
+            {/each}
+        {:else}
+            <span>Keine Sets gefunden</span>
+        {/if}
+    </div>
 </aside>
 
 <main>
     <div class="parts-list">
         {#if $selectedSetId}
             {#each $sets.filter(x => x.id === $selectedSetId)[0].parts.sort((a, b) => compareLegoParts(a, b)) as part}
-                <LegoPartView part={part}/>
+                <LegoPartView part={part} partCountChanged={onPartCountChanged}/>
             {/each}
         {:else}
             <span>Set auswählen!</span>
         {/if}
     </div>
 </main>
+
+<div class="logout-button">
+    <ActionIcon on:click={logout} size="xl" variant="outline">
+        <Icon icon={faLock}/>
+    </ActionIcon>
+</div>
 
 <style lang="scss">
   @import "vars";
@@ -144,19 +176,6 @@
     height: calc(100vh - 120px); // TODO: FIX
   }
 
-  .logout {
-    font-size: $sm-font-size;
-
-    a {
-      text-decoration: underline;
-
-      &:hover {
-        cursor: pointer;
-        color: $highlight-color;
-      }
-    }
-  }
-
   main {
     width: calc(100vw - $sidebar-width);
     background-color: $base-color-alt1;
@@ -171,5 +190,11 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: $base-spacing;
+  }
+
+  .logout-button {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
   }
 </style>
