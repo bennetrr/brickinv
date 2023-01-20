@@ -159,6 +159,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^0.7.2":
+  version: 0.7.3
+  resolution: "@floating-ui/core@npm:0.7.3"
+  checksum: f48f9fb0d19dcbe7a68c38e8de7fabb11f0c0e6e0ef215ae60b5004900bacb1386e7b89cb377d91a90ff7d147ea1f06c2905136ecf34dea162d9696d8f448d5f
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:0.5.2":
+  version: 0.5.2
+  resolution: "@floating-ui/dom@npm:0.5.2"
+  dependencies:
+    "@floating-ui/core": ^0.7.2
+  checksum: ff0897abed2e97a8d134b4dd8fa5309553eda3c25dbc2dbe8f7564b3eeac93d21d9334ae7c1ba1f1e5442ed119d82d2ce6935cd4ff607da1c0c6a913c493f5fc
+  languageName: node
+  linkType: hard
+
 "@fortawesome/fontawesome-common-types@npm:6.2.1":
   version: 6.2.1
   resolution: "@fortawesome/fontawesome-common-types@npm:6.2.1"
@@ -253,6 +269,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stitches/core@npm:1.2.8":
+  version: 1.2.8
+  resolution: "@stitches/core@npm:1.2.8"
+  checksum: 3a76a697b1d71ffb212e8b166f923c8f66ef99de93689dd417571f90fbba5692abb9a92220acd102baf5298896f0fdfeaa721da2d61adee1247531a26f67a15f
+  languageName: node
+  linkType: hard
+
 "@sveltejs/vite-plugin-svelte@npm:^2.0.0":
   version: 2.0.2
   resolution: "@sveltejs/vite-plugin-svelte@npm:2.0.2"
@@ -267,6 +290,26 @@ __metadata:
     svelte: ^3.54.0
     vite: ^4.0.0
   checksum: 6a223da864d74c4e6ea05881ee0cf79db8390953df6d506b79d2c37a365fe291e5a5bb330dcfb5366b61ee3915544fd37db3e134865085981342bab392a6a991
+  languageName: node
+  linkType: hard
+
+"@svelteuidev/composables@npm:^0.7.7":
+  version: 0.7.7
+  resolution: "@svelteuidev/composables@npm:0.7.7"
+  checksum: 155c017de3fd3aae48f228dbc2db155bf801bad2402077e5fa592c0ed74d730dba066f2726f3d109fe0fdee48a9a0b5fa917e393a44fb4c7a6d669f757e834a4
+  languageName: node
+  linkType: hard
+
+"@svelteuidev/core@npm:^0.7.7":
+  version: 0.7.7
+  resolution: "@svelteuidev/core@npm:0.7.7"
+  dependencies:
+    "@floating-ui/dom": 0.5.2
+    "@stitches/core": 1.2.8
+  peerDependencies:
+    "@svelteuidev/composables": 0.7.7
+    svelte: ">=3.47.0"
+  checksum: ea53278c0b8c8a05dd68651b5122c274662c7a413171f21a9eaf4113c89f0ab41f31d5f685a5f1dd91f56898ed05336d08d0f5b045ab039cb958d2d6629e8468
   languageName: node
   linkType: hard
 
@@ -304,13 +347,6 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 19eb71acc4b0d7db2170732a51ad18a34007021f42069652a5be8a3e3a448a470d2f970b9e85f734d1896bf3a25e48fb5132b4a989c101eb5df21cc171d426c5
-  languageName: node
-  linkType: hard
-
-"@zerodevx/svelte-toast@npm:^0.8.2":
-  version: 0.8.2
-  resolution: "@zerodevx/svelte-toast@npm:0.8.2"
-  checksum: 633ddf8d0f1975d1ca8de29e563ac58099f3324cf785e8d6c4e3f57b5015207544aed6fc3d0d00d440e2a084df3d1466d423fe75520a0852b08ea7bae6eb6cb2
   languageName: node
   linkType: hard
 
@@ -1063,8 +1099,9 @@ __metadata:
   dependencies:
     "@fortawesome/free-solid-svg-icons": ^6.2.1
     "@sveltejs/vite-plugin-svelte": ^2.0.0
+    "@svelteuidev/composables": ^0.7.7
+    "@svelteuidev/core": ^0.7.7
     "@tsconfig/svelte": ^3.0.0
-    "@zerodevx/svelte-toast": ^0.8.2
     axios: ^1.2.2
     pocketbase: ^0.10.0
     sass: ^1.57.1

@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
-    "@zerodevx/svelte-toast": "^0.8.2",
+    "@svelteuidev/composables": "^0.7.7",
+    "@svelteuidev/core": "^0.7.7",
     "axios": "^1.2.2",
     "pocketbase": "^0.10.0",
     "sass": "^1.57.1",

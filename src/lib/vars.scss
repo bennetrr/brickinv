@@ -38,57 +38,7 @@ $small-spacing: 10px;
 
 // Borders
 $base-border: 1px solid $base-color-alt2;
+$base-border-alt1: 2px solid $text-primary-color;
+$base-border-alt2: 2px solid $base-color-alt3;
 $base-radius: 3px;
 $card-border-radius: 15px;
-
-// Old
-$highlight-color: #ff6100;
-$aside-width: 400px;
-$background-color1: #ffffff;
-$background-color2: #f8f9fa;
-$background-color3: #ebeff2;
-
-:root {
-  // Colors
-  --text-primary-color: #{$text-primary-color};
-  --text-hint-color: #{$text-hint-color};
-  --text-disable-color: #{$text-disable-color};
-  --base-color: #{$base-color};
-  --base-color-alt1: #{$base-color-alt1};
-  --base-color-alt2: #{$base-color-alt2};
-  --base-color-alt3: #{$base-color-alt3};
-  --base-color-alt4: #{$base-color-alt4};
-  --info-color: #{$info-color};
-  --info-color-alt: #{$info-color-alt};
-  --success-color: #{$success-color};
-  --success-color-alt: #{$success-color-alt};
-  --error-color: #{$error-color};
-  --error-color-alt: #{$error-color-alt};
-  --warning-color: #{$warning-color};
-  --warning-color-alt: #{$warning-color-alt};
-  --overlay-color: #{$overlay-color};
-  --tooltip-color: #{$tooltip-color};
-  --shadow-color: #{$shadow-color};
-  // Font sizes
-  --base-font-size: #{$base-font-size};
-  --xs-font-size: #{$xs-font-size};
-  --sm-font-size: #{$sm-font-size};
-  --lg-font-size: #{$lg-font-size};
-  --xl-font-size: #{$xl-font-size};
-  // Dimensions
-  --sidebar-width: #{$sidebar-width};
-  --input-height: #{$input-height};
-  --button-height: #{$button-height};
-  --base-spacing: #{$base-spacing};
-  --small-spacing: #{$small-spacing};
-  // Borders
-  --base-border: #{$base-border};
-  --base-radius: #{$base-radius};
-  --card-border-radius: #{$card-border-radius};
-  // Old
-  --highlight-color: #{$highlight-color};
-  --aside-width: #{$aside-width};
-  --background-color1: #{$background-color1};
-  --background-color2: #{$background-color2};
-  --background-color3: #{$background-color3};
-}

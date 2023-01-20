@@ -1,62 +1,104 @@
 <script lang="ts">
     import type {LegoPart} from "./DataStructures";
+    import {ActionIcon, Group, Image} from "@svelteuidev/core";
+    import {Icon} from "svelte-fontawesome/main";
+    import {faCheck, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
     export let part: LegoPart;
+
+    function partPlusOne() {
+        if (part.presentPartCount >= part.partCount) return;
+        part.presentPartCount++;
+    }
+
+    function partMinusOne() {
+        if (part.presentPartCount <= 0) return;
+        part.presentPartCount--;
+    }
+
+    function partSetComplete() {
+        if (part.presentPartCount >= part.partCount) return;
+        part.presentPartCount = part.partCount;
+    }
+
+    const buttonStyleOverride = {
+        "&:disabled": {
+            border: "$borderWidths$light solid $colors$gray700"
+        }
+    };
+
+    const leftButtonStyleOverride = {
+        ...buttonStyleOverride,
+        borderBottomLeftRadius: "$radii$sm",
+        borderTopLeftRadius: "$radii$sm"
+    };
+
+    const rightButtonStyleOverride = {
+        ...buttonStyleOverride,
+        borderBottomRightRadius: "$radii$sm",
+        borderTopRightRadius: "$radii$sm"
+    };
 </script>
 
-<div class="part-view-complete">
-    <div class="part-view-column-left">
-        <img class="part-image" src={part.imageUrl}/>
-    </div>
-    <div class="part-view-column-right">
-        <span class="part-name">{part.partName}</span>
-        <br>
-        <span class="part-number">{part.partNumber}</span>
-        <span class="part-dot">•</span>
-        <span class="part-year">{part.colorName}</span>
-        <span class="part-dot">•</span>
-        <br>
-        <span class="part-part-count">{part.partCount} Teile</span>
-        <span>/</span>
-        <span class="part-to-sell">{part.presentPartCount}</span>
-    </div>
+<div class="part-view" class:part-view-complete={part.presentPartCount === part.partCount}>
+    <Group noWrap>
+        <Image class="part-image" fit="contain" height={100} src={part.imageUrl} width={120}/>
+        <div>
+            <span class="part-name">{part.partName}</span>
+            <br>
+            <span class="part-number">{part.partNumber}</span>
+            <span class="part-dot">•</span>
+            <span class="part-color">{part.colorName}</span>
+            <br>
+            <Group noWrap>
+                <ActionIcon disabled={part.presentPartCount <= 0} on:click={partMinusOne}
+                            override={leftButtonStyleOverride} radius={0}
+                            size={34} variant="outline">
+                    <Icon icon={faMinus}/>
+                </ActionIcon>
+                <span class="part-count-present">{part.presentPartCount}</span>
+                <ActionIcon disabled={part.presentPartCount >= part.partCount} on:click={partPlusOne}
+                            override={rightButtonStyleOverride} radius={0}
+                            size={34} variant="outline">
+                    <Icon icon={faPlus}/>
+                </ActionIcon>
+                <span class="part-count">von {part.partCount}</span>
+                <ActionIcon disabled={part.presentPartCount >= part.partCount} on:click={partSetComplete}
+                            override={buttonStyleOverride}
+                            size={34} variant="outline">
+                    <Icon icon={faCheck}/>
+                </ActionIcon>
+            </Group>
+        </div>
+    </Group>
 </div>
 
 <style lang="scss">
   @import "vars";
 
-  $height: 120px;
-
-  @mixin part-view($border) {
-    height: $height;
+  .part-view {
+    height: 140px;
 
     padding: $small-spacing;
     display: flex;
     flex-direction: row;
 
-    background-color: $base-color-alt2;
-    border: $border;
+    background-color: $base-color;
+    border: $base-border;
     border-radius: $card-border-radius;
   }
 
-  .part-view {
-    @include part-view($base-color-alt2);
-  }
-
   .part-view-complete {
-    @include part-view(2px solid $success-color)
+    border-color: $success-color;
   }
 
-  .part-view-column-left {
-    margin: auto $small-spacing auto 0;
-  }
-
-  .part-view-column-right {
-    margin: auto 0;
-  }
-
-  .part-image {
-    max-height: calc($height - 20px);
-    max-width: 110px;
+  .part-count-present {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgb(73, 80, 87);
+    margin-right: -17px;
+    margin-left: -17px;
+    text-align: center;
+    line-height: 34px;
   }
 </style>

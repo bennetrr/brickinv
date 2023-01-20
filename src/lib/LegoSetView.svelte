@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {LegoSet} from "./DataStructures";
     import {selectedSetId} from "./stores";
+    import {Group, Image} from "@svelteuidev/core";
 
     export let set: LegoSet;
 
@@ -9,32 +10,30 @@
     }
 </script>
 
-<div class={set.id === $selectedSetId ? "set-view-active" : "set-view"} on:click={selectSetHandler}>
-    <div class="set-view-column-left">
-        <img class="set-image" src={set.imageUrl}/>
-    </div>
-    <div class="set-view-column-right">
-        <span class="set-name">{set.setName}</span>
-        <br>
-        <span class="set-number">{set.setNumber}</span>
-        <span class="set-dot">•</span>
-        <span class="set-year">{set.releaseYear}</span>
-        <span class="set-dot">•</span>
-        <span class="set-part-count">{set.totalPartCount} Teile</span>
-        <br>
-        <span class="set-to-sell">{set.toSell ? "Verkaufen" : "Behalten"}</span>
-        <span class="set-dot">•</span>
-        <span class="set-username">Hinzugefügt von {set.addedByUserName}</span>
-    </div>
+<div class="set-view" class:set-view-active={set.id === $selectedSetId} on:click={selectSetHandler}>
+    <Group>
+        <Image class="set-image" fit="contain" height={80} src={set.imageUrl} width={110}/>
+        <div>
+            <span class="set-name">{set.setName}</span>
+            <br>
+            <span class="set-number">{set.setNumber}</span>
+            <span class="set-dot">•</span>
+            <span class="set-year">{set.releaseYear}</span>
+            <span class="set-dot">•</span>
+            <span class="set-part-count">{set.totalPartCount} Teile</span>
+            <br>
+            <span class="set-to-sell">{set.toSell ? "Verkaufen" : "Behalten"}</span>
+            <span class="set-dot">•</span>
+            <span class="set-username">Hinzugefügt von {set.addedByUserName}</span>
+        </div>
+    </Group>
 </div>
 
 <style lang="scss">
   @import "vars";
 
-  $height: 100px;
-
-  @mixin set-view($background-color) {
-    height: $height;
+  .set-view {
+    height: 100px;
     width: 100%;
 
     padding: $small-spacing;
@@ -42,14 +41,10 @@
     display: flex;
     flex-direction: row;
 
-    background-color: $background-color;
+    background-color: $base-color;
     border: $base-border;
     border-radius: $card-border-radius;
     cursor: pointer;
-  }
-
-  .set-view {
-    @include set-view($base-color);
 
     &:hover {
       background-color: $base-color-alt2;
@@ -57,19 +52,10 @@
   }
 
   .set-view-active {
-    @include set-view($base-color-alt3);
-  }
+    background-color: $base-color-alt3;
 
-  .set-view-column-left {
-    margin: auto $small-spacing auto 0;
-  }
-
-  .set-view-column-right {
-    margin: auto 0;
-  }
-
-  .set-image {
-    max-height: 100%;
-    max-width: 110px;
+    &:hover {
+      background-color: $base-color-alt3;
+    }
   }
 </style>
