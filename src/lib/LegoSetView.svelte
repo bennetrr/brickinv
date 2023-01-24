@@ -1,16 +1,26 @@
 <script lang="ts">
     import type {LegoSet} from "./DataStructures";
-    import {selectedSetId} from "./stores";
-    import {Group, Image} from "@svelteuidev/core";
+    import {selectedSetId, sets} from "./stores";
+    import {ActionIcon, Group, Image} from "@svelteuidev/core";
+    import {faTrash} from "@fortawesome/free-solid-svg-icons";
+    import {Icon} from "svelte-fontawesome/main";
+    import {pb} from "./PocketBase";
 
     export let set: LegoSet;
 
-    function selectSetHandler() {
+    function selectSet() {
         selectedSetId.set(set.id);
+    }
+
+    function removeSet(e: MouseEvent) {
+        e.stopPropagation()
+        pb.collection("lego_sets").delete(set.id);
+        sets.update(oldSets => oldSets.filter(x => x.id != set.id));
+        if ($selectedSetId === set.id) selectedSetId.set(undefined);
     }
 </script>
 
-<div class="set-view" class:set-view-active={set.id === $selectedSetId} on:click={selectSetHandler}>
+<div class="set-view" class:set-view-active={set.id === $selectedSetId} on:click={selectSet}>
     <Group>
         <Image class="set-image" fit="contain" height={80} src={set.imageUrl} width={110}/>
         <div>
@@ -22,9 +32,16 @@
             <span class="set-dot">•</span>
             <span class="set-part-count">{set.totalPartCount} Teile</span>
             <br>
-            <span class="set-to-sell">{set.toSell ? "Verkaufen" : "Behalten"}</span>
-            <span class="set-dot">•</span>
-            <span class="set-username">Hinzugefügt von {set.addedByUserName}</span>
+            <Group>
+                <div>
+                    <span class="set-to-sell">{set.toSell ? "Verkaufen" : "Behalten"}</span>
+                    <span class="set-dot">•</span>
+                    <span class="set-username">Hinzugefügt von {set.addedByUserName}</span>
+                </div>
+                <ActionIcon on:click={removeSet} override={{"&:hover": {backgroundColor: "transparent", color: "$colors$red900"}}}>
+                    <Icon icon={faTrash}/>
+                </ActionIcon>
+            </Group>
         </div>
     </Group>
 </div>

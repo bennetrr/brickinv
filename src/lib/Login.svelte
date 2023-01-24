@@ -13,19 +13,19 @@
 </script>
 
 <Stack override={{ height: "100%", width: "100%"}}  align="center" spacing="xl">
-    <TextInput label="Name">
+    <TextInput label="Name" bind:value={username}>
         <svelte:fragment slot="rightSection">
             <Icon icon={faUser}/>
         </svelte:fragment>
     </TextInput>
 
-    <TextInput label="Passwort" type="password">
+    <TextInput label="Passwort" type="password" bind:value={password}>
         <svelte:fragment slot="rightSection">
             <Icon icon={faKey}/>
         </svelte:fragment>
     </TextInput>
 
-    <Button variant="gradient">
+    <Button variant="gradient" on:click={login}>
         Anmelden
     </Button>
 </Stack>

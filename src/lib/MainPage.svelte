@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {currentUser, pb} from "./PocketBase";
+    import {pb} from "./PocketBase";
     import type {LegoPart, LegoSet} from "./DataStructures";
     import {mapLegoSetToPocketBase, mapPocketBaseToLegoSet} from "./DataStructures";
     import {faAdd, faLock} from "@fortawesome/free-solid-svg-icons";
@@ -9,8 +9,7 @@
     import LegoSetView from "./LegoSetView.svelte";
     import {addSetActionRunning, selectedSetId, sets} from "./stores";
     import LegoPartView from "./LegoPartView.svelte";
-    import {ActionIcon, Checkbox, Group, Space, TextInput} from "@svelteuidev/core";
-    import {debug} from "svelte/internal";
+    import {ActionIcon, Checkbox, Group, Notification, Space, TextInput} from "@svelteuidev/core";
 
     // Initialize the Rebrickable API
     //@ts-ignore
