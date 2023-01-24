@@ -9,7 +9,8 @@
     import LegoSetView from "./LegoSetView.svelte";
     import {addSetActionRunning, selectedSetId, sets} from "./stores";
     import LegoPartView from "./LegoPartView.svelte";
-    import {ActionIcon, Checkbox, Group, Notification, Space, TextInput} from "@svelteuidev/core";
+    import {ActionIcon, Checkbox, Group, Space, TextInput} from "@svelteuidev/core";
+    import addNotification from "./notifications/NotificationStore";
 
     // Initialize the Rebrickable API
     //@ts-ignore
@@ -33,7 +34,7 @@
 
     async function addSet() {
         if (newSetNumber === "" || newSetNumber === undefined) {
-            //toast.pushError("Keine Set-Nummer gegeben!");
+            addNotification({type: "error", text: "Keine Set-Nummer angegeben!", duration: 5});
             console.error("Keine Set-Nummer angegeben!");
             return;
         }
@@ -46,7 +47,7 @@
             newSetData = await rebrickable.getLegoSetData(newSetNumber);
         } catch (e) {
             // TODO: Add more precise error handling
-            // toast.pushError("Abrufen der LEGO-Daten fehlgeschlagen!");
+            addNotification({type: "error", text: "Abrufen der Set-Daten fehlgeschlagen!", duration: 10});
             console.error("Abrufen der LEGO-Daten von der Rebrickable API fehlgeschlagen!", e);
             addSetActionRunning.set(false);
             return;
@@ -63,7 +64,7 @@
             createResult = await pb.collection("lego_sets").create(await mapLegoSetToPocketBase(newSetData));
         } catch (e) {
             // TODO: Add more precise error handling
-            // toast.pushError("Eintragen der LEGO-Daten fehlgeschlagen!");
+            addNotification({type: "error", text: "Speichern der Set-Daten fehlgeschlagen!", duration: 10});
             console.error("Eintragen der LEGO-Daten in PocketBase fehlgeschlagen!", e);
             addSetActionRunning.set(false);
             return;

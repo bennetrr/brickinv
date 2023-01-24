@@ -5,6 +5,7 @@
     import {faTrash} from "@fortawesome/free-solid-svg-icons";
     import {Icon} from "svelte-fontawesome/main";
     import {pb} from "./PocketBase";
+    import {onMount} from "svelte";
 
     export let set: LegoSet;
 
@@ -18,9 +19,23 @@
         sets.update(oldSets => oldSets.filter(x => x.id != set.id));
         if ($selectedSetId === set.id) selectedSetId.set(undefined);
     }
+
+    let totalPartCount = 0;
+
+    onMount(() => {
+        for (let part of set.parts) {
+            totalPartCount += part.partCount;
+        }
+    })
+
+    let completedPartCount;
+    $: {
+        completedPartCount = 0
+        for (let part of set.parts) completedPartCount += part.presentPartCount;
+    }
 </script>
 
-<div class="set-view" class:set-view-active={set.id === $selectedSetId} on:click={selectSet}>
+<div class="set-view" class:set-view-active={set.id === $selectedSetId} class:set-view-complete={completedPartCount === totalPartCount} on:click={selectSet}>
     <Group>
         <Image class="set-image" fit="contain" height={80} src={set.imageUrl} width={110}/>
         <div>
@@ -30,7 +45,9 @@
             <span class="set-dot">•</span>
             <span class="set-year">{set.releaseYear}</span>
             <span class="set-dot">•</span>
-            <span class="set-part-count">{set.totalPartCount} Teile</span>
+            <span class="set-part-count">{completedPartCount}</span>
+            <span class="set-dot">von</span>
+            <span class="set-part-count">{totalPartCount} Teilen</span>
             <br>
             <Group>
                 <div>
@@ -74,5 +91,9 @@
     &:hover {
       background-color: $base-color-alt3;
     }
+  }
+
+  .set-view-complete {
+    border-color: $success-color;
   }
 </style>

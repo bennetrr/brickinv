@@ -12,6 +12,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
     "@tsconfig/svelte": "^3.0.0",
+    "@types/uuid": "^9.0.0",
     "svelte": "^3.54.0",
     "svelte-check": "^2.10.0",
     "tslib": "^2.4.1",
@@ -24,6 +25,7 @@
     "@svelteuidev/core": "^0.7.7",
     "axios": "^1.2.2",
     "pocketbase": "^0.10.0",
+    "radix-icons-svelte": "^1.2.1",
     "sass": "^1.57.1",
     "svelte-fontawesome": "^0.0.3",
     "uuid": "^9.0.0"
