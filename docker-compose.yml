@@ -10,3 +10,13 @@ services:
     restart: always
     ports:
       - "8200:8080"
+
+  svelteApp:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    image: bennetrr/lego:svelteApp
+    container_name: lego-svelteApp
+    restart: always
+    ports:
+      - "8201:5000"
