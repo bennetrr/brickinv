@@ -1,20 +1,23 @@
 version: '3.8'
 
 volumes:
-  lego-pocketbase-data:
+  pocketbase_data:
 
 services:
   pocketbase:
-    image: bennetrr/lego-pocketbase
+    image: ghcr.io/bennetrr/lego-pocketbase:latest
     container_name: lego-pocketBase
     restart: always
     ports:
       - "8200:8080"
     volumes:
       - type: volume
-        source: lego-pocketbase-data
-        target: "/pb/"
+        source: pocketbase_data
+        target: /pb/
 
-    build:
-      context: .
-      dockerfile: pocketbase.Dockerfile
+  app:
+    image: ghcr.io/bennetrr/lego-app:latest
+    container_name: lego-app
+    restart: always
+    ports:
+      - "8201:80"
