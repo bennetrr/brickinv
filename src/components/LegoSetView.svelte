@@ -1,11 +1,12 @@
 <script lang="ts">
     import type {LegoSet} from "../interfaces/DataStructures";
-    import {selectedSetId, sets} from "../stores/stores";
+    import {selectedSetId} from "../stores/stores";
     import {ActionIcon, Group, Image} from "@svelteuidev/core";
     import {faTrash} from "@fortawesome/free-solid-svg-icons";
     import {Icon} from "svelte-fontawesome/main";
     import {pb} from "../connectors/PocketBase";
     import {onMount} from "svelte";
+    import {sets} from "../stores/setStores";
 
     export let set: LegoSet;
 

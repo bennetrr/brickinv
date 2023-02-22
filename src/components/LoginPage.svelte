@@ -1,5 +1,6 @@
 <script lang="ts">
     import {pb} from "../connectors/PocketBase";
+    import {Collections} from "../interfaces/PocketBaseTypes";
     import {addNotification} from "../stores/NotificationStore";
 
     import {Button, Stack, TextInput} from "@svelteuidev/core";
@@ -15,7 +16,7 @@
 
     async function login() {
         try {
-            await pb.collection("users").authWithPassword(username, password);
+            await pb.collection(Collections.Users).authWithPassword(username, password);
         } catch (e) {
             addNotification({type: "error", title: "Anmeldung fehlgeschlagen!", text: "Falscher Benutzername oder falsches Passwort eingegeben", duration: 10});
         }

@@ -5,81 +5,109 @@
     import {Icon} from "svelte-fontawesome/main";
     import {faAdd, faLock} from "@fortawesome/free-solid-svg-icons";
 
-    import {pb} from "../connectors/PocketBase";
-    import RebrickableApi from "../connectors/RebrickableAPI";
-    import {type LegoPart, type LegoSet, mapLegoSetToPocketBase, mapPocketBaseToLegoSet} from "../interfaces/DataStructures";
-    import {addSetActionRunning, selectedSetId, sets} from "../stores/stores";
+    import {currentUser, pb} from "../connectors/PocketBase";
+    import type {
+        LegoPartsRecord,
+        LegoPartsResponse,
+        LegoSetsRecord,
+        LegoSetsResponse,
+        UsersResponse
+    } from "../interfaces/PocketBaseTypes";
+    import {Collections} from "../interfaces/PocketBaseTypes";
     import {addNotification} from "../stores/NotificationStore";
+    import {sets} from "../stores/setStores";
+    import RebrickableApi from "../connectors/RebrickableAPI";
+
+    import {addSetActionRunning, selectedSetId} from "../stores/stores";
 
     import LegoSetView from "./LegoSetView.svelte";
     import LegoPartView from "./LegoPartView.svelte";
 
     // Initialize the Rebrickable API
     //@ts-ignore
-    const rebrickable = new RebrickableApi(pb.authStore.model.rebrickable_api_key);
+    const rebrickable = new RebrickableApi($currentUser.rebrickable_api_key);
 
-    // Get the initial sets from PocketBase
     onMount(async () => {
-        const newSets: LegoSet[] = [];
-        const resultList = await pb.collection("lego_sets").getFullList();
+        // Get initial sets
+        $sets = await pb.collection(Collections.LegoSets).getFullList<LegoSetsResponse<{UsersResponse}>>(200, {expand: "added_by_user"});
 
-        for (const result of resultList) {
-            const data = await mapPocketBaseToLegoSet(result);
-            newSets.push(data);
-        }
-        sets.set(newSets);
+        // Subscribe to realtime changes
+        await pb.collection(Collections.LegoSets).subscribe<LegoSetsResponse<{UsersResponse}>>("*", async ({action, record}) => {
+            switch (action) {
+                case "create":
+                    $sets = [...$sets, record];
+                    break;
+                case "update":
+                    const updateIndex = $sets.findIndex(x => x.id === record.id);
+                    $sets.splice(updateIndex, 1, record);
+                    $sets = $sets;
+                    break;
+                case "delete":
+                    $sets.filter(x => x.id !== record.id);
+                    $sets = $sets;
+                    break;
+            }
+        });
     });
 
     // Add a set to the list
     let newSetNumber: string;
     let newSetToSell: boolean;
+    let newSetActionRunning = false;
 
     async function addSet() {
+        // Check if the set number textbox is empty
         if (newSetNumber === "" || newSetNumber === undefined) {
             addNotification({type: "error", text: "Keine Set-Nummer angegeben!", duration: 5});
-            console.error("Keine Set-Nummer angegeben!");
             return;
         }
 
-        addSetActionRunning.set(true);
+        // Activate the loader icon in the button
+        newSetActionRunning = true;
 
-        // Get the data from the Rebrickable API
-        let newSetData: LegoSet;
+        // Get the set data from Rebrickable
+        let newSetData: LegoSetsRecord;
+        let newSetParts: LegoPartsRecord[];
+
         try {
-            newSetData = await rebrickable.getLegoSetData(newSetNumber);
+            newSetData = await rebrickable.getLegoSetInformation(newSetNumber);
+            newSetParts = await rebrickable.getLegoSetParts(newSetNumber);
         } catch (e) {
             // TODO: Add more precise error handling
             addNotification({type: "error", text: "Abrufen der Set-Daten fehlgeschlagen!", duration: 10});
             console.error("Abrufen der LEGO-Daten von der Rebrickable API fehlgeschlagen!", e);
-            addSetActionRunning.set(false);
+            newSetActionRunning = false;
             return;
         }
 
-        // Get missing data
-        newSetData.toSell = newSetToSell || false;
-        //@ts-ignore
-        newSetData.addedByUserName = pb.authStore.model.username;
+        // Fill in missing data for the set
+        let totalParts = 0;
+        newSetParts.forEach(x => totalParts += x.total_count);
 
-        // Save the data into the collection
-        let createResult;
-        try {
-            createResult = await pb.collection("lego_sets").create(await mapLegoSetToPocketBase(newSetData));
-        } catch (e) {
-            // TODO: Add more precise error handling
-            addNotification({type: "error", text: "Speichern der Set-Daten fehlgeschlagen!", duration: 10});
-            console.error("Eintragen der LEGO-Daten in PocketBase fehlgeschlagen!", e);
-            addSetActionRunning.set(false);
-            return;
+        newSetData = {
+            ...newSetData,
+            added_by_user: $currentUser.id,
+            to_sell: newSetToSell,
+            present_parts: 0,
+            total_parts: totalParts
         }
 
-        // Get the ID and save the data to the store
-        newSetData.id = createResult.id;
-        sets.update(oldSets => [...oldSets, newSetData]);
+        // Add the new set to the collection
+        const {id: newSetId} = await pb.collection(Collections.LegoSets).create<LegoSetsResponse>(newSetData);
 
-        // Set the default values for the inputs
+        // Fill in missing data for the parts and add the parts to the collection
+        newSetParts.forEach(x => {
+            x.set = newSetId;
+            x.present_count = 0;
+            pb.collection(Collections.LegoParts).create<LegoPartsResponse>(x);
+        });
+
+        // Clear the inputs
         newSetNumber = undefined;
         newSetToSell = false;
-        addSetActionRunning.set(false);
+
+        // Disable the loader icon
+        newSetActionRunning = false;
     }
 
     function logout() {
@@ -129,7 +157,7 @@
         <TextInput bind:value={newSetNumber} placeholder="Set-Nummer" variant="filled"/>
         <Checkbox bind:checked={newSetToSell} color="teal" label="Verkaufen"/>
         <Space w={68}/>
-        <ActionIcon loading={$addSetActionRunning} on:click={addSet} size="xl" variant="outline">
+        <ActionIcon loading={newSetActionRunning} on:click={addSet} size="xl" variant="outline">
             <Icon icon={faAdd}/>
         </ActionIcon>
     </Group>
