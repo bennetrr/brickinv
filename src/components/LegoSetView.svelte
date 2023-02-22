@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type {LegoSet} from "./DataStructures";
-    import {selectedSetId, sets} from "./stores";
+    import type {LegoSet} from "../interfaces/DataStructures";
+    import {selectedSetId, sets} from "../stores/stores";
     import {ActionIcon, Group, Image} from "@svelteuidev/core";
     import {faTrash} from "@fortawesome/free-solid-svg-icons";
     import {Icon} from "svelte-fontawesome/main";
-    import {pb} from "./PocketBase";
+    import {pb} from "../connectors/PocketBase";
     import {onMount} from "svelte";
 
     export let set: LegoSet;
@@ -64,7 +64,7 @@
 </div>
 
 <style lang="scss">
-  @import "vars";
+  @import "../vars";
 
   .set-view {
     height: 100px;

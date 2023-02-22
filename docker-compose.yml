@@ -5,7 +5,7 @@ volumes:
 
 services:
   pocketbase:
-    image: ghcr.io/bennetrr/lego-pocketbase:latest
+    image: ghcr.io/bennetrr/lego-pocketbase:v1.0.0
     container_name: lego-pocketBase
     restart: always
     ports:
@@ -16,7 +16,7 @@ services:
         target: /pb/
 
   app:
-    image: ghcr.io/bennetrr/lego-app:latest
+    image: ghcr.io/bennetrr/lego-app:v1.0.0
     container_name: lego-app
     restart: always
     ports:

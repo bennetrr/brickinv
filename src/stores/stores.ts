@@ -1,5 +1,6 @@
 import {writable} from "svelte/store";
-import type {LegoSet} from "./DataStructures";
+
+import type {LegoSet} from "../interfaces/DataStructures";
 
 export const selectedSetId = writable<string>();
 

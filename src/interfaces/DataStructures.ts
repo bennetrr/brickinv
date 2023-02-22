@@ -1,4 +1,4 @@
-import {getUserIdFromName, getUsernameFromUserId} from "./PocketBase";
+import {getUserIdFromName, getUsernameFromUserId} from "../connectors/PocketBase";
 
 export interface LegoSet {
     id?: string;

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {LegoPart} from "./DataStructures";
+    import type {LegoPart} from "../interfaces/DataStructures";
     import {ActionIcon, Group, Image} from "@svelteuidev/core";
     import {Icon} from "svelte-fontawesome/main";
     import {faCheck, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
@@ -77,7 +77,7 @@
 </div>
 
 <style lang="scss">
-  @import "vars";
+  @import "../vars";
 
   .part-view {
     height: 140px;

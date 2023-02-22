@@ -1,8 +1,9 @@
 <script lang="ts">
-    import MainPage from "./lib/MainPage.svelte";
-    import Login from "./lib/Login.svelte";
-    import {currentUser} from "./lib/PocketBase";
-    import NotificationContainer from "./lib/notifications/NotificationContainer.svelte";
+    import {currentUser} from "./connectors/PocketBase";
+
+    import MainPage from "./components/MainPage.svelte";
+    import Login from "./components/LoginPage.svelte";
+    import NotificationContainer from "./components/NotificationContainer.svelte";
 </script>
 
 <NotificationContainer/>

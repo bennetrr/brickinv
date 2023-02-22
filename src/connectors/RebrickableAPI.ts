@@ -1,5 +1,5 @@
 import axios, {type AxiosInstance} from "axios";
-import type {LegoPart, LegoSet} from "./DataStructures";
+import type {LegoPart, LegoSet} from "../interfaces/DataStructures";
 
 interface RebrickableSet {
     set_num: string;

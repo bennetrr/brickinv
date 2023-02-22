@@ -1,16 +1,18 @@
 <script lang="ts">
-    import {pb} from "./PocketBase";
-    import type {LegoPart, LegoSet} from "./DataStructures";
-    import {mapLegoSetToPocketBase, mapPocketBaseToLegoSet} from "./DataStructures";
-    import {faAdd, faLock} from "@fortawesome/free-solid-svg-icons";
-    import {Icon} from "svelte-fontawesome/main";
     import {onMount} from "svelte";
-    import RebrickableApi from "./RebrickableAPI";
-    import LegoSetView from "./LegoSetView.svelte";
-    import {addSetActionRunning, selectedSetId, sets} from "./stores";
-    import LegoPartView from "./LegoPartView.svelte";
+
     import {ActionIcon, Checkbox, Group, Space, TextInput} from "@svelteuidev/core";
-    import addNotification from "./notifications/NotificationStore";
+    import {Icon} from "svelte-fontawesome/main";
+    import {faAdd, faLock} from "@fortawesome/free-solid-svg-icons";
+
+    import {pb} from "../connectors/PocketBase";
+    import RebrickableApi from "../connectors/RebrickableAPI";
+    import {type LegoPart, type LegoSet, mapLegoSetToPocketBase, mapPocketBaseToLegoSet} from "../interfaces/DataStructures";
+    import {addSetActionRunning, selectedSetId, sets} from "../stores/stores";
+    import {addNotification} from "../stores/NotificationStore";
+
+    import LegoSetView from "./LegoSetView.svelte";
+    import LegoPartView from "./LegoPartView.svelte";
 
     // Initialize the Rebrickable API
     //@ts-ignore
@@ -161,7 +163,7 @@
 </div>
 
 <style lang="scss">
-  @import "vars";
+  @import "../vars";
 
   aside {
     height: 100%;
