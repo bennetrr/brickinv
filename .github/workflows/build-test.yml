@@ -1,0 +1,30 @@
+name: Test Docker Images
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  docker-build-test:
+    name: Docker Image Build Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: docker/setup-buildx-action@v2
+
+      - name: Build PocketBase Image
+        uses: docker/build-push-action@v3
+        with:
+          file: ./pocketbase.Dockerfile
+          context: .
+          push: false
+
+      - name: Build App Image
+        uses: docker/build-push-action@v3
+        with:
+          file: ./app.Dockerfile
+          context: .
+          push: false
