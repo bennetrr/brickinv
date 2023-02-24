@@ -1,5 +1,5 @@
 import axios, {type AxiosInstance} from "axios";
-import type {LegoPart, LegoSet} from "../interfaces/DataStructures";
+
 import type {RebrickableSet, RebrickableSetMinifigs, RebrickableSetParts} from "../interfaces/RebrickableAPI";
 import type {LegoPartsRecord, LegoSetsRecord} from "../interfaces/PocketBaseTypes";
 
@@ -20,61 +20,51 @@ export default class RebrickableApi {
     }
 
     async getLegoSetInformation(setNumber: string): Promise<LegoSetsRecord> {
-        return null;
+        const response = await this.ax.get<RebrickableSet>(`sets/${setNumber}/`);
+        const responseData = response.data;
+
+        const data: LegoSetsRecord = {
+            set_number: setNumber,
+            set_name: responseData.name,
+            image_url: responseData.set_img_url,
+            release_year: responseData.year,
+            to_sell: undefined,
+            total_parts: undefined,
+            added_by_user: undefined,
+            present_parts: undefined
+        };
+
+        return data;
     }
 
     async getLegoSetParts(setNumber: string): Promise<LegoPartsRecord[]> {
-        return null;
-    }
+        const partsResponse = await this.ax.get<RebrickableSetParts>(`sets/${setNumber}/parts/?page_size=10000`);
+        const partsResponseData = partsResponse.data.results;
 
-    // async getLegoSet(setNumber: string): Promise<RebrickableSet> {
-    //     const response = await this.ax.get(`sets/${setNumber}`);
-    //     return response.data;
-    // }
-    //
-    // async getLegoSetParts(setNumber: string): Promise<RebrickableSetParts> {
-    //     const response = await this.ax.get(`sets/${setNumber}/parts?page_size=10000`);
-    //     return response.data;
-    // }
-    //
-    // async getLegoSetMinifigs(setNumber: string): Promise<RebrickableSetMinifigs> {
-    //     const response = await this.ax.get(`sets/${setNumber}/minifigs?page_size=10000`);
-    //     return response.data;
-    // }
-    //
-    // async getLegoSetData(setNumber: string): Promise<LegoSet> {
-    //     const setData = await this.getLegoSet(setNumber);
-    //     const partData = await this.getLegoSetParts(setNumber);
-    //     const minifigData = await this.getLegoSetMinifigs(setNumber);
-    //
-    //     const partList: LegoPart[] = partData.results.map<LegoPart>(part => ({
-    //         partNumber: part.part.part_num,
-    //         partName: part.part.name,
-    //         colorName: part.color.name,
-    //         imageUrl: part.part.part_img_url,
-    //         partCount: part.quantity,
-    //         presentPartCount: 0
-    //     }));
-    //
-    //     const minifigList: LegoPart[] = minifigData.results.map<LegoPart>(part => ({
-    //         partNumber: part.set_num,
-    //         partName: part.set_name,
-    //         imageUrl: part.set_img_url,
-    //         partCount: part.quantity,
-    //         presentPartCount: 0
-    //     }));
-    //
-    //     const data: LegoSet = {
-    //         setNumber: setNumber,
-    //         setName: setData.name,
-    //         totalPartCount: setData.num_parts,
-    //         releaseYear: setData.year,
-    //         imageUrl: setData.set_img_url,
-    //         toSell: null,
-    //         addedByUserName: null,
-    //         parts: [...minifigList, ...partList]
-    //     };
-    //
-    //     return data;
-    // }
+        const minifigsResponse = await this.ax.get<RebrickableSetMinifigs>(`sets/${setNumber}/minifigs/?page_size=10000`);
+        const minifigsResponseData = minifigsResponse.data.results;
+
+        const partsData: LegoPartsRecord[] = partsResponseData.map(part => ({
+            part_number: part.part.part_num,
+            part_name: part.part.name,
+            color_name: part.color.name,
+            image_url: part.part.part_img_url,
+            total_count: part.quantity,
+            present_count: undefined,
+            set: undefined
+        }));
+
+        const minifigsData: LegoPartsRecord[] = minifigsResponseData.map(minifig => ({
+            part_number: minifig.set_num,
+            part_name: minifig.set_name,
+            image_url: minifig.set_img_url,
+            total_count: minifig.quantity,
+            color_name: undefined,
+            set: undefined,
+            present_count: undefined
+        }));
+
+        const data = [...minifigsData, ...partsData];
+        return data;
+    }
 }

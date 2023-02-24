@@ -38,7 +38,7 @@ export type LegoPartsRecord = {
 	image_url: string
 	total_count: number
 	present_count?: number
-	color_name: string
+	color_name?: string
 	set: RecordIdString
 }
 

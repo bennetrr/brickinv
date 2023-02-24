@@ -3,6 +3,8 @@ import {writable} from "svelte/store";
 import type {UsersResponse} from "../interfaces/PocketBaseTypes";
 
 export const pb = new PocketBase("https://api.lego.bennetr.me");
+pb.autoCancellation(false);
+
 // @ts-ignore
 export const currentUser = writable<UsersResponse>(pb.authStore.model);
 
