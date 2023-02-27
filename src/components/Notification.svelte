@@ -19,7 +19,8 @@
     const overrideStyles = {
         minWidth: 300,
         marginBottom: 15,
-        padding: 20
+        padding: 20,
+        boxShadow: "none"
     };
 </script>
 

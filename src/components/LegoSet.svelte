@@ -6,7 +6,7 @@
 
     import {ActionIcon, Group, Image} from "@svelteuidev/core";
     import {Icon} from "svelte-fontawesome/main";
-    import {faTrash} from "@fortawesome/free-solid-svg-icons";
+    import {faMoneyBill, faMoneyBill1, faTrash} from "@fortawesome/free-solid-svg-icons";
 
     export let set: LegoSetsResponse<{ added_by_user: UsersResponse }>;
 
@@ -18,12 +18,17 @@
         e.stopPropagation();  // Because the |stopPropagation modifier cannot be used on a component
         await pb.collection(Collections.LegoSets).delete(set.id);
     }
+
+    async function changeToSell(e: MouseEvent) {
+        e.stopPropagation();
+        await pb.collection(Collections.LegoSets).update<LegoSetsResponse>(set.id, {...set, to_sell: !set.to_sell})
+    }
 </script>
 
-<div class="set-view" class:set-view-active={set.id === $openedSet}
-     class:set-view-complete={set.present_parts === set.total_parts} on:click={selectSet}>
+<div class="set-view" class:set-view-complete={set.present_parts === set.total_parts} on:click={selectSet}>
     <Group>
-        <Image class="set-image" fit="contain" height={80} src={set.image_url} width={110}/>
+        <img src={set.image_url} alt="Set Image" class="set-image">
+
         <div>
             <span class="set-name">{set.set_name}</span>
             <br>
@@ -41,10 +46,14 @@
                     <span class="set-dot">•</span>
                     <span class="set-username">Hinzugefügt von {set.expand.added_by_user.username}</span>
                 </div>
-                <ActionIcon on:click={removeSet}
-                            override={{"&:hover": {backgroundColor: "transparent", color: "$colors$red900"}}}>
-                    <Icon icon={faTrash}/>
-                </ActionIcon>
+                <div class="set-buttons">
+                    <ActionIcon on:click={changeToSell} color="yellow" size="lg" radius="xl" variant="filled">
+                        <Icon icon={faMoneyBill1}/>
+                    </ActionIcon>
+                    <ActionIcon on:click={removeSet} color="red" size="lg" radius="xl" variant="filled">
+                        <Icon icon={faTrash}/>
+                    </ActionIcon>
+                </div>
             </Group>
         </div>
     </Group>
@@ -54,11 +63,10 @@
   @import "../vars";
 
   .set-view {
-    height: 100px;
-    width: 100%;
+    height: 150px;
+    position: relative;
 
     padding: $small-spacing;
-    margin-top: $base-spacing;
     display: flex;
     flex-direction: row;
 
@@ -68,19 +76,29 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $base-color-alt2;
-    }
-  }
-
-  .set-view-active {
-    background-color: $base-color-alt3;
-
-    &:hover {
-      background-color: $base-color-alt3;
+      outline: $base-border-alt2;
     }
   }
 
   .set-view-complete {
     border-color: $success-color;
+  }
+
+  .set-image {
+    max-height: calc($card-height - (2 * $small-spacing));
+    max-width: 200px;
+  }
+
+  .set-name {
+    font-weight: bold;
+  }
+
+  .set-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: $base-spacing;
+    position: absolute;
+    right: $base-spacing;
+    bottom: $base-spacing;
   }
 </style>

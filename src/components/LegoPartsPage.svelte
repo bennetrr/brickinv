@@ -32,7 +32,7 @@
     }
 
     //#region Update opened set's parts
-    let parts: LegoPartsResponse[];
+    let parts: LegoPartsResponse[] = [];
     let updatePartsActionRunning = false;
 
     async function updateOpenedSetsParts() {
@@ -59,18 +59,14 @@
 </script>
 
 <div class="parts-list">
-    {#if $openedSet}
-        {#if updatePartsActionRunning}
-            <Stack align="center" override={{ height: "100%", width: "100%"}} spacing="xl">
-                <Loader variant="bars" color="teal" size="xl"/>
-            </Stack>
-        {:else}
-            {#each parts.sort(compareLegoParts) as part}
-                <LegoPart {part}/>
-            {/each}
-        {/if}
+    {#if updatePartsActionRunning}
+        <Stack align="center" override={{ height: "100%", width: "100%"}} spacing="xl">
+            <Loader variant="bars" color="teal" size="xl"/>
+        </Stack>
     {:else}
-        <span>Set auswählen!</span>
+        {#each parts.sort(compareLegoParts) as part}
+            <LegoPart {part}/>
+        {/each}
     {/if}
 </div>
 
@@ -79,8 +75,9 @@
 
   .parts-list {
     padding: $base-spacing;
-    height: 100vh;
-    overflow: auto;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);

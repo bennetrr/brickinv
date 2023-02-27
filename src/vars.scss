@@ -30,11 +30,12 @@ $lg-font-size: 15px;
 $xl-font-size: 16px;
 
 // Dimensions
-$sidebar-width: 500px;
 $input-height: 34px;
-$button-height: 40px;
+$button-height: 44px;
 $base-spacing: 15px;
 $small-spacing: 10px;
+$sidebar-width: calc(44px + (2 * $small-spacing));
+$card-height: 150px;
 
 // Borders
 $base-border: 1px solid $base-color-alt2;
