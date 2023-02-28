@@ -20,42 +20,6 @@
     // Initialize the Rebrickable API
     const rebrickable = new RebrickableApi($currentUser.rebrickable_api_key);
 
-    onMount(async () => {
-        // Get initial sets
-        $sets = await pb
-            .collection(Collections.LegoSets)
-            .getFullList<LegoSetsResponse<{ added_by_user: UsersResponse }>>(200, {expand: "added_by_user"});
-
-        // Subscribe to realtime changes
-        await pb
-            .collection(Collections.LegoSets)
-            .subscribe<LegoSetsResponse<{ added_by_user: UsersResponse }>>("*", async ({action, record}) => {
-                switch (action) {
-                    case "create":
-                        // Get the new record from pocketbase,
-                        // because the record from the subscription
-                        // does not have the user field expanded
-                        const newSet = await pb.collection(Collections.LegoSets).getOne<LegoSetsResponse<{ added_by_user: UsersResponse }>>(record.id, {expand: "added_by_user"});
-                        $sets = [...$sets, newSet];
-                        break;
-                    case "update":
-                        const updatedSet = await pb.collection(Collections.LegoSets).getOne<LegoSetsResponse<{ added_by_user: UsersResponse }>>(record.id, {expand: "added_by_user"});
-                        const updateIndex = $sets.findIndex(x => x.id === record.id);
-                        $sets.splice(updateIndex, 1, updatedSet);
-                        $sets = $sets;
-                        break;
-                    case "delete":
-                        $sets = $sets.filter(x => x.id !== record.id);
-                        if ($openedSet === record.id) $openedSet = null;
-                        break;
-                }
-            });
-    });
-
-    onDestroy(() => {
-        pb.collection(Collections.LegoSets).unsubscribe();
-    });
-
     //#region Add a set to the list
     let newSetNumber: string;
     let newSetToSell: boolean;
