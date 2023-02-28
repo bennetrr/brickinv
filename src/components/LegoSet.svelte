@@ -4,9 +4,9 @@
     import {Collections} from "../interfaces/PocketBaseTypes";
     import {openedSet} from "../stores/SetStores";
 
-    import {ActionIcon, Group, Image} from "@svelteuidev/core";
+    import {ActionIcon} from "@svelteuidev/core";
     import {Icon} from "svelte-fontawesome/main";
-    import {faMoneyBill, faMoneyBill1, faTrash} from "@fortawesome/free-solid-svg-icons";
+    import {faMoneyBillTransfer, faTrash} from "@fortawesome/free-solid-svg-icons";
 
     export let set: LegoSetsResponse<{ added_by_user: UsersResponse }>;
 
@@ -16,80 +16,104 @@
 
     async function removeSet(e: MouseEvent) {
         e.stopPropagation();  // Because the |stopPropagation modifier cannot be used on a component
-        await pb.collection(Collections.LegoSets).delete(set.id);
+        await pb
+            .collection(Collections.LegoSets)
+            .delete(set.id);
     }
 
     async function changeToSell(e: MouseEvent) {
         e.stopPropagation();
-        await pb.collection(Collections.LegoSets).update<LegoSetsResponse>(set.id, {...set, to_sell: !set.to_sell})
+        await pb
+            .collection(Collections.LegoSets)
+            .update<LegoSetsResponse>(set.id, {...set, to_sell: !set.to_sell});
     }
 </script>
 
-<div class="set-view" class:set-view-complete={set.present_parts === set.total_parts} on:click={selectSet}>
-    <Group>
-        <img src={set.image_url} alt="Set Image" class="set-image">
+<div class="set-card" class:set-card-completed="{set.present_parts === set.total_parts}" on:click={selectSet}>
+    <img alt="{set.set_name}" class="set-image" src={set.image_url}/>
 
-        <div>
-            <span class="set-name">{set.set_name}</span>
-            <br>
-            <span class="set-number">{set.set_number}</span>
-            <span class="set-dot">•</span>
-            <span class="set-year">{set.release_year}</span>
-            <span class="set-dot">•</span>
-            <span class="set-part-count">{set.present_parts}</span>
-            <span class="set-dot">von</span>
-            <span class="set-part-count">{set.total_parts} Teilen</span>
-            <br>
-            <Group>
-                <div>
-                    <span class="set-to-sell">{set.to_sell ? "Verkaufen" : "Behalten"}</span>
-                    <span class="set-dot">•</span>
-                    <span class="set-username">Hinzugefügt von {set.expand.added_by_user.username}</span>
-                </div>
-                <div class="set-buttons">
-                    <ActionIcon on:click={changeToSell} color="yellow" size="lg" radius="xl" variant="filled">
-                        <Icon icon={faMoneyBill1}/>
-                    </ActionIcon>
-                    <ActionIcon on:click={removeSet} color="red" size="lg" radius="xl" variant="filled">
-                        <Icon icon={faTrash}/>
-                    </ActionIcon>
-                </div>
-            </Group>
-        </div>
-    </Group>
+    <div>
+        <span class="set-line-0">
+            {set.set_name}
+        </span>
+        <br/>
+
+        <span class="set-line-1">
+            {set.set_number} • {set.release_year} • {set.present_parts} von {set.total_parts} Teilen
+        </span>
+        <br/>
+
+        <span class="set-line-2">
+            {set.to_sell ? "Verkaufen" : "Behalten"} • Hinzugefügt von {set.expand.added_by_user.username}
+        </span>
+    </div>
+
+    <div class="set-buttons">
+        <ActionIcon color="yellow" on:click={changeToSell} radius="xl" size="lg" variant="filled">
+            <Icon icon={faMoneyBillTransfer}/>
+        </ActionIcon>
+
+        <ActionIcon color="red" on:click={removeSet} radius="xl" size="lg" variant="filled">
+            <Icon icon={faTrash}/>
+        </ActionIcon>
+    </div>
 </div>
 
 <style lang="scss">
   @import "../vars";
 
-  .set-view {
-    height: 150px;
-    position: relative;
-
+  .set-card {
+    width: 300px;
+    height: 300px;
     padding: $small-spacing;
+
+    position: relative;
+    flex-direction: column;
     display: flex;
-    flex-direction: row;
+    gap: $base-spacing;
 
     background-color: $base-color;
-    border: $base-border;
-    border-radius: $card-border-radius;
+    outline: $base-border;
+    border-radius: $card-radius;
     cursor: pointer;
 
     &:hover {
-      outline: $base-border-alt2;
+      outline: $base-border-alt1;
+    }
+
+    // Not supported on firefox
+    &:has(button:hover) {
+      outline: $base-border;
+    }
+
+    @media screen and (min-width: calc($card-width + $sidebar-width + (2 * $base-spacing))) {
+      height: $card-height;
+      width: $card-width;
+      flex-direction: row;
     }
   }
 
-  .set-view-complete {
-    border-color: $success-color;
+  .set-card-completed {
+    outline: $completed-border;
+
+    &:hover {
+      outline: $completed-border-alt1;
+    }
+
+    &:has(button:hover) {
+      outline: $completed-border;
+    }
   }
 
   .set-image {
-    max-height: calc($card-height - (2 * $small-spacing));
-    max-width: 200px;
+    max-height: $card-height;
+    max-width: calc($card-width * 0.4);
+    height: auto;
+    width: auto;
+    align-self: center;
   }
 
-  .set-name {
+  .set-line-0 {
     font-weight: bold;
   }
 
@@ -97,6 +121,7 @@
     display: flex;
     flex-direction: row;
     gap: $base-spacing;
+
     position: absolute;
     right: $base-spacing;
     bottom: $base-spacing;

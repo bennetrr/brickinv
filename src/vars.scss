@@ -35,11 +35,18 @@ $button-height: 44px;
 $base-spacing: 15px;
 $small-spacing: 10px;
 $sidebar-width: calc(44px + (2 * $small-spacing));
+
+$card-width: 500px;
 $card-height: 150px;
 
 // Borders
-$base-border: 1px solid $base-color-alt2;
-$base-border-alt1: 2px solid $text-primary-color;
-$base-border-alt2: 2px solid $base-color-alt3;
+$_base-border-thickness: 1px;
+$_alt1-border-thickness: 3px;
+
+$base-border: $_base-border-thickness solid $base-color-alt2;
+$base-border-alt1: $_alt1-border-thickness solid $base-color-alt3;
+$completed-border: $_base-border-thickness solid $success-color;
+$completed-border-alt1: $_alt1-border-thickness solid $success-color;
+
 $base-radius: 3px;
-$card-border-radius: 15px;
+$card-radius: 15px;

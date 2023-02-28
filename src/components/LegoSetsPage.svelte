@@ -3,53 +3,53 @@
 
     import {currentUser, pb} from "../connectors/PocketBase";
     import type {
-        LegoPartsRecord,
-        LegoPartsResponse,
-        LegoSetsRecord,
-        LegoSetsResponse,
-        UsersResponse
+        LegoPartsRecord, LegoPartsResponse, LegoSetsRecord, LegoSetsResponse, UsersResponse
     } from "../interfaces/PocketBaseTypes";
     import {Collections} from "../interfaces/PocketBaseTypes";
     import RebrickableApi from "../connectors/RebrickableAPI";
     import {addNotification} from "../stores/NotificationStore";
     import {openedSet, sets} from "../stores/SetStores";
 
-    import {ActionIcon, Checkbox, Group, SimpleGrid, Space, TextInput} from "@svelteuidev/core";
+    import {ActionIcon, Checkbox, Group, Space, TextInput} from "@svelteuidev/core";
     import {Icon} from "svelte-fontawesome/main";
-    import {faAdd, faLock} from "@fortawesome/free-solid-svg-icons";
+    import {faAdd, faClose} from "@fortawesome/free-solid-svg-icons";
 
     import LegoSetView from "./LegoSet.svelte";
-    import LegoPartList from "./LegoPartsPage.svelte";
+    import useMediaQuery from "../stores/MediaQuerryHook";
 
     // Initialize the Rebrickable API
     const rebrickable = new RebrickableApi($currentUser.rebrickable_api_key);
 
     onMount(async () => {
         // Get initial sets
-        $sets = await pb.collection(Collections.LegoSets).getFullList<LegoSetsResponse<{ added_by_user: UsersResponse }>>(200, {expand: "added_by_user"});
+        $sets = await pb
+            .collection(Collections.LegoSets)
+            .getFullList<LegoSetsResponse<{ added_by_user: UsersResponse }>>(200, {expand: "added_by_user"});
 
         // Subscribe to realtime changes
-        await pb.collection(Collections.LegoSets).subscribe<LegoSetsResponse<{ added_by_user: UsersResponse }>>("*", async ({action, record}) => {
-            switch (action) {
-                case "create":
-                    // Get the new record from pocketbase,
-                    // because the record from the subscription
-                    // does not have the user field expanded
-                    const newSet = await pb.collection(Collections.LegoSets).getOne<LegoSetsResponse<{ added_by_user: UsersResponse }>>(record.id, {expand: "added_by_user"});
-                    $sets = [...$sets, newSet];
-                    break;
-                case "update":
-                    const updatedSet = await pb.collection(Collections.LegoSets).getOne<LegoSetsResponse<{ added_by_user: UsersResponse }>>(record.id, {expand: "added_by_user"});
-                    const updateIndex = $sets.findIndex(x => x.id === record.id);
-                    $sets.splice(updateIndex, 1, updatedSet);
-                    $sets = $sets;
-                    break;
-                case "delete":
-                    $sets = $sets.filter(x => x.id !== record.id);
-                    if ($openedSet === record.id) $openedSet = null;
-                    break;
-            }
-        });
+        await pb
+            .collection(Collections.LegoSets)
+            .subscribe<LegoSetsResponse<{ added_by_user: UsersResponse }>>("*", async ({action, record}) => {
+                switch (action) {
+                    case "create":
+                        // Get the new record from pocketbase,
+                        // because the record from the subscription
+                        // does not have the user field expanded
+                        const newSet = await pb.collection(Collections.LegoSets).getOne<LegoSetsResponse<{ added_by_user: UsersResponse }>>(record.id, {expand: "added_by_user"});
+                        $sets = [...$sets, newSet];
+                        break;
+                    case "update":
+                        const updatedSet = await pb.collection(Collections.LegoSets).getOne<LegoSetsResponse<{ added_by_user: UsersResponse }>>(record.id, {expand: "added_by_user"});
+                        const updateIndex = $sets.findIndex(x => x.id === record.id);
+                        $sets.splice(updateIndex, 1, updatedSet);
+                        $sets = $sets;
+                        break;
+                    case "delete":
+                        $sets = $sets.filter(x => x.id !== record.id);
+                        if ($openedSet === record.id) $openedSet = null;
+                        break;
+                }
+            });
     });
 
     onDestroy(() => {
@@ -103,30 +103,64 @@
         newSetToSell = false;
 
         // Add the new set to the collection
-        const {id: newSetId} = await pb.collection(Collections.LegoSets).create<LegoSetsResponse>(newSetData);
+        const {id: newSetId} = await pb
+            .collection(Collections.LegoSets)
+            .create<LegoSetsResponse>(newSetData);
 
         // Fill in missing data for the parts and add the parts to the collection
         for (const x of newSetParts) {
             x.set = newSetId;
             x.present_count = 0;
-            await pb.collection(Collections.LegoParts).create <LegoPartsResponse>(x);
+            await pb
+                .collection(Collections.LegoParts)
+                .create<LegoPartsResponse>(x);
         }
 
-        // Disable the loader icon
+        // Disable the loader icon and hide the popup
         newSetActionRunning = false;
+        addSetPopupOpen = false;
     }
+
+    //#endregion
+
+    //#region Add Set Popup
+    const addSetPopupNeeded = useMediaQuery("(max-width: 594px)");
+    let addSetPopupOpen = false;
+
+    function openAddSetPopup() {
+        addSetPopupOpen = true;
+    }
+
+    function closeAddSetPopup() {
+        newSetNumber = undefined;
+        newSetToSell = false;
+        addSetPopupOpen = false;
+    }
+
     //#endregion
 </script>
 
 <div class="add-set">
-    <Group>
-        <TextInput bind:value={newSetNumber} placeholder="Set-Nummer" variant="filled"/>
-        <Checkbox bind:checked={newSetToSell} color="teal" label="Verkaufen"/>
-        <Space/>
-        <ActionIcon loading={newSetActionRunning} on:click={addSet} size="xl" variant="filled" color="teal">
+    {#if $addSetPopupNeeded && !addSetPopupOpen}
+        <ActionIcon loading={newSetActionRunning} on:click={openAddSetPopup} size="xl" variant="filled" color="teal">
             <Icon icon={faAdd}/>
         </ActionIcon>
-    </Group>
+    {:else}
+        <Group>
+            <TextInput bind:value={newSetNumber} placeholder="Set-Nummer" variant="filled"/>
+            <Checkbox bind:checked={newSetToSell} color="teal" label="Verkaufen"/>
+            <Space/>
+            <ActionIcon loading={newSetActionRunning} on:click={addSet} size="xl" variant="filled" color="teal">
+                <Icon icon={faAdd}/>
+            </ActionIcon>
+
+            <ActionIcon loading={newSetActionRunning} on:click={closeAddSetPopup} size="xl" variant="filled"
+                        color="red">
+                <Icon icon={faClose}/>
+            </ActionIcon>
+        </Group>
+    {/if}
+
 </div>
 
 <div class="bar"></div>
@@ -142,35 +176,33 @@
 </div>
 
 <style lang="scss">
-    @import "../vars";
+  @import "../vars";
 
-    .add-set {
-      width: fit-content;
-      margin: $base-spacing;
-      padding: $base-spacing;
+  .add-set {
+    width: fit-content;
+    margin: $base-spacing;
+    padding: $base-spacing;
 
-      background-color: $base-color;
-      border: $base-border;
-      border-radius: $card-border-radius;
-    }
+    background-color: $base-color;
+    border: $base-border;
+    border-radius: $card-radius;
+  }
 
-    .bar {
-      width: 100%;
-      border-top: $base-border;
-    }
+  .bar {
+    width: 100%;
+    border-top: $base-border;
+  }
 
-    .sets-list {
-      width: 100%;
-      height: calc(100% - (44px + (4 * $base-spacing)));
-      padding: $base-spacing;
-      overflow-y: auto;
+  .sets-list {
+    width: 100%;
+    height: calc(100% - (44px + (4 * $base-spacing)));
+    padding: $base-spacing;
+    overflow-y: auto;
 
-      display: grid;
-      gap: $base-spacing;
-      grid-template-columns: repeat(1, 1fr);
-      
-      @media screen and (min-width: 1300px) {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+    display: grid;
+    gap: $base-spacing;
+    grid-template-columns: repeat(auto-fill, minmax($card-width, auto));
+    justify-items: center;
+    justify-content: center;
+  }
 </style>

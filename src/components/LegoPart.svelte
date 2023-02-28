@@ -100,7 +100,7 @@
 
     background-color: $base-color;
     border: $base-border;
-    border-radius: $card-border-radius;
+    border-radius: $card-radius;
   }
 
   .part-view-complete {
