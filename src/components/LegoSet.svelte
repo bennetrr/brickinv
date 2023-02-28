@@ -87,7 +87,7 @@
     }
 
     @media screen and (min-width: calc($card-width + $sidebar-width + (2 * $base-spacing))) {
-      height: $card-height;
+      height: $card-height-small;
       width: $card-width;
       flex-direction: row;
     }
@@ -106,7 +106,7 @@
   }
 
   .set-image {
-    max-height: $card-height;
+    max-height: $card-height-small;
     max-width: calc($card-width * 0.4);
     height: auto;
     width: auto;
