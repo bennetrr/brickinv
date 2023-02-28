@@ -36,8 +36,7 @@
     let updatePartsActionRunning = false;
 
     async function updateOpenedSetsParts() {
-        if (!$openedSet) parts = null;
-        else {
+        if (!$openedSet) parts = null; else {
             if (!parts) updatePartsActionRunning = true;
             parts = await pb.collection(Collections.LegoParts).getFullList(200, {filter: `set="${$openedSet}"`});
             updatePartsActionRunning = false;
@@ -74,13 +73,15 @@
   @import "../vars";
 
   .parts-list {
-    padding: $base-spacing;
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    padding: $base-spacing;
+    overflow-y: auto;
 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: $base-spacing;
+    grid-template-columns: repeat(auto-fill, minmax($card-width, auto));
+    justify-items: center;
+    justify-content: center;
   }
 </style>
