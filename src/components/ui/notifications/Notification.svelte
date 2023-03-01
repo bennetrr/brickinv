@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type NotificationProps from "../interfaces/NotificationProps";
+    import type NotificationProps from "../../../interfaces/NotificationProps";
 
     import {createEventDispatcher} from "svelte";
     import {Notification} from "@svelteuidev/core";
     import {Check, Cross2} from "radix-icons-svelte";
-    import Exclamation from "./icons/Exclamation.svelte";
+    import Exclamation from "../icons/Exclamation.svelte";
 
     export let notification: NotificationProps;
 

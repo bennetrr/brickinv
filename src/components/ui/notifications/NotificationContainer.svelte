@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {notifications, removeNotification} from "../stores/NotificationStore";
+    import {notifications, removeNotification} from "../../../stores/NotificationStore";
 
     import Notification from "./Notification.svelte";
     import {onDestroy, onMount} from "svelte";
@@ -29,7 +29,7 @@
 </div>
 
 <style lang="scss">
-  @import "../vars";
+  @import "../../../vars";
 
   .notification-container {
     position: absolute;

@@ -36,9 +36,14 @@ $base-spacing: 15px;
 $small-spacing: 10px;
 $sidebar-width: calc(44px + (2 * $small-spacing));
 
+// Cards
 $card-width: 500px;
 $card-height-small: 150px;
 $card-height-big: 250px;
+
+$card-shrunk-width: 300px;
+$card-shrunk-height-small: 300px;
+$card-shrunk-height-big: 400px;
 
 // Borders
 $_base-border-thickness: 1px;

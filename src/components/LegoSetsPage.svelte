@@ -1,21 +1,18 @@
 <script lang="ts">
-    import {onDestroy, onMount} from "svelte";
-
     import {currentUser, pb} from "../connectors/PocketBase";
-    import type {
-        LegoPartsRecord, LegoPartsResponse, LegoSetsRecord, LegoSetsResponse, UsersResponse
-    } from "../interfaces/PocketBaseTypes";
+    import type {LegoPartsRecord, LegoPartsResponse, LegoSetsRecord, LegoSetsResponse} from "../interfaces/PocketBaseTypes";
     import {Collections} from "../interfaces/PocketBaseTypes";
     import RebrickableApi from "../connectors/RebrickableAPI";
     import {addNotification} from "../stores/NotificationStore";
-    import {openedSet, sets} from "../stores/SetStores";
+    import {sets} from "../stores/SetStores";
 
-    import {ActionIcon, Checkbox, Group, Space, TextInput} from "@svelteuidev/core";
+    import {ActionIcon, Checkbox, Group, Loader, Space, TextInput} from "@svelteuidev/core";
     import {Icon} from "svelte-fontawesome/main";
     import {faAdd, faClose} from "@fortawesome/free-solid-svg-icons";
 
     import LegoSetView from "./LegoSet.svelte";
     import useMediaQuery from "../stores/MediaQuerryHook";
+    import CardsContainer from "./ui/cards/CardsContainer.svelte";
 
     // Initialize the Rebrickable API
     const rebrickable = new RebrickableApi($currentUser.rebrickable_api_key);
@@ -62,10 +59,6 @@
             total_parts: totalParts
         };
 
-        // Clear the inputs
-        newSetNumber = undefined;
-        newSetToSell = false;
-
         // Add the new set to the collection
         const {id: newSetId} = await pb
             .collection(Collections.LegoSets)
@@ -82,7 +75,7 @@
 
         // Disable the loader icon and hide the popup
         newSetActionRunning = false;
-        addSetPopupOpen = false;
+        closeAddSetPopup();
     }
 
     //#endregion
@@ -101,6 +94,11 @@
         addSetPopupOpen = false;
     }
 
+    function handleKeyPress(e: KeyboardEvent) {
+        if (e.key !== "Enter") return;
+        addSet();
+    }
+
     //#endregion
 </script>
 
@@ -111,45 +109,54 @@
         </ActionIcon>
     {:else}
         <Group>
-            <TextInput bind:value={newSetNumber} placeholder="Set-Nummer" variant="filled"/>
-            <Checkbox bind:checked={newSetToSell} color="teal" label="Verkaufen"/>
+            <TextInput bind:value={newSetNumber} placeholder="Set-Nummer" variant="filled" on:keypress={handleKeyPress}/>
+            <Checkbox bind:checked={newSetToSell} color="teal" label="Verkaufen" on:keypress={handleKeyPress}/>
             <Space/>
             <ActionIcon loading={newSetActionRunning} on:click={addSet} size="xl" variant="filled" color="teal">
                 <Icon icon={faAdd}/>
             </ActionIcon>
 
-            <ActionIcon loading={newSetActionRunning} on:click={closeAddSetPopup} size="xl" variant="filled"
-                        color="red">
+            <ActionIcon on:click={closeAddSetPopup} size="xl" variant="filled" color="red">
                 <Icon icon={faClose}/>
             </ActionIcon>
         </Group>
     {/if}
-
 </div>
 
 <div class="bar"></div>
 
-<div class="sets-list">
-    {#if $sets.length > 0}
-        {#each $sets as set}
-            <LegoSetView set={set}/>
-        {/each}
-    {:else}
-        <span>Keine Sets gefunden</span>
-    {/if}
-</div>
+{#if newSetActionRunning}
+    <div class="loader-container">
+        <Loader variant="bars" color="teal" size="xl"/>
+        <span>Lade Set-Daten für {newSetNumber}</span>
+    </div>
+{:else}
+    <CardsContainer variation="small" style="height: calc(100% - 106px)">
+        {#if $sets.length > 0}
+            {#each $sets as set}
+                <LegoSetView set={set}/>
+            {/each}
+        {:else}
+            <span>Keine Sets gefunden</span>
+        {/if}
+    </CardsContainer>
+{/if}
 
 <style lang="scss">
   @import "../vars";
 
   .add-set {
-    width: fit-content;
+    width: $card-width;
     margin: $base-spacing;
     padding: $base-spacing;
 
     background-color: $base-color;
     border: $base-border;
     border-radius: $card-radius;
+    
+    @media screen and (max-width: calc($card-width + $sidebar-width + (2 * $base-spacing))) {
+      width: fit-content;
+    }
   }
 
   .bar {
@@ -157,16 +164,13 @@
     border-top: $base-border;
   }
 
-  .sets-list {
+  .loader-container {
     width: 100%;
     height: calc(100% - (44px + (4 * $base-spacing)));
-    padding: $base-spacing;
-    overflow-y: auto;
 
-    display: grid;
-    gap: $base-spacing;
-    grid-template-columns: repeat(auto-fill, minmax($card-width, auto));
-    justify-items: center;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 </style>

@@ -60,36 +60,21 @@
 </div>
 
 <style lang="scss">
-  @import "../vars";
+  @import "src/vars";
+  @import "src/components/ui/cards/card";
 
   .set-card {
-    width: 300px;
-    height: 300px;
-    padding: $small-spacing;
+    @include card($card-width, $card-height-small, $card-shrunk-width, $card-shrunk-height-small, $sidebar-width);
 
     position: relative;
-    flex-direction: column;
+    flex-direction: row;
     display: flex;
     gap: $base-spacing;
 
-    background-color: $base-color;
-    outline: $base-border;
-    border-radius: $card-radius;
     cursor: pointer;
 
     &:hover {
       outline: $base-border-alt1;
-    }
-
-    // Not supported on firefox
-    &:has(button:hover) {
-      outline: $base-border;
-    }
-
-    @media screen and (min-width: calc($card-width + $sidebar-width + (2 * $base-spacing))) {
-      height: $card-height-small;
-      width: $card-width;
-      flex-direction: row;
     }
   }
 
@@ -106,11 +91,7 @@
   }
 
   .set-image {
-    max-height: $card-height-small;
-    max-width: calc($card-width * 0.4);
-    height: auto;
-    width: auto;
-    align-self: center;
+    @include card-image($card-width, $card-height-small)
   }
 
   .set-line-0 {

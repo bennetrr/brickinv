@@ -3,7 +3,7 @@
 
     import MainPage from "./components/MainPage.svelte";
     import Login from "./components/LoginPage.svelte";
-    import NotificationContainer from "./components/NotificationContainer.svelte";
+    import NotificationContainer from "./components/ui/notifications/NotificationContainer.svelte";
 </script>
 
 <NotificationContainer/>

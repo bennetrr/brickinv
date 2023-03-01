@@ -1,14 +1,15 @@
 <script lang="ts">
     import {onDestroy, onMount} from "svelte";
 
-    import {pb} from "../connectors/PocketBase.js";
+    import {pb} from "../connectors/PocketBase";
     import type {LegoPartsResponse} from "../interfaces/PocketBaseTypes";
     import {Collections} from "../interfaces/PocketBaseTypes";
-    import {openedSet, sets} from "../stores/SetStores.js";
+    import {openedSet, sets} from "../stores/SetStores";
 
     import {Loader, Stack} from "@svelteuidev/core";
 
     import LegoPart from "./LegoPart.svelte";
+    import CardsContainer from "./ui/cards/CardsContainer.svelte";
 
     function compareLegoParts(a: LegoPartsResponse, b: LegoPartsResponse): 1 | 0 | -1 {
         // If one is already complete, it's "smaller"
@@ -57,7 +58,7 @@
     //#endregion
 </script>
 
-<div class="parts-list">
+<CardsContainer>
     {#if updatePartsActionRunning}
         <Stack align="center" override={{ height: "100%", width: "100%"}} spacing="xl">
             <Loader variant="bars" color="teal" size="xl"/>
@@ -67,21 +68,8 @@
             <LegoPart {part}/>
         {/each}
     {/if}
-</div>
+</CardsContainer>
 
 <style lang="scss">
-  @import "../vars";
 
-  .parts-list {
-    height: 100%;
-    width: 100%;
-    padding: $base-spacing;
-    overflow-y: auto;
-
-    display: grid;
-    gap: $base-spacing;
-    grid-template-columns: repeat(auto-fill, minmax($card-width, auto));
-    justify-items: center;
-    justify-content: center;
-  }
 </style>

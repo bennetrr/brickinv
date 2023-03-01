@@ -126,39 +126,24 @@
 </div>
 
 <style lang="scss">
-  @import "../vars";
+  @import "src/vars";
+  @import "src/components/ui/cards/card";
 
   .part-view {
-    height: 400px;
-    width: 300px;
-    padding: $small-spacing;
+    @include card($card-width, $card-height-big, $card-shrunk-width, $card-shrunk-height-big, $sidebar-width);
 
     position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: $base-spacing;
-
-    background-color: $base-color;
-    border: $base-border;
-    border-radius: $card-radius;
-
-    @media screen and (min-width: calc($card-width + $sidebar-width + (2 * $base-spacing))) {
-      height: $card-height-big;
-      width: $card-width;
-      flex-direction: row;
-    }
   }
 
   .part-view-completed {
-    border-color: $success-color;
+    outline: $completed-border;
   }
 
   .part-image {
-    max-height: $card-height-big;
-    max-width: calc($card-width * 0.4);
-    height: auto;
-    width: auto;
-    align-self: center;
+    @include card-image($card-width, $card-height-big);
   }
 
   .part-line-0 {
