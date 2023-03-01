@@ -1,4 +1,6 @@
 <script lang="ts">
+    import {AxiosError} from "axios";
+
     import {currentUser, pb} from "../connectors/PocketBase";
     import type {LegoPartsRecord, LegoPartsResponse, LegoSetsRecord, LegoSetsResponse} from "../interfaces/PocketBaseTypes";
     import {Collections} from "../interfaces/PocketBaseTypes";
@@ -39,10 +41,13 @@
         try {
             newSetData = await rebrickable.getLegoSetInformation(newSetNumber);
             newSetParts = await rebrickable.getLegoSetParts(newSetNumber);
-        } catch (e) {
-            // TODO: Add more precise error handling
-            addNotification({type: "error", text: "Abrufen der Set-Daten fehlgeschlagen!", duration: 10});
-            console.error("Abrufen der LEGO-Daten von der Rebrickable API fehlgeschlagen!", e);
+        } catch (e: AxiosError) {
+            if (e.response.status === 404) {
+                addNotification({type: "error", title: "Set-Nummer nicht gefunden", text: "Die meisten Sets brauchen ein '-1' hinter der eigentlichen Nummer", duration: 10});
+            } else {
+                addNotification({type: "error", text: "Abrufen der Set-Daten fehlgeschlagen!", duration: 10});
+            }
+
             newSetActionRunning = false;
             return;
         }
