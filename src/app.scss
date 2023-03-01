@@ -1,13 +1,15 @@
-@import "lib/vars";
+@import "vars";
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  outline: none;
+  outline: transparent;
   border: none;
   appearance: none;
   user-select: none;
+  overflow: hidden;
+  //outline: 1px solid coral;  // Debug
 }
 
 html, body {
@@ -28,9 +30,9 @@ html, body {
 }
 
 #app {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+  height: 100dvh;
+  width: 100dvw;
+
   display: flex;
   flex-direction: row;
 }

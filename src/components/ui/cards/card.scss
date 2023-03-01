@@ -1,0 +1,31 @@
+@import "src/vars";
+
+@mixin card($_card-width, $_card-height, $_card-shrunk-width, $_card-shrunk-height, $_vw-addition: 0px) {
+  width: $_card-width;
+  height: $_card-height;
+  padding: $small-spacing;
+
+  background-color: $base-color;
+  outline: $base-border;
+  border-radius: $card-radius;
+
+  // Resize the card to horizontal instead of vertical orientation
+  @media screen and (max-width: calc($_vw-addition + $_card-width + (2 * $base-spacing))) {
+    width: $_card-shrunk-width;
+    height: $_card-shrunk-height;
+    flex-direction: column;
+  }
+
+  // Reset the cards outline if a button is hovered (not supported on Firefox)
+  &:has(button:hover) {
+    outline: $base-border;
+  }
+}
+
+@mixin card-image($_card-width, $_card-height) {
+  max-height: $_card-height;
+  max-width: calc($_card-width * 0.4);
+  height: auto;
+  width: auto;
+  align-self: center;
+}
