@@ -58,7 +58,7 @@
     //#endregion
 </script>
 
-<CardsContainer>
+<CardsContainer variation="big">
     {#if updatePartsActionRunning}
         <Stack align="center" override={{ height: "100%", width: "100%"}} spacing="xl">
             <Loader variant="bars" color="teal" size="xl"/>

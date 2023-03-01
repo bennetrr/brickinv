@@ -1,6 +1,6 @@
 <script lang="ts">
     export let variation: "small" | "big" = "small";
-    export let style: string;
+    export let style: string | undefined;
 </script>
 
 <div class="card-container-{variation}" style={style}>

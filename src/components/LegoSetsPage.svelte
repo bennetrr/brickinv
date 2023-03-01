@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {AxiosError} from "axios";
+    import type {AxiosError} from "axios";
 
     import {currentUser, pb} from "../connectors/PocketBase";
     import type {LegoPartsRecord, LegoPartsResponse, LegoSetsRecord, LegoSetsResponse} from "../interfaces/PocketBaseTypes";
@@ -41,7 +41,7 @@
         try {
             newSetData = await rebrickable.getLegoSetInformation(newSetNumber);
             newSetParts = await rebrickable.getLegoSetParts(newSetNumber);
-        } catch (e: AxiosError) {
+        } catch (e) {
             if (e.response.status === 404) {
                 addNotification({type: "error", title: "Set-Nummer nicht gefunden", text: "Die meisten Sets brauchen ein '-1' hinter der eigentlichen Nummer", duration: 10});
             } else {
