@@ -44,7 +44,7 @@ export default class RebrickableApi {
         const minifigsResponse = await this.ax.get<RebrickableSetMinifigs>(`sets/${setNumber}/minifigs/?page_size=10000`);
         const minifigsResponseData = minifigsResponse.data.results;
 
-        const partsData: LegoPartsRecord[] = partsResponseData.map(part => ({
+        const partsDataUnCleaned: LegoPartsRecord[] = partsResponseData.map(part => ({
             part_number: part.part.part_num,
             part_name: part.part.name,
             color_name: part.color.name,
@@ -53,6 +53,23 @@ export default class RebrickableApi {
             present_count: undefined,
             set: undefined
         }));
+
+        // Rebrickable has multiple entries for the same part when there are spare parts
+        // Combine these entries in one single entry
+        let partsData: LegoPartsRecord[] = [];
+
+        // Sets only allow unique items
+        const partNumbers = new Set(partsDataUnCleaned.map(part => part.part_number));
+
+        partNumbers.forEach(partNumber => {
+            // Get all parts with the same product number
+            const partEntries = partsDataUnCleaned.filter(part => part.part_number == partNumber);
+            const newPartEntry = partEntries[0];
+
+            // Add up the total counts of every entry
+            newPartEntry.total_count = partEntries.map(part => part.total_count).reduce((a, b) => a + b);
+            partsData = [...partsData, newPartEntry];
+        });
 
         const minifigsData: LegoPartsRecord[] = minifigsResponseData.map(minifig => ({
             part_number: minifig.set_num,
