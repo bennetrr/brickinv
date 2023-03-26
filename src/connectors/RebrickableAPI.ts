@@ -59,11 +59,11 @@ export default class RebrickableApi {
         let partsData: LegoPartsRecord[] = [];
 
         // Sets only allow unique items
-        const partNumbers = new Set(partsDataUnCleaned.map(part => part.part_number));
+        const partIdentifier = new Set(partsDataUnCleaned.map(part => `${part.part_number}###${part.color_name}`));
 
-        partNumbers.forEach(partNumber => {
+        partIdentifier.forEach(identifier => {
             // Get all parts with the same product number
-            const partEntries = partsDataUnCleaned.filter(part => part.part_number == partNumber);
+            const partEntries = partsDataUnCleaned.filter(part => identifier == `${part.part_number}###${part.color_name}`);
             const newPartEntry = partEntries[0];
 
             // Add up the total counts of every entry
