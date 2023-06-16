@@ -41,5 +41,5 @@ jobs:
           tags: ghcr.io/bennetrr/lego-app:${{ github.event.release.tag_name }}
           push: true
 
-      - name: Notify Server about Updates
-        run: wget -O- https://containerupdate.bennetr.me/lego
+#      - name: Notify Server about Updates
+#        run: wget -O- https://containerupdate.bennetr.me/lego
