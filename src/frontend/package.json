@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "lego",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,11 +9,26 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@8.9.0",
   "dependencies": {
+    "@fontsource/inter": "^5.0.15",
+    "@heroicons/react": "^2.0.18",
+    "@wemogy/reactbase": "^0.7.12",
+    "axios": "^1.6.2",
+    "mobx": "^6.12.0",
+    "mobx-react": "^9.1.0",
+    "mobx-state-tree": "^5.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-native-screens": "1.0.0-alpha.21",
+    "react-router-dom": "^6.20.0",
+    "the-new-css-reset": "^1.11.2"
   },
   "devDependencies": {
+    "@types/node": "^20.10.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
