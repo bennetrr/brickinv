@@ -1,7 +1,7 @@
 import React from 'react';
 import IMainNavBarProps from './IMainNavBarProps';
 import { Link } from 'react-router-dom';
-import { StackLayout, Text, Icon } from '$/ui';
+import { Icon, StackLayout, Text } from '$/ui';
 
 const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
   return (
@@ -9,14 +9,14 @@ const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
         <Link to="/">
           <Text variation20WhiteMedium>LegoApp</Text>
         </Link>
-        
+
         <StackLayout stretch/>
-        
+
         <Link to={'/settings'}>
           <Icon icon="user" variation3GreyLight/>
         </Link>
       </StackLayout>
   );
-}
+};
 
 export default MainNavBar;

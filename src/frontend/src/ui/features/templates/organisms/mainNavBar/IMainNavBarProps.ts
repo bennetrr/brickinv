@@ -1,3 +1,3 @@
-export default  interface IMainNavBarProps {
+export default interface IMainNavBarProps {
 
 }

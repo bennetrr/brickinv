@@ -12,6 +12,6 @@ const DefaultPageTemplate: React.FC<IDefaultPageTemplateProps> = ({}) => {
         <Outlet/>
       </StackLayout>
   );
-}
+};
 
 export default DefaultPageTemplate;

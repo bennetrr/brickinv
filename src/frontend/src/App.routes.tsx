@@ -15,7 +15,7 @@ const RedirectingRoute: React.FC<{ destination: any }> = ({ destination }) => {
   return null;
 };
 
-export const redirect = (route: string) => <RedirectingRoute destination={route} />;
+export const redirect = (route: string) => <RedirectingRoute destination={route}/>;
 
 const appRoutes: RouteObject[] = [
   {

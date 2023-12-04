@@ -1,5 +1,5 @@
-import { StoryObj, ComponentMeta } from '@storybook/react';
-import { StackLayout, IIconProps } from '@wemogy/reactbase';
+import { ComponentMeta, StoryObj } from '@storybook/react';
+import { IIconProps, StackLayout } from '@wemogy/reactbase';
 
 import Icon, { iconMapKeys } from './Icon';
 
@@ -18,13 +18,13 @@ export const Default: StoryObj<IIconProps> = {
 
 export const Overview: StoryObj<IIconProps> = {
   render: () => (
-    <StackLayout>
-      {iconMapKeys.map(iconKey => (
-        <StackLayout orientation="horizontal" vCenter>
-          <Icon icon={iconKey} />
-          <span className="ml-2">{iconKey}</span>
-        </StackLayout>
-      ))}
-    </StackLayout>
+      <StackLayout>
+        {iconMapKeys.map(iconKey => (
+            <StackLayout orientation="horizontal" vCenter>
+              <Icon icon={iconKey}/>
+              <span className="ml-2">{iconKey}</span>
+            </StackLayout>
+        ))}
+      </StackLayout>
   )
 };

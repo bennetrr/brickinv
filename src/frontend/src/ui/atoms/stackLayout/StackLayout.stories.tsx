@@ -1,4 +1,4 @@
-import { StoryObj, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, StoryObj } from '@storybook/react';
 import StackLayout from './StackLayout';
 import IStackLayoutProps from './IStackLayoutProps';
 
@@ -10,6 +10,5 @@ export default {
 
 // CSF 3.0 - explicit render function
 export const Default: StoryObj<IStackLayoutProps> = {
-  args: {
-  }
+  args: {}
 };
