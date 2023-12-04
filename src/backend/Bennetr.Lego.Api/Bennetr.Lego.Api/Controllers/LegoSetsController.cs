@@ -1,10 +1,11 @@
 using Bennetr.Lego.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bennetr.Lego.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("sets")]
 [ApiController]
 public class LegoSetsController : ControllerBase
 {
@@ -17,6 +18,7 @@ public class LegoSetsController : ControllerBase
 
     // GET: api/LegoSets
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<LegoSet>>> GetLegoSets()
     {
         if (_context.LegoSets == null) return NotFound();
@@ -25,6 +27,7 @@ public class LegoSetsController : ControllerBase
 
     // GET: api/LegoSets/5
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<LegoSet>> GetLegoSet(string id)
     {
         if (_context.LegoSets == null) return NotFound();
@@ -38,6 +41,7 @@ public class LegoSetsController : ControllerBase
     // PUT: api/LegoSets/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> PutLegoSet(string id, LegoSet legoSet)
     {
         if (id != legoSet.Id) return BadRequest();
@@ -61,6 +65,7 @@ public class LegoSetsController : ControllerBase
     // POST: api/LegoSets
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<LegoSet>> PostLegoSet(LegoSet legoSet)
     {
         if (_context.LegoSets == null) return Problem("Entity set 'LegoContext.LegoSets'  is null.");
@@ -81,6 +86,7 @@ public class LegoSetsController : ControllerBase
 
     // DELETE: api/LegoSets/5
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteLegoSet(string id)
     {
         if (_context.LegoSets == null) return NotFound();

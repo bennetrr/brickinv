@@ -1,33 +1,13 @@
-using Bennetr.Lego.Api.Models;
-using Microsoft.EntityFrameworkCore;
+using Bennetr.Lego.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var startup = new Startup(builder.Configuration);
 
-builder.Services.AddControllers();
-builder.Services.AddDbContext<LegoContext>(opt =>
-{
-    opt.UseInMemoryDatabase("LegoDatabase");
-    if (builder.Environment.IsDevelopment()) opt.EnableSensitiveDataLogging();
-});
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+startup.Configure(app, app.Environment);
 
 app.Run();
