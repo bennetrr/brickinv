@@ -1,3 +1,4 @@
+using System.Reflection;
 using Bennetr.Lego.Api.Contexts;
 using Bennetr.Lego.Api.Models;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,7 +35,8 @@ public class Startup
 
         // Add Swagger
         _openApiEnvironment = _options
-            .AddOpenApi("v3");
+            .AddOpenApi("v1",
+                Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.json"));
     }
 
     public IConfiguration Configuration { get; } // TODO: This is missing from the Wemogy.AspNet Readme
