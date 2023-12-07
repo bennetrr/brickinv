@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.Lego.Api", "Bennetr.Lego.Api\Bennetr.Lego.Api.csproj", "{2E8664C5-2E05-47DB-BE03-D07128D74558}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rebrickable", "Rebrickable\Rebrickable.csproj", "{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{2E8664C5-2E05-47DB-BE03-D07128D74558}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E8664C5-2E05-47DB-BE03-D07128D74558}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E8664C5-2E05-47DB-BE03-D07128D74558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

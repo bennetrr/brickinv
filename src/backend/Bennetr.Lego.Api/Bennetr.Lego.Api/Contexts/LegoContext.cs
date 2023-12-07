@@ -1,6 +1,7 @@
+using Bennetr.Lego.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bennetr.Lego.Api.Models;
+namespace Bennetr.Lego.Api.Contexts;
 
 public class LegoContext : DbContext
 {

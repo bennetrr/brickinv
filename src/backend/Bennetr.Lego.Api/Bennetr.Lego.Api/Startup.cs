@@ -1,6 +1,5 @@
 using System.Reflection;
 using Bennetr.Lego.Api.Contexts;
-using Bennetr.Lego.Api.Models;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
