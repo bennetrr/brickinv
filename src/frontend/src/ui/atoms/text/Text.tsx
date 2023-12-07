@@ -114,9 +114,9 @@ const Text = TextBase.extendVariations({
     fontWeight: 'semibold',
     fontColor: 'black'
   },
-  variation20WhiteMedium: {
+  variation20WhiteSemi: {
     fontSize: 'variation20',
-    fontWeight: 'medium',
+    fontWeight: 'semibold',
     fontColor: 'white'
   },
   variation30Grey900Bold: {
@@ -135,6 +135,6 @@ export default Text;
 
 declare global {
   interface TextVariations {
-    lego: typeof Text['variationKey'];
+    spaceBlocksCore: typeof Text['variationKey'];
   }
 }

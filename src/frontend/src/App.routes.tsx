@@ -1,7 +1,7 @@
 import { ReactElement, useEffect } from 'react';
 import { RouteObject, useNavigate } from 'react-router-dom';
 
-import { DefaultPageTemplate, SetOverviewPage } from './ui';
+import { DefaultPageTemplate, SetOverviewPage, LoginPage } from '$/ui';
 
 const protect = (element: ReactElement) => <>Protected{element}</>;
 
@@ -18,6 +18,10 @@ const RedirectingRoute: React.FC<{ destination: any }> = ({ destination }) => {
 export const redirect = (route: string) => <RedirectingRoute destination={route}/>;
 
 const appRoutes: RouteObject[] = [
+  {
+    path: '/login',
+    element: <LoginPage/>
+  },
   {
     element: <DefaultPageTemplate/>,
     children: [

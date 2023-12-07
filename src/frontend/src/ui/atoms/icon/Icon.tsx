@@ -46,7 +46,8 @@ export const iconMap: IconMap = {
   supportPhoneWorker: useFillInsteadOfColor(SupportPhoneWorkerIcon),
   settingsGear: useFillInsteadOfColor(SettingsGearIcon),
   xMark: HeroIconsSolid.XMarkIcon,
-  check: HeroIcons.CheckIcon
+  check: HeroIcons.CheckIcon,
+  key: HeroIcons.KeyIcon
 };
 
 for (let key in iconMap) {
@@ -178,5 +179,6 @@ declare module '@wemogy/reactbase' {
     settingsGear?: boolean;
     chevronRight?: boolean;
     xMark?: boolean;
+    key?: boolean;
   }
 }

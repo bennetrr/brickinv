@@ -1,13 +1,20 @@
 import { StackLayout as StackLayoutBase } from '@wemogy/reactbase';
 
 const StackLayout = StackLayoutBase.extendVariations({
-  base: {}
+  base: {
+    position: 'relative',
+    border: 0
+  },
+  divider1: {
+    height: { custom: 1 },
+    backgroundColor: 'grey200'
+  }
 });
 
 export default StackLayout;
 
 declare global {
   interface StackLayoutVariations {
-    lego: typeof StackLayout['variationKey'];
+    spaceBlocksCore: typeof StackLayout['variationKey'];
   }
 }
