@@ -47,14 +47,15 @@ export const iconMap: IconMap = {
   settingsGear: useFillInsteadOfColor(SettingsGearIcon),
   xMark: HeroIconsSolid.XMarkIcon,
   check: HeroIcons.CheckIcon,
-  key: HeroIcons.KeyIcon
+  key: HeroIcons.KeyIcon,
+  envelopeOpen: HeroIcons.EnvelopeOpenIcon
 };
 
 for (let key in iconMap) {
   iconMap[key] = styled(iconMap[key])`
-    * {
-      ${iconMap[key].useFillInsteadOfColor ? 'fill' : 'color'}: ${props => props._color};
-    }
+      * {
+          ${iconMap[key].useFillInsteadOfColor ? 'fill' : 'color'}: ${props => props._color};
+      }
   `;
 }
 
@@ -180,5 +181,6 @@ declare module '@wemogy/reactbase' {
     chevronRight?: boolean;
     xMark?: boolean;
     key?: boolean;
+    envelopeOpen?: boolean;
   }
 }

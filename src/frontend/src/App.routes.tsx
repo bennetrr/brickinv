@@ -1,9 +1,20 @@
-import { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { RouteObject, useNavigate } from 'react-router-dom';
 
-import { DefaultPageTemplate, SetOverviewPage, LoginPage } from '$/ui';
+import { DefaultPageTemplate, LoginPage, RegisterPage, SetOverviewPage } from '$/ui';
+import { useAppStore } from '$/domain/hooks';
 
-const protect = (element: ReactElement) => <>Protected{element}</>;
+const ProtectedRoute: React.FC<{ element: ReactElement }> = ({ element }) => {
+  const { authenticationStore } = useAppStore();
+
+  if (!authenticationStore.authSession.isAuthenticated) {
+    return redirect('/login');
+  }
+
+  return element;
+};
+
+const protect = (element: ReactElement) => <ProtectedRoute element={element}/>;
 
 const RedirectingRoute: React.FC<{ destination: any }> = ({ destination }) => {
   const navigate = useNavigate();
@@ -23,7 +34,11 @@ const appRoutes: RouteObject[] = [
     element: <LoginPage/>
   },
   {
-    element: <DefaultPageTemplate/>,
+    path: '/register',
+    element: <RegisterPage/>
+  },
+  {
+    element: protect(<DefaultPageTemplate/>),
     children: [
       {
         index: true,

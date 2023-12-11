@@ -77,7 +77,7 @@ const Button = ButtonBase.extendVariations({
     backgroundColor: 'primaryDisabled'
   }
 }).registerDependencies({
-  loadingIndicator: () => <LoadingIndicator beat />
+  loadingIndicator: () => <LoadingIndicator beat/>
 });
 
 export default Button;

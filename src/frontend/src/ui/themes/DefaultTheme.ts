@@ -1,5 +1,5 @@
 import { ThemeBuilder } from '@wemogy/reactbase';
-import { primary, red, green } from './Colors';
+import { green, primary, red } from './Colors';
 
 const DefaultTheme = ThemeBuilder.createTheme({
   referenceValueCollection: {

@@ -8,7 +8,7 @@ const LoadingIndicator: React.FC<ILoadingIndicatorProps> = ({ primary, sm }) => 
 
   const loaderColor = color[primary ? 'primary' : 'white'];
 
-  return <BeatLoader size={sm ? 8 : 12} color={loaderColor} />;
+  return <BeatLoader size={sm ? 8 : 12} color={loaderColor}/>;
 };
 
 export default LoadingIndicator;

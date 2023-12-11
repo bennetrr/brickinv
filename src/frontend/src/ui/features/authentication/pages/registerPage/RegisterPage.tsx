@@ -2,51 +2,46 @@ import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '$/ui';
-import { useAppStore } from '$/domain';
-import ILoginPageProps from './ILoginPageProps';
+import IRegisterPageProps from './IRegisterPageProps';
 
 const axiosInstance = axios.create({ baseURL: 'http://localhost:5105' });
 
-const LoginPage: React.FC<ILoginPageProps> = ({}) => {
+const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
   const navigate = useNavigate();
-  const { authenticationStore } = useAppStore();
 
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignInClick = useCallback(async () => {
+  const handleSignUpClick = useCallback(async () => {
     try {
-      const response = await axiosInstance.post('/login', { email, password });
-      authenticationStore.authSession.setSession(
-          response.data.tokenType,
-          response.data.accessToken,
-          response.data.refreshToken,
-          response.data.expiresIn
-      );
+      await axiosInstance.post('/register', { email, password });
     } catch (error) {
-      if (!(error instanceof AxiosError) || !error.response || error.response.status !== 401) {
+      if (!(error instanceof AxiosError) || !error.response || error.response.status !== 400) {
         toast.error('Login failed: Unexpected error. Please try again later!');
         return;
       }
 
-      toast.error('Email address or password are incorrect!');
+      for (const errorElement in (error.response.data.errors as object)) {
+        toast.error(error.response.data.errors[errorElement]);
+      }
       return;
     }
 
-    toast.success('Login successful');
-    navigate('/');
-  }, [email, password]);
+    toast.success('Account created');
+    navigate('/login');
+  }, [email, username, password]);
 
   const handleEnterPress = useCallback(async (key: string) => {
     if (key !== 'Enter') {
       return;
     }
 
-    await handleSignInClick();
-  }, [handleSignInClick]);
+    await handleSignUpClick();
+  }, [handleSignUpClick]);
 
   return (
-      <StackLayout height100 hCenter vCenter>
+      <StackLayout height100 width100 hCenter vCenter>
         <StackLayout width={40} gap>
           <LabeledView label="Email Address">
             <TextInput
@@ -55,7 +50,17 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
                 value={email}
                 onChange={setEmail}
                 onKeyPress={handleEnterPress}
-                automationId="login-email-field"
+                automationId="register-email-field"
+            />
+          </LabeledView>
+
+          <LabeledView label="Your name">
+            <TextInput
+                icon="user"
+                value={username}
+                onChange={setUsername}
+                onKeyPress={handleEnterPress}
+                automationId="register-username-field"
             />
           </LabeledView>
 
@@ -66,28 +71,21 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
                 value={password}
                 onChange={setPassword}
                 onKeyPress={handleEnterPress}
-                automationId="login-password-field"
+                automationId="register-password-field"
             />
           </LabeledView>
 
           <Button
               primary14
-              onPress={handleSignInClick}
-              automationId="login-signin-button"
+              onPress={handleSignUpClick}
+              automationId="register-signup-button"
           >
-            Sign in
+            Sign up
           </Button>
 
-          <Link to={'/register'}>
+          <Link to={'/login'}>
             <StackLayout vCenter orientation="horizontal">
-              <Text cta>No account yet?</Text>
-              <Icon chevronRight variation2PrimaryDark/>
-            </StackLayout>
-          </Link>
-
-          <Link to={'/reset-password'}>
-            <StackLayout vCenter orientation="horizontal">
-              <Text cta>Forgot your password?</Text>
+              <Text cta>Already have an account?</Text>
               <Icon chevronRight variation2PrimaryDark/>
             </StackLayout>
           </Link>
@@ -96,4 +94,4 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

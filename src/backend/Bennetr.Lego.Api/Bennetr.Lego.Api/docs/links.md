@@ -6,6 +6,5 @@
 - https://github.com/wemogy/libs-infrastructure-database
 - https://github.com/wemogy/libs-cqrs
 - https://github.com/wemogy/libs-aspnet
-- https://learn.microsoft.com/en-us/aspnet/core/migration/50-to-60?view=aspnetcore-8.0&tabs=visual-studio#smhm
 
 - https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-8.0&tabs=visual-studio
