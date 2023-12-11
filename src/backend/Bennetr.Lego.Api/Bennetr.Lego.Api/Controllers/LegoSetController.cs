@@ -122,7 +122,7 @@ public class LegoSetController : ControllerBase
         if (_context.LegoSets == null) return Problem("Entity set 'LegoContext.LegoSets'  is null.");
         _context.LegoSets.Add(set);
         _context.LegoParts.AddRange(parts);
-        
+
         try
         {
             await _context.SaveChangesAsync();
@@ -133,7 +133,7 @@ public class LegoSetController : ControllerBase
                 return Conflict();
             throw;
         }
-        
+
         return CreatedAtAction(nameof(GetLegoSet), new { id = set.Id }, set.Adapt<LegoSetDto>());
     }
 

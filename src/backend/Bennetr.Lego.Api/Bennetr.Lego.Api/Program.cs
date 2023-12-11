@@ -1,13 +1,44 @@
-using Bennetr.Lego.Api;
+using Bennetr.Lego.Api.Contexts;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Wemogy.AspNet.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var startup = new Startup(builder.Configuration);
+var options = new StartupOptions();
 
-startup.ConfigureServices(builder.Services);
+// Middleware
+options
+    // .AddMiddleware<ApiExceptionFilter>()
+    .AddMiddleware<HttpsRedirectionMiddleware>();
+
+// Add Swagger
+options.AddOpenApi("v1");
+
+
+builder.Services.AddDefaultSetup(options);
+
+// Database
+builder.Services
+    .AddDbContext<LegoContext>(opt => opt.UseInMemoryDatabase("LegoDb"))
+    .AddDbContext<IdentityContext>(opt => opt.UseInMemoryDatabase("IdentityDb"));
+
+// Authentication
+builder.Services
+    .AddAuthorization()
+    .AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<IdentityContext>();
+
+// Swagger
+builder.Services
+    .AddEndpointsApiExplorer();
+
 
 var app = builder.Build();
 
-startup.Configure(app, app.Environment);
+app.UseDefaultSetup(app.Environment, options);
+
+app.MapIdentityApi<IdentityUser>();
 
 app.Run();

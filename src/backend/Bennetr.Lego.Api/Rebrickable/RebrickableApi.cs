@@ -11,12 +11,12 @@ public class RebrickableApi(string apiKey)
     {
         return new RebrickableSet();
     }
-    
+
     public async Task<IEnumerable<RebrickablePart>> GetRebrickableParts(string partId)
     {
         return new List<RebrickablePart>();
     }
-    
+
     public async Task<RebrickableSetMinifigs> GetRebrickableMinifigs(string colorId)
     {
         return new RebrickableSetMinifigs();
