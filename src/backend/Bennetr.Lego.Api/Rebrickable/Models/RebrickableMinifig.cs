@@ -5,7 +5,7 @@ public class RebrickableSetMinifigs
     public int count { get; set; }
     public string next { get; set; }
     public string previous { get; set; }
-    public RebrickableMinifig[] results { get; set; }
+    public IEnumerable<RebrickableMinifig> results { get; set; }
 }
 
 public class RebrickableMinifig

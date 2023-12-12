@@ -1,5 +1,13 @@
 namespace Rebrickable.Models;
 
+public class RebrickableSetParts
+{
+    public int count { get; set; }
+    public string next { get; set; }
+    public string previous { get; set; }
+    public IEnumerable<RebrickablePart> results { get; set; }
+}
+
 public class RebrickablePart
 {
     public int id { get; set; }
