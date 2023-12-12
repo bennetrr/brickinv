@@ -19,7 +19,7 @@ function App() {
             }}
         >
           <RouterProvider router={appRouter}/>
-          <Toaster closeButton richColors position="top-right" style={{ top: 76, right: 16 }}/>
+          <Toaster closeButton richColors position="top-right" style={{ top: 16, right: 16 }}/>
         </ReactBaseProvider>
       </MobxProvider>
   );
