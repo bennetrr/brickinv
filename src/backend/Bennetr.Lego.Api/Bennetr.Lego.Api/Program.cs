@@ -2,6 +2,7 @@ using Bennetr.Lego.Api.Contexts;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Wemogy.AspNet.Middlewares;
 using Wemogy.AspNet.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ var options = new StartupOptions();
 
 // Middleware
 options
-    // .AddMiddleware<ApiExceptionFilter>()
+    .AddMiddleware<ErrorHandlerMiddleware>()
     .AddMiddleware<HttpsRedirectionMiddleware>();
 
 // Add Swagger

@@ -20,12 +20,12 @@ public class LegoPartController(LegoContext context) : ControllerBase
 
     // GET: api/LegoParts/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<LegoPart>> GetLegoPart(string setId, string id)
+    public async Task<ActionResult<LegoPartDto>> GetLegoPart(string setId, string id)
     {
         var legoPart = await context.LegoParts.FindAsync(id);
 
         if (legoPart == null) return NotFound();
 
-        return legoPart;
+        return legoPart.Adapt<LegoPartDto>();
     }
 }
