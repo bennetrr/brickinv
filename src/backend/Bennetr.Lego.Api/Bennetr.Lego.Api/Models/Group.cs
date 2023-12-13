@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace Bennetr.Lego.Api.Models;
 
 public class Group
@@ -8,7 +10,7 @@ public class Group
 
     public DateTime Updated { get; set; }
 
-    public User Owner { get; set; }
+    public IdentityUser Owner { get; set; }
 
-    public List<User> Users { get; set; }
+    public IEnumerable<IdentityUser> Users { get; set; }
 }

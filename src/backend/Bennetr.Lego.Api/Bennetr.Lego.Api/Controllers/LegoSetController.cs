@@ -35,28 +35,6 @@ public class LegoSetController(LegoContext context) : ControllerBase
         return legoSet.Adapt<LegoSetDto>();
     }
 
-    [HttpPut("{id}")]
-    [Authorize]
-    public async Task<IActionResult> PutLegoSet(string id, LegoSet legoSet)
-    {
-        if (id != legoSet.Id) return BadRequest();
-
-        context.Entry(legoSet).State = EntityState.Modified;
-
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!LegoSetExists(id))
-                return NotFound();
-            throw;
-        }
-
-        return NoContent();
-    }
-
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<LegoSetDto>> PostLegoSet(string setNumber, bool forSale)
@@ -139,6 +117,7 @@ public class LegoSetController(LegoContext context) : ControllerBase
         if (legoSet == null) return NotFound();
 
         context.LegoSets.Remove(legoSet);
+        context.LegoParts.RemoveRange(context.LegoParts.Where(x => x.Set.Id == id));
         await context.SaveChangesAsync();
 
         return NoContent();

@@ -4,10 +4,4 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bennetr.Lego.Api.Contexts;
 
-public class IdentityContext : IdentityDbContext<IdentityUser>
-{
-    public IdentityContext(DbContextOptions<IdentityContext> options) :
-        base(options)
-    {
-    }
-}
+public class IdentityContext(DbContextOptions<IdentityContext> options) : IdentityDbContext<IdentityUser>(options);
