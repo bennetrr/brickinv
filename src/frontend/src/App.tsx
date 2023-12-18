@@ -4,6 +4,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { DefaultTheme, themeDeclaration } from './ui';
 import appRoutes from './App.routes.tsx';
 import { AppStore } from '$/domain/stores';
+import { setupAxiosInstance } from '$/domain/axiosInstance/AxiosInstance.ts';
+
+setupAxiosInstance(window.env.apiBaseUrl);
 
 const appRouter = createBrowserRouter(appRoutes);
 const appStore = AppStore.create();

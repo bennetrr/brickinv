@@ -1,36 +1,32 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
 import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '$/ui';
 import IRegisterPageProps from './IRegisterPageProps';
-
-const axiosInstance = axios.create({ baseURL: 'http://localhost:5105' });
+import { AuthenticationService } from '$/domain';
 
 const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignUpClick = useCallback(async () => {
-    try {
-      await axiosInstance.post('/register', { email, password });
-    } catch (error) {
-      if (!(error instanceof AxiosError) || !error.response || error.response.status !== 400) {
-        toast.error('Login failed: Unexpected error. Please try again later!');
-        return;
-      }
-
-      for (const errorElement in (error.response.data.errors as object)) {
-        toast.error(error.response.data.errors[errorElement]);
-      }
+    const status = await AuthenticationService.register(email, password);
+    
+    if (status === 'success') {
+      toast.success('Account created');
+      navigate('/login');
+      return;
+    }
+    
+    if (status === 'error') {
+      toast.error('Login failed: Unexpected error. Please try again later!');
       return;
     }
 
-    toast.success('Account created');
-    navigate('/login');
-  }, [email, username, password]);
+    status.forEach(toast.error);
+  }, [email, /*username,*/ password, navigate]);
 
   const handleEnterPress = useCallback(async (key: string) => {
     if (key !== 'Enter') {
@@ -54,7 +50,7 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
             />
           </LabeledView>
 
-          <LabeledView label="Your name">
+          {/*<LabeledView label="Your name">
             <TextInput
                 icon="user"
                 value={username}
@@ -62,7 +58,7 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
                 onKeyPress={handleEnterPress}
                 automationId="register-username-field"
             />
-          </LabeledView>
+          </LabeledView>*/}
 
           <LabeledView label="Password">
             <TextInput

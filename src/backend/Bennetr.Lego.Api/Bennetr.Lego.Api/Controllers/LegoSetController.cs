@@ -48,7 +48,6 @@ public class LegoSetController(LegoContext context) : ControllerBase
         var set = new LegoSet
         {
             Id = Guid.NewGuid().ToString(),
-            Group = new Group { Id = "0" },
             Created = DateTime.Now,
             Updated = DateTime.Now,
             SetNumber = rebrickableSet.set_num,

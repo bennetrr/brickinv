@@ -40,6 +40,6 @@ var app = builder.Build();
 
 app.UseDefaultSetup(app.Environment, options);
 
-app.MapIdentityApi<IdentityUser>();
+app.MapGroup("/auth").MapIdentityApi<IdentityUser>();
 
 app.Run();
