@@ -20,13 +20,23 @@ class AuthenticationService {
     const refreshToken = localStorage.getItem('refreshToken');
     const expiresAt = localStorage.getItem('expiresAt');
     
+    if (!accessToken || !refreshToken || !expiresAt) {
+      this.logout();
+      return;
+    }
+
     this.setToken(
-        accessToken || undefined,
-        refreshToken || undefined,
-        expiresAt ? DateTime.fromISO(expiresAt) : undefined
+        accessToken,
+        refreshToken,
+        DateTime.fromISO(expiresAt)
     )
-      
-    // TODO: Check if token is still valid and refresh if necessary.
+    
+    if (DateTime.fromISO(expiresAt) < DateTime.now()) {
+      void this.refresh();
+      return;
+    }
+    
+    this.scheduleRefresh(DateTime.fromISO(expiresAt).diffNow('seconds').seconds);
   }
   
   public async register(email: string, password: string): Promise<'success' | 'error' | string[] > {  // TODO: Better type for error.
