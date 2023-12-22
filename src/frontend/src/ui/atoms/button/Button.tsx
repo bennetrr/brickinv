@@ -44,6 +44,7 @@ const Button = ButtonBase.extendVariations({
     fontColor: 'grey700',
     fontWeight: 'medium',
     fontSize: 'variation14',
+    iconVariation: 'variation2PrimaryDark',
     paddingTopBottom: 1
   },
   secondary14Disabled: {

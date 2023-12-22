@@ -25,6 +25,6 @@ declare global {
 
 declare module '@wemogy/reactbase' {
   export interface IModalKeys {
-    permissionManagement: boolean;
+    addSet: boolean;
   }
 }

@@ -1,15 +1,18 @@
 import { Provider as MobxProvider } from 'mobx-react';
-import { ReactBaseProvider, Toaster } from '@wemogy/reactbase';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ReactBaseProvider, Toaster } from '@wemogy/reactbase';
 import { DefaultTheme, themeDeclaration } from './ui';
+import { AuthenticationService, setupAxiosInstance, AppStore } from '$/domain';
 import appRoutes from './App.routes.tsx';
-import { AppStore } from '$/domain/stores';
-import { setupAxiosInstance } from '$/domain/axiosInstance/AxiosInstance.ts';
 
 setupAxiosInstance(window.env.apiBaseUrl);
+AuthenticationService.initialize();
 
 const appRouter = createBrowserRouter(appRoutes);
 const appStore = AppStore.create();
+
+AuthenticationService.addTokenChangeHandler(token => appStore.authenticationStore.setIsAuthenticated(!!token));
+appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenticated);
 
 function App() {
   return (

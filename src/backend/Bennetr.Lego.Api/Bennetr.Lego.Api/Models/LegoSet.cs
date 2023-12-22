@@ -8,7 +8,7 @@ public class LegoSet
 
     public DateTime Updated { get; set; }
 
-    public string SetNumber { get; set; }
+    public string SetId { get; set; }
 
     public string SetName { get; set; }
 

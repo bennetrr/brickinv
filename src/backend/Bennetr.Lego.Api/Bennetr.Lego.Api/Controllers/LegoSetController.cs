@@ -1,6 +1,7 @@
 using Bennetr.Lego.Api.Contexts;
 using Bennetr.Lego.Api.Dtos;
 using Bennetr.Lego.Api.Models;
+using Bennetr.Lego.Api.Requests;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,27 +38,30 @@ public class LegoSetController(LegoContext context) : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<LegoSetDto>> PostLegoSet(string setNumber, bool forSale)
+    public async Task<ActionResult<LegoSetDto>> PostLegoSet(PostSetRequest request)
     {
+        var setId = request.SetId.Trim();
+        setId = setId.Contains('-') ? setId : $"{setId}-1";
+        
         // Get the set from Rebrickable
-        var rebrickableSet = await _rebrickableApi.GetRebrickableSet("11d413dfbda310cc80c6e1f741bc6d0f", setNumber);
-        var rebrickableParts = await _rebrickableApi.GetRebrickableParts("11d413dfbda310cc80c6e1f741bc6d0f", setNumber);
+        var rebrickableSet = await _rebrickableApi.GetRebrickableSet("11d413dfbda310cc80c6e1f741bc6d0f", setId);
+        var rebrickableParts = await _rebrickableApi.GetRebrickableParts("11d413dfbda310cc80c6e1f741bc6d0f", setId);
         var rebrickableMinifigs =
-            await _rebrickableApi.GetRebrickableMinifigs("11d413dfbda310cc80c6e1f741bc6d0f", setNumber);
+            await _rebrickableApi.GetRebrickableMinifigs("11d413dfbda310cc80c6e1f741bc6d0f", setId);
 
         var set = new LegoSet
         {
             Id = Guid.NewGuid().ToString(),
             Created = DateTime.Now,
             Updated = DateTime.Now,
-            SetNumber = rebrickableSet.set_num,
+            SetId = rebrickableSet.set_num,
             SetName = rebrickableSet.name,
             ReleaseYear = rebrickableSet.year,
             ImageUri = new Uri(rebrickableSet.set_img_url),
             TotalParts = rebrickableSet.num_parts,
             PresentParts = 0,
             Finished = false,
-            ForSale = forSale
+            ForSale = request.ForSale
         };
 
         var parts = rebrickableParts.results
@@ -68,10 +72,10 @@ public class LegoSetController(LegoContext context) : ControllerBase
                 Set = set,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
-                PartNumber = x.part.part_num,
+                PartId = x.part.part_num,
                 PartName = x.part.name,
                 PartColor = x.color.name,
-                ImageUri = new Uri(x.part.part_img_url),
+                ImageUri = x.part.part_img_url is null ? null : new Uri(x.part.part_img_url),
                 TotalCount = x.quantity,
                 PresentCount = 0
             }).Concat(
@@ -82,7 +86,7 @@ public class LegoSetController(LegoContext context) : ControllerBase
                         Set = set,
                         Created = DateTime.Now,
                         Updated = DateTime.Now,
-                        PartNumber = x.set_num,
+                        PartId = x.set_num,
                         PartName = x.set_name,
                         ImageUri = new Uri(x.set_img_url),
                         TotalCount = x.quantity,

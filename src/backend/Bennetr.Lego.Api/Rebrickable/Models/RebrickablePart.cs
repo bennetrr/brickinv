@@ -29,7 +29,7 @@ public class Part
     public int year_from { get; set; }
     public int year_to { get; set; }
     public string part_url { get; set; }
-    public string part_img_url { get; set; }
+    public string? part_img_url { get; set; }
     public string[] prints { get; set; }
     public string[] molds { get; set; }
     public string[] alternates { get; set; }

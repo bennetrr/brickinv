@@ -2,12 +2,12 @@ import React, { ReactElement, useEffect } from 'react';
 import { RouteObject, useNavigate } from 'react-router-dom';
 
 import { DefaultPageTemplate, LoginPage, RegisterPage, SetOverviewPage } from '$/ui';
-import { useAppStore } from '$/domain/hooks';
+import { useAppStore } from '$/domain';
 
 const ProtectedRoute: React.FC<{ element: ReactElement }> = ({ element }) => {
   const { authenticationStore } = useAppStore();
 
-  if (!authenticationStore.authSession.isAuthenticated) {
+  if (!authenticationStore.isAuthenticated) {
     return redirect('/login');
   }
 
@@ -28,14 +28,26 @@ const RedirectingRoute: React.FC<{ destination: any }> = ({ destination }) => {
 
 export const redirect = (route: string) => <RedirectingRoute destination={route}/>;
 
+const UnauthenticatedRoute: React.FC<{ element: ReactElement }> = ({ element }) => {
+  const { authenticationStore } = useAppStore();
+
+  if (authenticationStore.isAuthenticated) {
+    return redirect('/');
+  }
+
+  return element;
+}
+
+const unauthenticated = (element: ReactElement) => <UnauthenticatedRoute element={element}/>;
+
 const appRoutes: RouteObject[] = [
   {
     path: '/login',
-    element: <LoginPage/>
+    element: unauthenticated(<LoginPage/>)
   },
   {
     path: '/register',
-    element: <RegisterPage/>
+    element: unauthenticated(<RegisterPage/>)
   },
   {
     element: protect(<DefaultPageTemplate/>),

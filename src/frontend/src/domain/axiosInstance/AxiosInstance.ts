@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AuthenticationService } from '../authentication';
 
 export const axiosInstance = axios.create({
   validateStatus: () => true,
@@ -7,6 +8,10 @@ export const axiosInstance = axios.create({
       Authorization: undefined,
     }
   }
+});
+
+AuthenticationService.addTokenChangeHandler(token => {
+    axiosInstance.defaults.headers.common.Authorization = token ? `Bearer ${token}` : undefined;
 });
 
 export function setupAxiosInstance(baseUrl: string) {

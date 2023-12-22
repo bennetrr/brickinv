@@ -52,8 +52,10 @@ export const iconMap: IconMap = {
 };
 
 for (let key in iconMap) {
+  // @ts-ignore
   iconMap[key] = styled(iconMap[key])`
       * {
+          // @ts-ignore
           ${iconMap[key].useFillInsteadOfColor ? 'fill' : 'color'}: ${props => props._color};
       }
   `;

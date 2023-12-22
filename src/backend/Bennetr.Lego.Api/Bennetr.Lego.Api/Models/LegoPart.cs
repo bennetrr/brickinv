@@ -10,7 +10,7 @@ public class LegoPart
 
     public DateTime Updated { get; set; }
 
-    public string PartNumber { get; set; }
+    public string PartId { get; set; }
 
     public string PartName { get; set; }
 

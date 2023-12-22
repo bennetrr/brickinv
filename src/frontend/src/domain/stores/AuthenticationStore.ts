@@ -1,9 +1,12 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { AuthSession } from '$/domain/models';
 
 const AuthenticationStore = types.model('AuthenticationStore', {
-  authSession: types.optional(AuthSession, () => AuthSession.create())
-});
+  isAuthenticated: types.optional(types.boolean, false),
+}).actions(self => ({
+  setIsAuthenticated(isAuthenticated: boolean) {
+    self.isAuthenticated = isAuthenticated;
+  }
+}));
 
 export default AuthenticationStore;
 

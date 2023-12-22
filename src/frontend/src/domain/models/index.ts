@@ -1,5 +1,5 @@
-import AuthSession from './AuthSession';
+import LegoSet from './LegoSet';
 
-export { AuthSession };
+export { LegoSet };
 
-export * from './AuthSession';
+export * from './LegoSet';
