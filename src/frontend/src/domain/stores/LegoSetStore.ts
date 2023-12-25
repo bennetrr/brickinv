@@ -26,6 +26,10 @@ const LegoSetStore = types.model('LegoSetStore', {
 
     return newSet;
   }),
+})).views((self) => ({
+      getSet(setId: string): ILegoSet | undefined {
+        return self.items.find(set => set.id === setId);
+      }
 }));
 
 export default LegoSetStore;

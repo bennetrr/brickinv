@@ -8,7 +8,8 @@ const Button = ButtonBase.extendVariations({
     paddingTopBottom: true,
     paddingRightLeft: 2,
     textAlign: 'center',
-    lineHeight: 20
+    lineHeight: 20,
+    iconSpacing: 2
   },
   primary: {
     backgroundColor: 'primary',
@@ -44,7 +45,7 @@ const Button = ButtonBase.extendVariations({
     fontColor: 'grey700',
     fontWeight: 'medium',
     fontSize: 'variation14',
-    iconVariation: 'variation2PrimaryDark',
+    iconVariation: 'variation2Grey700',
     paddingTopBottom: 1
   },
   secondary14Disabled: {
@@ -76,6 +77,17 @@ const Button = ButtonBase.extendVariations({
     fontColor: 'white',
     fontWeight: 'medium',
     backgroundColor: 'primaryDisabled'
+  },
+  navButton: {
+    height: 7,
+    width: 40,
+    iconVariation: 'navButton',
+    iconPosition: 'right',
+    fontColor: 'grey700',
+    fontSize: 'variation16',
+    backgroundColor: 'white',
+    borderColor: 'grey300',
+    border: { custom: 1 }
   }
 }).registerDependencies({
   loadingIndicator: () => <LoadingIndicator beat/>

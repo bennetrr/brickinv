@@ -4,6 +4,7 @@ import { ReactBaseProvider, Toaster } from '@wemogy/reactbase';
 import { DefaultTheme, themeDeclaration } from './ui';
 import { AuthenticationService, setupAxiosInstance, AppStore } from '$/domain';
 import appRoutes from './App.routes.tsx';
+import { useEffect } from 'react';
 
 setupAxiosInstance(window.env.apiBaseUrl);
 AuthenticationService.initialize();
@@ -15,6 +16,10 @@ AuthenticationService.addTokenChangeHandler(token => appStore.authenticationStor
 appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenticated);
 
 function App() {
+  useEffect(() => {
+    appStore.legoSetStore.queryLegoSets();
+  }, [AuthenticationService.isAuthenticated]);
+  
   return (
       <MobxProvider appStore={appStore}>
         <ReactBaseProvider

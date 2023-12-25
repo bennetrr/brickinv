@@ -30,6 +30,7 @@
     "react-native-screens": "1.0.0-alpha.21",
     "react-router-dom": "^6.20.0",
     "react-spinners": "^0.13.8",
+    "react-use-clipboard": "^1.0.9",
     "supports-color": "^9.4.0",
     "the-new-css-reset": "^1.11.2"
   },

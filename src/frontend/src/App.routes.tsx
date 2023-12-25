@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
 import { RouteObject, useNavigate } from 'react-router-dom';
 
-import { DefaultPageTemplate, LoginPage, RegisterPage, SetOverviewPage } from '$/ui';
+import { DefaultPageTemplate, LoginPage, RegisterPage, SetDetailPage, SetOverviewPage } from '$/ui';
 import { useAppStore } from '$/domain';
 
 const ProtectedRoute: React.FC<{ element: ReactElement }> = ({ element }) => {
@@ -55,6 +55,19 @@ const appRoutes: RouteObject[] = [
       {
         index: true,
         element: <SetOverviewPage/>
+      },
+      {
+        path: '/set',
+        children: [
+          {
+            index: true,
+            element: redirect('/')
+          },
+          {
+            path: ':setId',
+            element: <SetDetailPage/>
+          }
+        ]
       }
     ]
   }

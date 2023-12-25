@@ -1,2 +1,2 @@
-export * from './legoSetCard';
+export * from './setCard';
 export * from './addSetModal';

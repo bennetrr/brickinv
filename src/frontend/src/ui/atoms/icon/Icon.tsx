@@ -84,6 +84,10 @@ const Icon = IconBase.extendVariations({
     size: 2,
     color: 'grey600'
   },
+  variation2Grey700: {
+    size: 2,
+    color: 'grey700'
+  },
   variation2White: {
     size: 2,
     color: 'white'
@@ -131,6 +135,11 @@ const Icon = IconBase.extendVariations({
   variation3GreyLight: {
     size: 3,
     color: 'greyLight'
+  },
+  navButton: {
+    size: 5,
+    color: 'grey700',
+    marginLeft: {custom: 'auto'}
   }
 }).registerDependencies({
   iconResolver: props => {

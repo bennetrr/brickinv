@@ -53,7 +53,7 @@ const AddSetModal: React.FC<IAddSetModalProps> = ({}) => {
                 value={setId}
             />
             
-            <StackLayout orientation="horizontal" vCenter onPress={() => setForSale(!forSale)} gap={1.5}>
+            <StackLayout orientation="horizontal" vCenter onPress={() => setForSale(!forSale)} gap>
               <Checkbox
                   checked={forSale}
                   onChange={setForSale}
@@ -64,12 +64,12 @@ const AddSetModal: React.FC<IAddSetModalProps> = ({}) => {
             </StackLayout>
           </StackLayout>
           
-          <StackLayout orientation="horizontal" vCenter>
-            <Button secondary14 width100 onPress={handleCancelPress}>
+          <StackLayout orientation="horizontal" vCenter gap={1.5}>
+            <Button icon="xMark" secondary14 width100 onPress={handleCancelPress}>
               Cancel
             </Button>
             
-            <Button marginLeft={1.5} primary14 width100 onPress={handleAddPress} isLoading={isLoading}>
+            <Button icon="plus" primary14 width100 onPress={handleAddPress} isLoading={isLoading}>
               Add
             </Button>
           </StackLayout>

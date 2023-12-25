@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import ISetOverviewPageProps from './ISetOverviewPageProps';
 import { useAppStore } from '$/domain';
 import { observer } from 'mobx-react';
-import { Button, StackLayout, Text, TextInput, AddSetModal, LegoSetCard, IAddSetModalParameters } from '$/ui';
-import { useModalStore } from '@wemogy/reactbase';
+import { Button, StackLayout, Text, TextInput, AddSetModal, SetCard, IAddSetModalParameters } from '$/ui';
+import { RenderIf, useModalStore } from '@wemogy/reactbase';
 
 const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
   const { legoSetStore } = useAppStore();
@@ -14,10 +14,6 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
     console.log(searchFieldText)
     openModal('addSet', { setId: searchFieldText } satisfies IAddSetModalParameters);
   }, [searchFieldText, openModal]);
-
-  useEffect(() => {
-    legoSetStore.queryLegoSets();
-  }, []);
   
   const sets = useMemo(() => {
     return legoSetStore.items.filter(x => {
@@ -43,6 +39,10 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
                 secondary14
                 height={5}
                 width={5}
+                paddingTopBottom={0}
+                paddingRightLeft={0}
+                iconSpacing={1.25}
+                iconPosition="right"
                 icon="plus"
                 onPress={handleAddSetPress}
             >
@@ -51,8 +51,8 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
           </StackLayout>
   
           {sets.length !== 0 ?
-              <StackLayout wrap padding={2}>
-                {sets.map(x => <LegoSetCard legoSet={x} key={x.id}/>)}
+              <StackLayout wrap padding={2} orientation="horizontal" gap={2}>
+                {sets.map(x => <SetCard set={x} key={x.id}/>)}
               </StackLayout>
               :
               <StackLayout padding={2} hCenter>
@@ -67,12 +67,14 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
                   Add a new set
                 </Button>
 
-                <Button
+                <RenderIf condition={searchFieldText !== ''}>
+                  <Button
                     borderless
                     onPress={() => setSearchFieldText('')}
-                >
-                  Clear filters
-                </Button>
+                  >
+                    Clear filters
+                  </Button>
+                </RenderIf>
               </StackLayout>
           }
         </StackLayout>
