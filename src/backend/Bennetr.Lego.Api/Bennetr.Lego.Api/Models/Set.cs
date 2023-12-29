@@ -1,6 +1,6 @@
-namespace Bennetr.Lego.Api.Dtos;
+namespace Bennetr.Lego.Api.Models;
 
-public class LegoSetDto
+public class Set
 {
     public string Id { get; set; }
 

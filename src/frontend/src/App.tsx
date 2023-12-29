@@ -1,10 +1,10 @@
+import { useEffect } from 'react';
 import { Provider as MobxProvider } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ReactBaseProvider, Toaster } from '@wemogy/reactbase';
-import { DefaultTheme, themeDeclaration } from './ui';
-import { AuthenticationService, setupAxiosInstance, AppStore } from '$/domain';
+import { DefaultTheme, themeDeclaration } from '$/ui';
+import { AppStore, AuthenticationService, setupAxiosInstance } from '$/domain';
 import appRoutes from './App.routes.tsx';
-import { useEffect } from 'react';
 
 setupAxiosInstance(window.env.apiBaseUrl);
 AuthenticationService.initialize();
@@ -17,9 +17,9 @@ appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenti
 
 function App() {
   useEffect(() => {
-    appStore.legoSetStore.queryLegoSets();
+    appStore.setStore.querySets();
   }, [AuthenticationService.isAuthenticated]);
-  
+
   return (
       <MobxProvider appStore={appStore}>
         <ReactBaseProvider

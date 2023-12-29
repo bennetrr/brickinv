@@ -1,4 +1,4 @@
-import { IconKey, TranslationInformation, TextContentType, Factor } from '@wemogy/reactbase';
+import { Factor, IconKey, TextContentType, TranslationInformation } from '@wemogy/reactbase';
 
 export default interface ITextInputFieldProps {
   label: TranslationInformation;

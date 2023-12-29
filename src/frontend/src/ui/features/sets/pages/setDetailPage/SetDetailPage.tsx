@@ -1,30 +1,26 @@
 import React from 'react';
-import ISetDetailPageProps from './ISetDetailPageProps';
-import { useAppStore } from '$/domain';
 import { observer } from 'mobx-react';
-import {
-  Button, Checkbox,
-  StackLayout, Text,
-  ValueField
-} from '$/ui';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAppStore } from '$/domain';
+import { Button, Checkbox, StackLayout, Text } from '$/ui/atoms';
+import { ValueField } from '$/ui/molecules';
+import ISetDetailPageProps from './ISetDetailPageProps';
 
 const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
-  const { legoSetStore } = useAppStore();
+  const { setStore } = useAppStore();
   const navigate = useNavigate();
   const { setId } = useParams();
-  console.log('SetDetailPage', setId)
-  
+
   if (!setId) {
     return;
   }
-  
-  const set = legoSetStore.getSet(setId);
-  
+
+  const set = setStore.getSet(setId);
+
   if (!set) {
     return null;  // TODO: Show 404 page
   }
-  
+
   return (
       <StackLayout marginRightLeft={4} gap={2} marginTop={2}>
         <ValueField label="Set Name" value={set.setName}/>
@@ -56,9 +52,9 @@ const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
           <Text variation14Gray900>
             Parts:
           </Text>
-          
+
           <ValueField label="" value={set.presentParts.toString()}/>
-          
+
           <Text variation14Gray900>
             finished from
           </Text>
@@ -69,11 +65,11 @@ const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
             total
           </Text>
         </StackLayout>
-        
+
         <StackLayout>
           <Button
               navButton
-              icon={"chevronRight"}
+              icon={'chevronRight'}
               onPress={() => navigate('parts')}
           >
             Parts

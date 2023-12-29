@@ -1,13 +1,13 @@
 import React from 'react';
-import IMainNavBarProps from './IMainNavBarProps';
 import { Link } from 'react-router-dom';
-import { Icon, StackLayout, Text } from '$/ui';
+import { Icon, StackLayout, Text } from '$/ui/atoms';
+import IMainNavBarProps from './IMainNavBarProps';
 
 const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
   return (
       <StackLayout padding={2} vCenter orientation="horizontal" backgroundColor="greyDark">
         <Link to="/">
-          <Text variation20WhiteMedium>LegoApp</Text>
+          <Text variation20WhiteSemi>App</Text>
         </Link>
 
         <StackLayout stretch/>

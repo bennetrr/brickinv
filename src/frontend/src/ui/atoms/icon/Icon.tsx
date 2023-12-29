@@ -48,7 +48,9 @@ export const iconMap: IconMap = {
   xMark: HeroIconsSolid.XMarkIcon,
   check: HeroIcons.CheckIcon,
   key: HeroIcons.KeyIcon,
-  envelopeOpen: HeroIcons.EnvelopeOpenIcon
+  envelopeOpen: HeroIcons.EnvelopeOpenIcon,
+  chevronLeft: HeroIcons.ChevronLeftIcon,
+  minus: HeroIcons.MinusIcon
 };
 
 for (let key in iconMap) {
@@ -139,7 +141,7 @@ const Icon = IconBase.extendVariations({
   navButton: {
     size: 5,
     color: 'grey700',
-    marginLeft: {custom: 'auto'}
+    marginLeft: { custom: 'auto' }
   }
 }).registerDependencies({
   iconResolver: props => {
@@ -193,5 +195,7 @@ declare module '@wemogy/reactbase' {
     xMark?: boolean;
     key?: boolean;
     envelopeOpen?: boolean;
+    chevronLeft?: boolean;
+    minus?: boolean;
   }
 }

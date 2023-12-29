@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import { RouteObject, useNavigate } from 'react-router-dom';
-
-import { DefaultPageTemplate, LoginPage, RegisterPage, SetDetailPage, SetOverviewPage } from '$/ui';
+import { DefaultPageTemplate, LoginPage, PartOverviewPage, RegisterPage, SetDetailPage, SetOverviewPage } from '$/ui';
 import { useAppStore } from '$/domain';
 
 const ProtectedRoute: React.FC<{ element: ReactElement }> = ({ element }) => {
@@ -36,7 +35,7 @@ const UnauthenticatedRoute: React.FC<{ element: ReactElement }> = ({ element }) 
   }
 
   return element;
-}
+};
 
 const unauthenticated = (element: ReactElement) => <UnauthenticatedRoute element={element}/>;
 
@@ -65,7 +64,16 @@ const appRoutes: RouteObject[] = [
           },
           {
             path: ':setId',
-            element: <SetDetailPage/>
+            children: [
+              {
+                index: true,
+                element: <SetDetailPage/>
+              },
+              {
+                path: 'parts',
+                element: <PartOverviewPage/>
+              }
+            ]
           }
         ]
       }

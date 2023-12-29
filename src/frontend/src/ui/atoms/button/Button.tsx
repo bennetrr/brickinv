@@ -83,11 +83,41 @@ const Button = ButtonBase.extendVariations({
     width: 40,
     iconVariation: 'navButton',
     iconPosition: 'right',
+    iconSpacing: 27,
     fontColor: 'grey700',
     fontSize: 'variation16',
     backgroundColor: 'white',
     borderColor: 'grey300',
     border: { custom: 1 }
+  },
+  iconButton: {
+    // TODO Ask Sebastian: Inherit from secondary14?
+    backgroundColor: 'white',
+    borderColor: 'grey300',
+    border: { custom: 1 },
+    fontColor: 'grey700',
+    fontWeight: 'medium',
+    fontSize: 'variation14',
+    iconVariation: 'variation2Grey700',
+    height: 5,
+    width: 5,
+    paddingTopBottom: 0,
+    paddingRightLeft: 0,
+    iconSpacing: 1.25,
+    iconPosition: 'right'
+  },
+  iconButtonBorderless: {
+    backgroundColor: 'white',
+    fontColor: 'grey700',
+    fontWeight: 'medium',
+    fontSize: 'variation14',
+    iconVariation: 'variation2Grey700',
+    height: 5,
+    width: 5,
+    paddingTopBottom: 0,
+    paddingRightLeft: 0,
+    iconSpacing: 1.25,
+    iconPosition: 'right'
   }
 }).registerDependencies({
   loadingIndicator: () => <LoadingIndicator beat/>

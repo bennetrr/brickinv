@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
  * Custom MST type for luxon's DateTime object that serializes to the ISO-8601 time format.
  */
 const MSTDateTime = types.custom<number, DateTime>({
-  name: "DateTime",
+  name: 'DateTime',
   fromSnapshot(snapshot: number): DateTime {
     return DateTime.fromMillis(snapshot);
   },
@@ -17,7 +17,7 @@ const MSTDateTime = types.custom<number, DateTime>({
   },
   getValidationMessage(snapshot: number): string {
     const dt = DateTime.fromMillis(snapshot);
-    return dt.isValid ? "" : dt.invalidExplanation!;
+    return dt.isValid ? '' : dt.invalidExplanation!;
   }
 });
 

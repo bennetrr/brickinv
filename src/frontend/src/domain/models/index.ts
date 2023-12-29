@@ -1,5 +1,7 @@
-import LegoSet from './LegoSet';
+import Set from './Set';
+import Part from './Part';
 
-export { LegoSet };
+export { Set, Part };
 
-export * from './LegoSet';
+export * from './Set';
+export * from './Part';

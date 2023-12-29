@@ -1,6 +1,6 @@
-import { IAppStore } from '$/domain/stores/AppStore.ts';
 import { useContext } from 'react';
 import { MobXProviderContext } from 'mobx-react';
+import { IAppStore } from '$/domain/stores';
 
 const useAppStore = (): IAppStore => useContext(MobXProviderContext).appStore;
 

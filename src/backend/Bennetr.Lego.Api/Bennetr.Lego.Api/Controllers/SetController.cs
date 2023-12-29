@@ -1,4 +1,3 @@
-using Bennetr.Lego.Api.Contexts;
 using Bennetr.Lego.Api.Dtos;
 using Bennetr.Lego.Api.Models;
 using Bennetr.Lego.Api.Requests;
@@ -7,49 +6,50 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rebrickable;
+using AppContext = Bennetr.Lego.Api.Contexts.AppContext;
 
 namespace Bennetr.Lego.Api.Controllers;
 
-[Route("sets")]
+[Route("[controller]s")]
 [ApiController]
-public class LegoSetController(LegoContext context) : ControllerBase
+public class SetController(AppContext context) : ControllerBase
 {
     private readonly RebrickableApi _rebrickableApi = new();
 
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<LegoSetDto>>> GetLegoSets()
+    public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
-        if (context.LegoSets == null) return NotFound();
-        return (await context.LegoSets.ToListAsync()).Adapt<List<LegoSetDto>>();
+        if (context.Sets == null) return NotFound();
+        return (await context.Sets.ToListAsync()).Adapt<List<SetDto>>();
     }
 
     [HttpGet("{id}")]
     [Authorize]
-    public async Task<ActionResult<LegoSetDto>> GetLegoSet(string id)
+    public async Task<ActionResult<SetDto>> GetSet(string id)
     {
-        if (context.LegoSets == null) return NotFound();
-        var legoSet = await context.LegoSets.FindAsync(id);
+        if (context.Sets == null) return NotFound();
+        var set = await context.Sets.FindAsync(id);
 
-        if (legoSet == null) return NotFound();
+        if (set == null) return NotFound();
 
-        return legoSet.Adapt<LegoSetDto>();
+        return set.Adapt<SetDto>();
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<LegoSetDto>> PostLegoSet(PostSetRequest request)
+    public async Task<ActionResult<SetDto>> PostSet(PostSetRequest request)
     {
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
-        
+
         // Get the set from Rebrickable
         var rebrickableSet = await _rebrickableApi.GetRebrickableSet("11d413dfbda310cc80c6e1f741bc6d0f", setId);
         var rebrickableParts = await _rebrickableApi.GetRebrickableParts("11d413dfbda310cc80c6e1f741bc6d0f", setId);
         var rebrickableMinifigs =
             await _rebrickableApi.GetRebrickableMinifigs("11d413dfbda310cc80c6e1f741bc6d0f", setId);
 
-        var set = new LegoSet
+        var set = new Set
         {
             Id = Guid.NewGuid().ToString(),
             Created = DateTime.Now,
@@ -66,7 +66,7 @@ public class LegoSetController(LegoContext context) : ControllerBase
 
         var parts = rebrickableParts.results
             .Where(x => !x.is_spare)
-            .Select(x => new LegoPart
+            .Select(x => new Part
             {
                 Id = Guid.NewGuid().ToString(),
                 Set = set,
@@ -80,7 +80,7 @@ public class LegoSetController(LegoContext context) : ControllerBase
                 PresentCount = 0
             }).Concat(
                 rebrickableMinifigs.results
-                    .Select(x => new LegoPart
+                    .Select(x => new Part
                     {
                         Id = Guid.NewGuid().ToString(),
                         Set = set,
@@ -93,9 +93,9 @@ public class LegoSetController(LegoContext context) : ControllerBase
                         PresentCount = 0
                     }));
 
-        if (context.LegoSets == null) return Problem("Entity set 'LegoContext.LegoSets'  is null.");
-        context.LegoSets.Add(set);
-        context.LegoParts.AddRange(parts);
+        if (context.Sets == null) return Problem("Entity set 'LegoContext.LegoSets'  is null.");
+        context.Sets.Add(set);
+        context.Parts.AddRange(parts);
 
         try
         {
@@ -103,31 +103,31 @@ public class LegoSetController(LegoContext context) : ControllerBase
         }
         catch (DbUpdateException)
         {
-            if (LegoSetExists(set.Id))
+            if (SetExists(set.Id))
                 return Conflict();
             throw;
         }
 
-        return CreatedAtAction(nameof(GetLegoSet), new { id = set.Id }, set.Adapt<LegoSetDto>());
+        return CreatedAtAction(nameof(GetSet), new { id = set.Id }, set.Adapt<SetDto>());
     }
 
     [HttpDelete("{id}")]
     [Authorize]
-    public async Task<IActionResult> DeleteLegoSet(string id)
+    public async Task<IActionResult> DeleteSet(string id)
     {
-        if (context.LegoSets == null) return NotFound();
-        var legoSet = await context.LegoSets.FindAsync(id);
-        if (legoSet == null) return NotFound();
+        if (context.Sets == null) return NotFound();
+        var set = await context.Sets.FindAsync(id);
+        if (set == null) return NotFound();
 
-        context.LegoSets.Remove(legoSet);
-        context.LegoParts.RemoveRange(context.LegoParts.Where(x => x.Set.Id == id));
+        context.Sets.Remove(set);
+        context.Parts.RemoveRange(context.Parts.Where(x => x.Set.Id == id));
         await context.SaveChangesAsync();
 
         return NoContent();
     }
 
-    private bool LegoSetExists(string id)
+    private bool SetExists(string id)
     {
-        return (context.LegoSets?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (context.Sets?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

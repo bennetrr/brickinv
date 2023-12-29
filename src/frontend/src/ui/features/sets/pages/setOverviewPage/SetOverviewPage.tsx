@@ -1,55 +1,47 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import ISetOverviewPageProps from './ISetOverviewPageProps';
-import { useAppStore } from '$/domain';
+import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
-import { Button, StackLayout, Text, TextInput, AddSetModal, SetCard, IAddSetModalParameters } from '$/ui';
 import { RenderIf, useModalStore } from '@wemogy/reactbase';
+import { useAppStore } from '$/domain';
+import { Button, StackLayout, Text, TextInput } from '$/ui/atoms';
+import { AddSetModal, IAddSetModalParameters, SetCard } from '$/ui/features/sets/organisms';
+import ISetOverviewPageProps from './ISetOverviewPageProps';
 
 const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
-  const { legoSetStore } = useAppStore();
+  const { setStore } = useAppStore();
   const { openModal } = useModalStore();
   const [searchFieldText, setSearchFieldText] = useState('');
-  
+
   const handleAddSetPress = useCallback(() => {
-    console.log(searchFieldText)
     openModal('addSet', { setId: searchFieldText } satisfies IAddSetModalParameters);
   }, [searchFieldText, openModal]);
-  
-  const sets = useMemo(() => {
-    return legoSetStore.items.filter(x => {
-      if (!searchFieldText) return true;
-      return x.setName.toLowerCase().includes(searchFieldText.toLowerCase()) || x.setId.includes(searchFieldText);
-    });
-  }, [searchFieldText, legoSetStore.items, legoSetStore.items.length]);
-  
+
+  const sets = setStore.items.filter(x => {
+    if (!searchFieldText) {
+      return true;
+    }
+    return x.setName.toLowerCase().includes(searchFieldText.toLowerCase()) || x.setId.includes(searchFieldText);
+  });
+
   return (
       <>
         <StackLayout>
-          <StackLayout orientation="horizontal" marginTop marginRightLeft={30} gap>
+          <StackLayout orientation="horizontal" marginTop marginRightLeft={4} gap>
             <StackLayout stretch>
               <TextInput
-                stretch
-                placeholder="Filter sets by name or number or add a new set"
-                onChange={setSearchFieldText}
-                value={searchFieldText}
+                  stretch
+                  placeholder="Filter sets by name or number or add a new set"
+                  onChange={setSearchFieldText}
+                  value={searchFieldText}
               />
             </StackLayout>
-            
+
             <Button
-                secondary14
-                height={5}
-                width={5}
-                paddingTopBottom={0}
-                paddingRightLeft={0}
-                iconSpacing={1.25}
-                iconPosition="right"
+                iconButton
                 icon="plus"
                 onPress={handleAddSetPress}
-            >
-              {""}
-            </Button>
+            >{''}</Button>
           </StackLayout>
-  
+
           {sets.length !== 0 ?
               <StackLayout wrap padding={2} orientation="horizontal" gap={2}>
                 {sets.map(x => <SetCard set={x} key={x.id}/>)}
@@ -69,8 +61,8 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
 
                 <RenderIf condition={searchFieldText !== ''}>
                   <Button
-                    borderless
-                    onPress={() => setSearchFieldText('')}
+                      borderless
+                      onPress={() => setSearchFieldText('')}
                   >
                     Clear filters
                   </Button>
@@ -78,7 +70,7 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
               </StackLayout>
           }
         </StackLayout>
-        
+
         <AddSetModal/>
       </>
   );

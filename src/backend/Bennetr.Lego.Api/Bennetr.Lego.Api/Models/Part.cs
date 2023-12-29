@@ -1,8 +1,10 @@
-namespace Bennetr.Lego.Api.Dtos;
+namespace Bennetr.Lego.Api.Models;
 
-public class LegoPartDto
+public class Part
 {
     public string Id { get; set; }
+
+    public Set Set { get; set; }
 
     public DateTime Created { get; set; }
 
@@ -12,9 +14,9 @@ public class LegoPartDto
 
     public string PartName { get; set; }
 
-    public string PartColor { get; set; }
+    public string? PartColor { get; set; }
 
-    public Uri ImageUri { get; set; }
+    public Uri? ImageUri { get; set; }
 
     public int TotalCount { get; set; }
 

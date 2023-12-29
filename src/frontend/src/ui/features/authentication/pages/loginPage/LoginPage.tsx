@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '$/ui';
 import { AuthenticationService } from '$/domain';
+import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '$/ui/atoms';
 import ILoginPageProps from './ILoginPageProps';
 
 const LoginPage: React.FC<ILoginPageProps> = ({}) => {
@@ -14,9 +14,9 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
     if (!email && !password) {
       return;
     }
-    
+
     const status = await AuthenticationService.login(email, password);
-    
+
     switch (status) {
       case 'success':
         toast.success('Login successful');

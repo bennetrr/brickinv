@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '$/ui';
-import IRegisterPageProps from './IRegisterPageProps';
 import { AuthenticationService } from '$/domain';
+import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '$/ui/atoms';
+import IRegisterPageProps from './IRegisterPageProps';
 
 const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
   const navigate = useNavigate();
@@ -13,13 +13,13 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
 
   const handleSignUpClick = useCallback(async () => {
     const status = await AuthenticationService.register(email, password);
-    
+
     if (status === 'success') {
       toast.success('Account created');
       navigate('/login');
       return;
     }
-    
+
     if (status === 'error') {
       toast.error('Login failed: Unexpected error. Please try again later!');
       return;
