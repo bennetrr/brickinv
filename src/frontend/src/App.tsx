@@ -17,6 +17,9 @@ appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenti
 
 function App() {
   useEffect(() => {
+    if (!AuthenticationService.isAuthenticated) {
+      return;
+    }
     appStore.setStore.querySets();
   }, [AuthenticationService.isAuthenticated]);
 

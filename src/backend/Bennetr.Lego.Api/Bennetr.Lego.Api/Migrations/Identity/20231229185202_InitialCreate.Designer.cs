@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Bennetr.Lego.Api.Migrations
+namespace Bennetr.Lego.Api.Migrations.Identity
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20231226220550_InitialCreate")]
+    [Migration("20231229185202_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

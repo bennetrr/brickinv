@@ -9,10 +9,10 @@ using AppContext = Bennetr.Lego.Api.Contexts.AppContext;
 
 #nullable disable
 
-namespace Bennetr.Lego.Api.Migrations.Lego
+namespace Bennetr.Lego.Api.Migrations.App
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20231226220617_InitialCreate")]
+    [Migration("20231229185357_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,7 +44,7 @@ namespace Bennetr.Lego.Api.Migrations.Lego
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Bennetr.Lego.Api.Models.LegoPart", b =>
+            modelBuilder.Entity("Bennetr.Lego.Api.Models.Part", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -82,10 +82,10 @@ namespace Bennetr.Lego.Api.Migrations.Lego
 
                     b.HasIndex("SetId");
 
-                    b.ToTable("LegoParts");
+                    b.ToTable("Parts");
                 });
 
-            modelBuilder.Entity("Bennetr.Lego.Api.Models.LegoSet", b =>
+            modelBuilder.Entity("Bennetr.Lego.Api.Models.Set", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -125,7 +125,7 @@ namespace Bennetr.Lego.Api.Migrations.Lego
 
                     b.HasKey("Id");
 
-                    b.ToTable("LegoSets");
+                    b.ToTable("Sets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -194,9 +194,9 @@ namespace Bennetr.Lego.Api.Migrations.Lego
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Bennetr.Lego.Api.Models.LegoPart", b =>
+            modelBuilder.Entity("Bennetr.Lego.Api.Models.Part", b =>
                 {
-                    b.HasOne("Bennetr.Lego.Api.Models.LegoSet", "Set")
+                    b.HasOne("Bennetr.Lego.Api.Models.Set", "Set")
                         .WithMany()
                         .HasForeignKey("SetId");
 
