@@ -22,7 +22,7 @@ const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
   }
 
   return (
-      <StackLayout marginRightLeft={4} gap={2} marginTop={2}>
+      <StackLayout margin={2} gap={2}>
         <ValueField label="Set Name" value={set.setName}/>
         <ValueField label="Set ID" value={set.setId}/>
         <ValueField label="Created" value={set.created.toLocaleString()}/>

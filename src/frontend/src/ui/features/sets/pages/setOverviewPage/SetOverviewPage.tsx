@@ -25,7 +25,7 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
   return (
       <>
         <StackLayout>
-          <StackLayout orientation="horizontal" marginTop marginRightLeft={4} gap>
+          <StackLayout orientation="horizontal" margin={2} gap>
             <StackLayout stretch>
               <TextInput
                   stretch
@@ -43,11 +43,11 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
           </StackLayout>
 
           {sets.length !== 0 ?
-              <StackLayout wrap padding={2} orientation="horizontal" gap={2}>
+              <StackLayout wrap marginRightLeft={2} marginBottom={2} orientation="horizontal" gap={2}>
                 {sets.map(x => <SetCard set={x} key={x.id}/>)}
               </StackLayout>
               :
-              <StackLayout padding={2} hCenter>
+              <StackLayout marginRightLeft={2} hCenter>
                 <Text>
                   No sets found
                 </Text>
