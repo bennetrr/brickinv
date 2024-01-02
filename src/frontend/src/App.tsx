@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Provider as MobxProvider } from 'mobx-react';
+import React, { useEffect } from 'react';
+import { observer, Provider as MobxProvider } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ReactBaseProvider, Toaster } from '@wemogy/reactbase';
 import { DefaultTheme, themeDeclaration } from '$/ui';
@@ -15,13 +15,14 @@ const appStore = AppStore.create();
 AuthenticationService.addTokenChangeHandler(token => appStore.authenticationStore.setIsAuthenticated(!!token));
 appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenticated);
 
-function App() {
+const App: React.FC = () => {
   useEffect(() => {
     if (!AuthenticationService.isAuthenticated) {
       return;
     }
+    
     appStore.setStore.querySets();
-  }, [AuthenticationService.isAuthenticated]);
+  }, [appStore.authenticationStore.isAuthenticated]);
 
   return (
       <MobxProvider appStore={appStore}>
