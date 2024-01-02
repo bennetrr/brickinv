@@ -6,7 +6,7 @@ import ISetCardProps from './ISetCardProps';
 
 const SetCard: React.FC<ISetCardProps> = ({ set }) => {
   return (
-      <Link to={`/set/${set.id}`}>
+      <Link to={`/sets/${set.id}`}>
         <StackLayout
             width={30}
             height={40}
