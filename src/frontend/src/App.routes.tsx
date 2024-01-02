@@ -53,14 +53,14 @@ const appRoutes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <SetOverviewPage/>
+        element: redirect('/sets')
       },
       {
-        path: '/set',
+        path: '/sets',
         children: [
           {
             index: true,
-            element: redirect('/')
+            element: <SetOverviewPage/>
           },
           {
             path: ':setId',
