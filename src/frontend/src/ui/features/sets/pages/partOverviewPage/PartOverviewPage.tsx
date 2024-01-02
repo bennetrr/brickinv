@@ -71,7 +71,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
     }
 
     setStore.queryParts(setId);
-  }, []);
+  }, [set]);
 
   if (!set) {
     return <>404</>;  // TODO: Show 404 page
