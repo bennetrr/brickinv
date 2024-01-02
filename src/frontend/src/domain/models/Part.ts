@@ -3,7 +3,7 @@ import { MSTDateTime } from '$/utils';
 import { DateTime } from 'luxon';
 
 const Part = types.model('Part', {
-  id: types.string,
+  id: types.identifier,
   created: MSTDateTime,
   updated: MSTDateTime,
   partId: types.string,

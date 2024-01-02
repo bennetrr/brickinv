@@ -1,4 +1,4 @@
-import { applySnapshot, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import { applySnapshot, cast, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { flow } from 'mobx';
 import { Flow } from '@wemogy/reactbase';
 import { AxiosResponse } from 'axios';
@@ -13,24 +13,26 @@ import {
 } from '$/domain/rest';
 
 const SetStore = types.model('SetStore', {
-  items: types.optional(types.array(Set), [])
+  items: types.array(Set)
 })
     .actions(self => ({
+      updateItems(updateFn: (items: ISet[]) => ISet[]) {
+        self.items = cast(updateFn(self.items));
+      },
       querySets: flow(function* queryResourceTypes(): Flow<AxiosResponse<ISetSnapshotIn[]>, void> {
         const response = yield ApiServiceFactory.setApi.getSets();
 
         applySnapshot(self.items, response.data);
       }),
       createSet: flow(function* createSet(setId: string, forSale: boolean): Flow<AxiosResponse<ISetSnapshotIn>, ISet> {
-        // TODO: Fails with 'cannot modify' (Ask Sebastian)
-        // TODO: Add error handling
         const request = new CreateSetRequest(setId, forSale);
         const response = yield ApiServiceFactory.setApi.createSet(request);
 
         const newSet = Set.create(response.data);
-        self.items.push(newSet);
+        // TODO: Why can't I use self.items.push(newSet) here?
+        (self as ISetStore).updateItems(items => [...items, newSet]);
 
-        toast.success(`Set ${newSet.setName} created`);
+        toast.success(`Set "${newSet.setName}" created`);
 
         return newSet;
       }),
@@ -40,7 +42,7 @@ const SetStore = types.model('SetStore', {
 
         applySnapshot(set, response.data);
 
-        toast.success(`Set ${set.setName} updated`);
+        toast.success(`Set "${set.setName}" saved`);
       }),
       /* --- Parts --- */
       queryParts: flow(function* queryParts(setId: string): Flow<AxiosResponse<IPartSnapshotIn[]>, void> {
@@ -60,7 +62,7 @@ const SetStore = types.model('SetStore', {
         applySnapshot(part, response.data.part);
         applySnapshot(set, response.data.set);
 
-        toast.success(`Set ${part.partName} updated`);
+        toast.success(`Part ${part.partName} saved`);
       })
     })).views((self) => ({
       getSet(setId: string): ISet | undefined {

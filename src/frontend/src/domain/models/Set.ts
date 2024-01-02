@@ -40,7 +40,7 @@ interface ISetVolatile {
 }
 
 const Set = types.model('Set', {
-  id: types.string,
+  id: types.identifier,
   created: MSTDateTime,
   updated: MSTDateTime,
   setId: types.string,
