@@ -12,12 +12,12 @@ namespace Bennetr.Lego.Api.Controllers;
 
 [Route("[controller]s")]
 [ApiController]
+[Authorize]
 public class SetController(AppContext context) : ControllerBase
 {
     private readonly RebrickableApi _rebrickableApi = new();
 
     [HttpGet]
-    [Authorize]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
         if (context.Sets == null) return NotFound();
@@ -25,7 +25,6 @@ public class SetController(AppContext context) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize]
     public async Task<ActionResult<SetDto>> GetSet(string id)
     {
         if (context.Sets == null) return NotFound();
@@ -37,8 +36,7 @@ public class SetController(AppContext context) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
-    public async Task<ActionResult<SetDto>> PostSet(PostSetRequest request)
+    public async Task<ActionResult<SetDto>> CreateSet(CreateSetRequest request)
     {
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
@@ -112,7 +110,6 @@ public class SetController(AppContext context) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize]
     public async Task<IActionResult> DeleteSet(string id)
     {
         if (context.Sets == null) return NotFound();
@@ -124,6 +121,21 @@ public class SetController(AppContext context) : ControllerBase
         await context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateSet(string id, UpdateSetRequest request)
+    {
+        if (context.Sets == null) return NotFound();
+        var set = await context.Sets.FindAsync(id);
+        if (set == null) return NotFound();
+
+        set.Updated = DateTime.Now;
+        set.ForSale = request.ForSale;
+
+        await context.SaveChangesAsync();
+
+        return Accepted(set.Adapt<SetDto>());
     }
 
     private bool SetExists(string id)

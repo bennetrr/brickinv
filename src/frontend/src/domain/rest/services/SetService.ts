@@ -1,15 +1,18 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { ISetSnapshotIn } from '$/domain/models';
+import { CreateSetRequest, UpdateSetRequest } from '$/domain/rest/requests';
 
 export default class SetService {
-  public constructor(private readonly axiosInstance: AxiosInstance) {
+  public constructor(
+      private readonly axiosInstance: AxiosInstance
+  ) {
   }
 
-  public async createSet(setId: string, forSale: boolean): Promise<AxiosResponse<ISetSnapshotIn>> {
-    return this.axiosInstance.post(`/sets/`, { setId, forSale });
+  public async createSet(request: CreateSetRequest): Promise<AxiosResponse<ISetSnapshotIn>> {
+    return this.axiosInstance.post(`/sets/`, request);
   }
 
-  public async updateSet(id: string, request: void): Promise<AxiosResponse<ISetSnapshotIn>> {
+  public async updateSet(id: string, request: UpdateSetRequest): Promise<AxiosResponse<ISetSnapshotIn>> {
     return this.axiosInstance.put(`/sets/${id}`, request);
   }
 

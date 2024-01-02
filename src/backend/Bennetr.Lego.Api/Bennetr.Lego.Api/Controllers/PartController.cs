@@ -1,5 +1,7 @@
 using Bennetr.Lego.Api.Dtos;
+using Bennetr.Lego.Api.Requests;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AppContext = Bennetr.Lego.Api.Contexts.AppContext;
@@ -8,6 +10,7 @@ namespace Bennetr.Lego.Api.Controllers;
 
 [Route("sets/{setId}/parts")]
 [ApiController]
+[Authorize]
 public class PartController(AppContext context) : ControllerBase
 {
     [HttpGet]
@@ -24,5 +27,30 @@ public class PartController(AppContext context) : ControllerBase
         if (part == null) return NotFound();
 
         return part.Adapt<PartDto>();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdatePart(string setId, string id, UpdatePartRequest request)
+    {
+        var part = await context.Parts.Include(part => part.Set).FirstAsync(part => part.Id == id);
+
+        if (part == null) return NotFound();
+        if (part.Set.Id != setId) return NotFound();
+
+        if (request.PresentCount < 0 || request.PresentCount > part.TotalCount)
+            return BadRequest("PresentCount must be between 0 and TotalCount");
+
+        var oldPresentCount = part.PresentCount;
+        part.PresentCount = request.PresentCount;
+
+        part.Set.PresentParts += part.PresentCount - oldPresentCount;
+        part.Set.Finished = part.Set.PresentParts == part.Set.TotalParts;
+
+        await context.SaveChangesAsync();
+        return Accepted(new UpdatePartResponse
+        {
+            Part = part.Adapt<PartDto>(),
+            Set = part.Set.Adapt<SetDto>()
+        });
     }
 }

@@ -1,6 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { MSTDateTime } from '$/utils';
-import Part, { IPart } from './Part';
+import { IPart } from './Part';
 
 function compareParts(a: IPart, b: IPart): 1 | 0 | -1 {
   // If one is already complete, it's "smaller"
@@ -35,6 +35,10 @@ function compareParts(a: IPart, b: IPart): 1 | 0 | -1 {
   return 0;
 }
 
+interface ISetVolatile {
+  parts: IPart[];
+}
+
 const Set = types.model('Set', {
   id: types.string,
   created: MSTDateTime,
@@ -46,9 +50,14 @@ const Set = types.model('Set', {
   totalParts: types.integer,
   presentParts: types.integer,
   forSale: types.boolean,
-  finished: types.boolean,
-  parts: types.optional(types.array(Part), [])
-}).views(self => ({
+  finished: types.boolean
+}).volatile<ISetVolatile>(() => ({
+  parts: []
+})).actions(self => ({
+  updateParts(updateFn: (parts: IPart[]) => IPart[]) {
+    self.parts = updateFn(self.parts);
+  }
+})).views(self => ({
   get partsSorted() {
     return self.parts.slice().sort(compareParts);
   }

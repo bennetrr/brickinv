@@ -1,11 +1,14 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { IPartSnapshotIn, ISetSnapshotIn } from '$/domain/models';
+import { IPartSnapshotIn } from '$/domain/models';
+import { UpdatePartRequest, UpdatePartResponse } from '$/domain/rest/requests';
 
 export default class PartService {
-  public constructor(private readonly axiosInstance: AxiosInstance) {
+  public constructor(
+      private readonly axiosInstance: AxiosInstance
+  ) {
   }
 
-  public async updatePart(setId: string, id: string, request: void): Promise<AxiosResponse<ISetSnapshotIn>> {
+  public async updatePart(setId: string, id: string, request: UpdatePartRequest): Promise<AxiosResponse<UpdatePartResponse>> {
     return this.axiosInstance.put(`/sets/${setId}/parts/${id}`, request);
   }
 

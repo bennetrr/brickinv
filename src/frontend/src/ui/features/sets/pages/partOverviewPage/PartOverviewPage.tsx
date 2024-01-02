@@ -39,28 +39,31 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
   }, [currentIndex, set]);
 
   const handleDecrementPress = useCallback(() => {
-    if (!part || part.presentCount <= 0) {
+    if (!part || !set || part.presentCount <= 0) {
       return;
     }
 
     part.setPresentCount(part.presentCount - 1);
-  }, [part]);
+    setStore.updatePart(set, part);
+  }, [part, set]);
 
   const handleIncrementPress = useCallback(() => {
-    if (!part || part.presentCount >= part.totalCount) {
+    if (!part || !set || part.presentCount >= part.totalCount) {
       return;
     }
 
     part.setPresentCount(part.presentCount + 1);
-  }, [part]);
+    setStore.updatePart(set, part);
+  }, [part, set]);
 
   const handleCompletePress = useCallback(() => {
-    if (!part) {
+    if (!part || !set) {
       return;
     }
 
     part.setPresentCount(part.totalCount);
-  }, [part]);
+    setStore.updatePart(set, part);
+  }, [part, set]);
 
   useEffect(() => {
     if (!set) {
