@@ -19,8 +19,8 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
       return undefined;
     }
 
-    return set.parts[currentIndex];
-  }, [set, currentIndex, set?.parts, set?.parts.length]);
+    return set.partsSorted[currentIndex];
+  }, [set, currentIndex, set?.partsSorted, set?.partsSorted.length]);
 
   const handlePreviousPress = useCallback(() => {
     if (currentIndex <= 0) {
@@ -81,8 +81,9 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
     return <>Loading</>;  // TODO: Show loading indicator
   }
 
+  // TODO: Add animation when a part is completed
   return (
-      <StackLayout height={{ custom: 'calc(100dvh - 64px)' }} hCenter vCenter>
+      <StackLayout height={{ custom: 'calc(100dvh - 64px)' }} hCenter vCenter key={part.id}>
         <StackLayout
             orientation="horizontal"
             width={50}
