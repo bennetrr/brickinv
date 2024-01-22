@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wemogy.AspNet.Middlewares;
+using Wemogy.AspNet.Refit;
 using Wemogy.AspNet.Startup;
 using AppContext = Bennetr.Lego.Api.Contexts.AppContext;
 
@@ -12,7 +13,6 @@ var options = new StartupOptions();
 
 // Middleware
 options
-    .AddMiddleware<ErrorHandlerMiddleware>()
     .AddMiddleware<HttpsRedirectionMiddleware>();
 
 // Add Swagger

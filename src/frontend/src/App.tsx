@@ -21,7 +21,7 @@ appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenti
 //       - Groups and Users
 //       - Space Blocks Permissions
 //       - CQRS (?)
-//       - Make use of ErrorHandlerMiddleware (?)
+//       - Make use of ErrorHandlerMiddleware
 
 // TODO: Frontend
 //       - Loading, success and error indicators
