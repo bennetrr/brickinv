@@ -111,12 +111,12 @@ const Text = TextBase.extendVariations({
   },
   variation20BlackSemi: {
     fontSize: 'variation20',
-    fontWeight: 'semibold',
+    fontWeight: 'semiBold',
     fontColor: 'black'
   },
   variation20WhiteSemi: {
     fontSize: 'variation20',
-    fontWeight: 'semibold',
+    fontWeight: 'semiBold',
     fontColor: 'white'
   },
   variation30Grey900Bold: {
@@ -128,6 +128,11 @@ const Text = TextBase.extendVariations({
     fontSize: 'variation30',
     fontWeight: 'extraBold',
     fontColor: 'grey900'
+  },
+  variation60Grey600Thin: {
+    fontSize: 'variation60',
+    fontWeight: 'thin',
+    fontColor: 'grey600'
   }
 });
 

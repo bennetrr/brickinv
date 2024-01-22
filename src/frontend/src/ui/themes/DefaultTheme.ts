@@ -9,24 +9,29 @@ const DefaultTheme = ThemeBuilder.createTheme({
       medium: '2rem'
     },
     fontFamily: {
-      default: 'Inter',
+      default: 'Inter Variable',
       title: 'Roboto, sans-serif'
     },
     fontSize: {
-      default: 16,
       variation12: 12,
       variation14: 14,
       variation16: 16,
+      default: 16,
       variation18: 18,
       variation20: 20,
-      variation30: 30
+      variation30: 30,
+      variation60: 60
     },
     fontWeight: {
+      thin: 100,
+      extraLight: 200,
+      light: 300,
       default: 400,
       medium: 500,
-      semibold: 600,
+      semiBold: 600,
       bold: 700,
-      extraBold: 800
+      extraBold: 800,
+      black: 900  
     },
     margin: {},
     padding: {},

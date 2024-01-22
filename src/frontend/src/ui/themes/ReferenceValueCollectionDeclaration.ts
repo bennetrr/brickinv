@@ -10,13 +10,19 @@ const referenceValueCollectionDeclaration = DefaultReferenceValueCollection.exte
     variation16: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
     variation18: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
     variation20: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
-    variation30: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number)
+    variation30: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
+    variation60: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number)
   },
   fontWeight: {
+    thin: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
+    extraLight: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
+    light: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
+    default: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
     medium: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
-    semibold: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
+    semiBold: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
     bold: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
-    extraBold: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number)
+    extraBold: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
+    black: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number)
   },
   color: {
     primary: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),

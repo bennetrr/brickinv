@@ -14,7 +14,7 @@
   },
   "packageManager": "pnpm@8.9.0",
   "dependencies": {
-    "@fontsource/inter": "^5.0.15",
+    "@fontsource-variable/inter": "^5.0.16",
     "@heroicons/react": "^2.0.18",
     "@wemogy/reactbase": "^0.7.12",
     "axios": "^1.6.2",
