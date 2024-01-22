@@ -30,7 +30,6 @@ appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenti
 //       - Move components into own files
 
 // TODO: General
-//       - Think of app name and logo
 //       - Docker containers and compose file
 //       - GitHub Workflows
 //       - Ask Sebastian things that I don't understand

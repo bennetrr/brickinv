@@ -5,9 +5,23 @@ import IMainNavBarProps from './IMainNavBarProps';
 
 const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
   return (
-      <StackLayout padding={2} vCenter orientation="horizontal" backgroundColor="greyDark">
-        <Link to="/">
-          <Text variation20WhiteSemi>BrickInv</Text>
+      <StackLayout
+          height={6}
+          orientation="horizontal"
+          vCenter
+          paddingRightLeft={2}
+          gap={2}
+          backgroundColor="greyDark"
+      >
+        <Link to="/sets" style={{ display: 'contents' }}>
+          <img
+              src="/brickinv.png"
+              alt="BrickInv Logo"
+              style={{ height: '32px', width: 'auto' }}
+          />
+          <Text variation20WhiteSemi>
+            BrickInv
+          </Text>
         </Link>
 
         <StackLayout stretch/>
