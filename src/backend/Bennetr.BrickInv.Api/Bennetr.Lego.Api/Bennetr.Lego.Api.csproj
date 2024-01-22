@@ -23,7 +23,6 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
         <PackageReference Include="Wemogy.AspNet" Version="5.0.0" />
         <PackageReference Include="Wemogy.Configuration" Version="1.0.0"/>
-        <PackageReference Include="Wemogy.CQRS" Version="5.1.1" />
     </ItemGroup>
 
     <ItemGroup>
