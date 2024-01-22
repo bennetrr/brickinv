@@ -1,0 +1,48 @@
+import { debug } from 'debug';
+import React from 'react';
+import { useRouteError, ErrorResponse, isRouteErrorResponse } from 'react-router-dom';
+import { observer } from 'mobx-react';
+import { RenderIf } from '@wemogy/reactbase';
+import { useAppStore } from '$/domain';
+import { StackLayout } from '$/ui/atoms';
+import { MainNavBar } from '$/ui/features/templates';
+import { NotFoundError, UnexpectedError } from '$/ui/features/errorHandling/organisms';
+import IErrorPageProps from './IErrorPageProps';
+
+const log = debug('App.Ui.ErrorPage');
+
+const ErrorPage: React.FC<IErrorPageProps> = () => {
+  const error = useRouteError() as ErrorResponse;
+  const { authenticationStore } = useAppStore();
+  
+  log("Route Error: %O", error);
+  
+  let ErrorNode: React.FC;
+  
+  if (!isRouteErrorResponse(error)) {
+    ErrorNode = UnexpectedError;
+  } else {
+    switch (error.status) {
+      case 404:
+        ErrorNode = NotFoundError;
+        break;
+      default:
+        ErrorNode = UnexpectedError;
+        break;
+    }
+  }
+  
+  return (
+      <StackLayout height100>
+        <RenderIf condition={authenticationStore.isAuthenticated}>
+          <MainNavBar/>
+        </RenderIf>
+        
+        <StackLayout width100 height100 vCenter hCenter>
+          <ErrorNode/>
+        </StackLayout>
+      </StackLayout>
+  );
+};
+
+export default observer(ErrorPage);

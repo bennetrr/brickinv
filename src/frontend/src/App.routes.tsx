@@ -1,6 +1,14 @@
 import React, { ReactElement, useEffect } from 'react';
 import { RouteObject, useNavigate } from 'react-router-dom';
-import { DefaultPageTemplate, LoginPage, PartOverviewPage, RegisterPage, SetDetailPage, SetOverviewPage } from '$/ui';
+import {
+  DefaultPageTemplate,
+  LoginPage,
+  ErrorPage,
+  PartOverviewPage,
+  RegisterPage,
+  SetDetailPage,
+  SetOverviewPage
+} from '$/ui';
 import { useAppStore } from '$/domain';
 
 const ProtectedRoute: React.FC<{ element: ReactElement }> = ({ element }) => {
@@ -41,37 +49,42 @@ const unauthenticated = (element: ReactElement) => <UnauthenticatedRoute element
 
 const appRoutes: RouteObject[] = [
   {
-    path: '/login',
-    element: unauthenticated(<LoginPage/>)
-  },
-  {
-    path: '/register',
-    element: unauthenticated(<RegisterPage/>)
-  },
-  {
-    element: protect(<DefaultPageTemplate/>),
+    errorElement: <ErrorPage/>,
     children: [
       {
-        index: true,
-        element: redirect('/sets')
+        path: '/login',
+        element: unauthenticated(<LoginPage/>)
       },
       {
-        path: '/sets',
+        path: '/register',
+        element: unauthenticated(<RegisterPage/>)
+      },
+      {
+        element: protect(<DefaultPageTemplate/>),
         children: [
           {
             index: true,
-            element: <SetOverviewPage/>
+            element: redirect('/sets')
           },
           {
-            path: ':setId',
+            path: '/sets',
             children: [
               {
                 index: true,
-                element: <SetDetailPage/>
+                element: <SetOverviewPage/>
               },
               {
-                path: 'parts',
-                element: <PartOverviewPage/>
+                path: ':setId',
+                children: [
+                  {
+                    index: true,
+                    element: <SetDetailPage/>
+                  },
+                  {
+                    path: 'parts',
+                    element: <PartOverviewPage/>
+                  }
+                ]
               }
             ]
           }

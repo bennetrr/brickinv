@@ -29,7 +29,6 @@ appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenti
 //       - Test for and fix small errors
 //       - Customize theme
 //       - Move components into own files
-//       - Error pages
 
 // TODO: General
 //       - Think of app name and logo
@@ -49,7 +48,9 @@ const App: React.FC = () => {
   }, [appStore.authenticationStore.isAuthenticated]);
 
   return (
-      <MobxProvider appStore={appStore}>
+      <MobxProvider
+          appStore={appStore}
+      >
         <ReactBaseProvider
             theme={DefaultTheme}
             themeDependencies={{
@@ -57,8 +58,16 @@ const App: React.FC = () => {
               themeDeclaration
             }}
         >
-          <RouterProvider router={appRouter}/>
-          <Toaster closeButton richColors position="top-right" style={{ top: 16, right: 16 }}/>
+          <RouterProvider
+              router={appRouter}
+          />
+          
+          <Toaster
+              closeButton
+              richColors
+              position="top-right"
+              style={{ top: 16, right: 16 }}
+          />
         </ReactBaseProvider>
       </MobxProvider>
   );
