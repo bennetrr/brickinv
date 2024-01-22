@@ -1,5 +1,4 @@
-import { applySnapshot, cast, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { flow } from 'mobx';
+import { applySnapshot, Instance, SnapshotIn, SnapshotOut, types, flow } from 'mobx-state-tree';
 import { Flow } from '@wemogy/reactbase';
 import { AxiosResponse } from 'axios';
 import { toast } from '$/ui';
@@ -16,9 +15,6 @@ const SetStore = types.model('SetStore', {
   items: types.array(Set)
 })
     .actions(self => ({
-      updateItems(updateFn: (items: ISet[]) => ISet[]) {
-        self.items = cast(updateFn(self.items));
-      },
       querySets: flow(function* queryResourceTypes(): Flow<AxiosResponse<ISetSnapshotIn[]>, void> {
         const response = yield ApiServiceFactory.setApi.getSets();
 
@@ -29,8 +25,7 @@ const SetStore = types.model('SetStore', {
         const response = yield ApiServiceFactory.setApi.createSet(request);
 
         const newSet = Set.create(response.data);
-        // TODO: Why can't I use self.items.push(newSet) here?
-        (self as ISetStore).updateItems(items => [...items, newSet]);
+        self.items.push(newSet);
 
         toast.success(`Set "${newSet.setName}" created`);
 
