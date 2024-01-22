@@ -51,7 +51,7 @@ class AuthenticationService {
     this.scheduleRefresh(DateTime.fromISO(expiresAt).diffNow('seconds').seconds);
   }
 
-  public async register(email: string, password: string): Promise<'success' | 'error' | string[]> {  // TODO: Better type for error.
+  public async register(email: string, password: string): Promise<'success' | 'error' | string[]> {
     const response = await axiosInstance.post('/auth/register', { email, password });
 
     switch (response.status) {
