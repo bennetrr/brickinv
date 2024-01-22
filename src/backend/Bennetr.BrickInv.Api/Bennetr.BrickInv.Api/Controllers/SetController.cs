@@ -1,19 +1,20 @@
-using Bennetr.Lego.Api.Dtos;
-using Bennetr.Lego.Api.Models;
-using Bennetr.Lego.Api.Requests;
+using Bennetr.BrickInv.Api.Dtos;
+using Bennetr.BrickInv.Api.Models;
+using Bennetr.BrickInv.Api.Requests;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rebrickable;
-using AppContext = Bennetr.Lego.Api.Contexts.AppContext;
+using AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
+using Contexts_AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
 
-namespace Bennetr.Lego.Api.Controllers;
+namespace Bennetr.BrickInv.Api.Controllers;
 
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public class SetController(AppContext context) : ControllerBase
+public class SetController(Contexts_AppContext context) : ControllerBase
 {
     private readonly RebrickableApi _rebrickableApi = new();
 

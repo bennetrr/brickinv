@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Bennetr.Lego.Api.Migrations.Identity
+namespace Bennetr.BrickInv.Api.Migrations.Identity
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

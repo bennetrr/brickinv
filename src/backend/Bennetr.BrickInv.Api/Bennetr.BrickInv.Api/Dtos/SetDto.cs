@@ -1,4 +1,4 @@
-namespace Bennetr.Lego.Api.Dtos;
+namespace Bennetr.BrickInv.Api.Dtos;
 
 public class SetDto
 {

@@ -1,7 +1,7 @@
-using Bennetr.Lego.Api.Models;
+using Bennetr.BrickInv.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bennetr.Lego.Api.Contexts;
+namespace Bennetr.BrickInv.Api.Contexts;
 
 public class AppContext(DbContextOptions<AppContext> options) : DbContext(options)
 {

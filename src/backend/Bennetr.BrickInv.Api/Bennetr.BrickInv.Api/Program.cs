@@ -1,11 +1,11 @@
-using Bennetr.Lego.Api.Contexts;
+using Bennetr.BrickInv.Api.Contexts;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wemogy.AspNet.Middlewares;
 using Wemogy.AspNet.Refit;
 using Wemogy.AspNet.Startup;
-using AppContext = Bennetr.Lego.Api.Contexts.AppContext;
+using AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
 
 var builder = WebApplication.CreateBuilder(args);
 

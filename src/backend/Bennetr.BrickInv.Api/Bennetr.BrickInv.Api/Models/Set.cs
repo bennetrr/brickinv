@@ -1,4 +1,4 @@
-namespace Bennetr.Lego.Api.Models;
+namespace Bennetr.BrickInv.Api.Models;
 
 public class Set
 {

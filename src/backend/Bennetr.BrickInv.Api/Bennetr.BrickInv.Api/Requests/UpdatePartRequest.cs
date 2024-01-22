@@ -1,4 +1,4 @@
-namespace Bennetr.Lego.Api.Requests;
+namespace Bennetr.BrickInv.Api.Requests;
 
 public class UpdatePartRequest
 {

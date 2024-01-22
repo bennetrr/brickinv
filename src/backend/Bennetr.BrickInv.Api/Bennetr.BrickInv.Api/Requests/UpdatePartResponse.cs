@@ -1,6 +1,6 @@
-using Bennetr.Lego.Api.Dtos;
+using Bennetr.BrickInv.Api.Dtos;
 
-namespace Bennetr.Lego.Api.Requests;
+namespace Bennetr.BrickInv.Api.Requests;
 
 public class UpdatePartResponse
 {

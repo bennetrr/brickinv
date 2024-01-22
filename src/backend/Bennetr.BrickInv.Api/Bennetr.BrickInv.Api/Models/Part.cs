@@ -1,8 +1,10 @@
-namespace Bennetr.Lego.Api.Dtos;
+namespace Bennetr.BrickInv.Api.Models;
 
-public class PartDto
+public class Part
 {
     public string Id { get; set; }
+
+    public Set Set { get; set; }
 
     public DateTime Created { get; set; }
 

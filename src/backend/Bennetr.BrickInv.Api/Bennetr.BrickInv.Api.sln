@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.Lego.Api", "Bennetr.Lego.Api\Bennetr.Lego.Api.csproj", "{2E8664C5-2E05-47DB-BE03-D07128D74558}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.BrickInv.Api", "Bennetr.BrickInv.Api\Bennetr.BrickInv.Api.csproj", "{2E8664C5-2E05-47DB-BE03-D07128D74558}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rebrickable", "Rebrickable\Rebrickable.csproj", "{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}"
 EndProject
