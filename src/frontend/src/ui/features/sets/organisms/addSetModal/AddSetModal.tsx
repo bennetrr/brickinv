@@ -10,6 +10,7 @@ const AddSetModal: React.FC<IAddSetModalProps> = ({}) => {
   const { closeModal, getActiveParameters } = useModalStore();
   const { setStore } = useAppStore();
   const activeParameters = getActiveParameters<IAddSetModalParameters>('addSet');
+  
   const [setId, setSetId] = useState('');
   const [forSale, setForSale] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +28,8 @@ const AddSetModal: React.FC<IAddSetModalProps> = ({}) => {
     await setStore.createSet(setId, forSale);
     setIsLoading(false);
     closeModal();
-  }, [setId, forSale, closeModal, setStore]);
+    activeParameters?.setSearchFieldText('');
+  }, [setId, forSale, closeModal, setStore, activeParameters]);
 
   return (
       <Modal modalKey="addSet" withoutHeader withoutScrollView>

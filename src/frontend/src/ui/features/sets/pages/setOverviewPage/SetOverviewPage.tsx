@@ -12,7 +12,7 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
   const [searchFieldText, setSearchFieldText] = useState('');
 
   const handleAddSetPress = useCallback(() => {
-    openModal('addSet', { setId: searchFieldText } satisfies IAddSetModalParameters);
+    openModal('addSet', { setId: searchFieldText, setSearchFieldText } satisfies IAddSetModalParameters);
   }, [searchFieldText, openModal]);
 
   const sets = setStore.items.filter(x => {
