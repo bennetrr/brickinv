@@ -18,7 +18,7 @@ const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
   const set = setStore.getSet(setId);
 
   if (!set) {
-    return null;  // TODO: Show 404 page
+    throw 404;
   }
 
   return (

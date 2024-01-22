@@ -12,17 +12,20 @@ import IErrorPageProps from './IErrorPageProps';
 const log = debug('App.Ui.ErrorPage');
 
 const ErrorPage: React.FC<IErrorPageProps> = () => {
-  const error = useRouteError() as ErrorResponse;
+  const error = useRouteError();
   const { authenticationStore } = useAppStore();
   
   log("Route Error: %O", error);
   
   let ErrorNode: React.FC;
   
-  if (!isRouteErrorResponse(error)) {
+  if (error === 404) {
+    ErrorNode = NotFoundError;
+  }
+  else if (!isRouteErrorResponse(error)) {
     ErrorNode = UnexpectedError;
   } else {
-    switch (error.status) {
+    switch ((error as ErrorResponse).status) {
       case 404:
         ErrorNode = NotFoundError;
         break;

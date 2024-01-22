@@ -74,7 +74,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
   }, [set]);
 
   if (!set) {
-    return <>404</>;  // TODO: Show 404 page
+    throw 404;
   }
 
   if (set.parts.length === 0 || !part) {
