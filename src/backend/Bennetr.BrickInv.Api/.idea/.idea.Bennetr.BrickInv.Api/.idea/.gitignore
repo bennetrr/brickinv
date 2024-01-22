@@ -2,9 +2,9 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
-/.idea.Bennetr.Lego.Api.iml
-/projectSettingsUpdater.xml
 /modules.xml
+/projectSettingsUpdater.xml
+/.idea.Bennetr.BrickInv.Api.iml
 /contentModel.xml
 # Editor-based HTTP Client requests
 /httpRequests/
