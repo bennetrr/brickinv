@@ -1,4 +1,6 @@
-﻿services:
+﻿name: bennetr-brickinv
+
+services:
   mariadb:
     image: mariadb:10.9.8-jammy
     environment:
