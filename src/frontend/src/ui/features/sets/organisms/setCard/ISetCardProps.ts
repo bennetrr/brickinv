@@ -1,5 +1,5 @@
-import { ILegoSet } from '$/domain';
+import { ISet } from '$/domain';
 
 export default interface ISetCardProps {
-  set: ILegoSet;
+  set: ISet;
 }

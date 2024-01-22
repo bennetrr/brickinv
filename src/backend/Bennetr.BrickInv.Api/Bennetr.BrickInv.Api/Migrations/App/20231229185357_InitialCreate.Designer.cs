@@ -5,14 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
-using Contexts_AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
 
 #nullable disable
 
 namespace Bennetr.BrickInv.Api.Migrations.App
 {
-    [DbContext(typeof(Contexts_AppContext))]
+    [DbContext(typeof(BrickInvContext))]
     [Migration("20231229185357_InitialCreate")]
     partial class InitialCreate
     {

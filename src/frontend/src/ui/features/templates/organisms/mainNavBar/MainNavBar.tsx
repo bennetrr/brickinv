@@ -7,7 +7,7 @@ const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
   return (
       <StackLayout padding={2} vCenter orientation="horizontal" backgroundColor="greyDark">
         <Link to="/">
-          <Text variation20WhiteSemi>App</Text>
+          <Text variation20WhiteSemi>BrickInv</Text>
         </Link>
 
         <StackLayout stretch/>

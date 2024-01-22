@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bennetr.BrickInv.Api.Contexts;
 
-public class AppContext(DbContextOptions<AppContext> options) : DbContext(options)
+public class BrickInvContext(DbContextOptions<BrickInvContext> options) : DbContext(options)
 {
     public DbSet<Set> Sets { get; set; } = null!;
 

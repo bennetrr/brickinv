@@ -1,18 +1,17 @@
+using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Requests;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
-using Contexts_AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
 [Route("sets/{setId}/parts")]
 [ApiController]
 [Authorize]
-public class PartController(Contexts_AppContext context) : ControllerBase
+public class PartController(BrickInvContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts(string setId)

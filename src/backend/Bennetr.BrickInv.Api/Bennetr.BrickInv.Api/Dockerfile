@@ -5,16 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Bennetr.Lego.Api/Bennetr.Lego.Api.csproj", "Bennetr.Lego.Api/"]
-RUN dotnet restore "Bennetr.Lego.Api/Bennetr.Lego.Api.csproj"
+COPY ["Bennetr.BrickInv.Api/Bennetr.BrickInv.Api.csproj", "Bennetr.BrickInv.Api/"]
+RUN dotnet restore "Bennetr.BrickInv.Api/Bennetr.BrickInv.Api.csproj"
 COPY . .
-WORKDIR "/src/Bennetr.Lego.Api"
-RUN dotnet build "Bennetr.Lego.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/Bennetr.BrickInv.Api"
+RUN dotnet build "Bennetr.BrickInv.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Bennetr.Lego.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Bennetr.BrickInv.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Bennetr.Lego.Api.dll"]
+ENTRYPOINT ["dotnet", "Bennetr.BrickInv.Api.dll"]

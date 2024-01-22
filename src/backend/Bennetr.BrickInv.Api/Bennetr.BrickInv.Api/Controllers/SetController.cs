@@ -1,3 +1,4 @@
+using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Models;
 using Bennetr.BrickInv.Api.Requests;
@@ -6,15 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rebrickable;
-using AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
-using Contexts_AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public class SetController(Contexts_AppContext context) : ControllerBase
+public class SetController(BrickInvContext context) : ControllerBase
 {
     private readonly RebrickableApi _rebrickableApi = new();
 
@@ -92,7 +91,7 @@ public class SetController(Contexts_AppContext context) : ControllerBase
                         PresentCount = 0
                     }));
 
-        if (context.Sets == null) return Problem("Entity set 'LegoContext.LegoSets'  is null.");
+        if (context.Sets == null) return Problem("Entity set 'AppContext.Sets'  is null.");
         context.Sets.Add(set);
         context.Parts.AddRange(parts);
 

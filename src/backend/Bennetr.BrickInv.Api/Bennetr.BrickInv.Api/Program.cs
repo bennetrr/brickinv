@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Wemogy.AspNet.Middlewares;
 using Wemogy.AspNet.Refit;
 using Wemogy.AspNet.Startup;
-using AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +22,8 @@ builder.Services.AddDefaultSetup(options);
 
 // Database
 builder.Services
-    .AddDbContext<AppContext>(opt => opt
-        .UseMySql(builder.Configuration.GetConnectionString("LegoDb"), new MariaDbServerVersion(new Version(11, 2, 2)))
+    .AddDbContext<BrickInvContext>(opt => opt
+        .UseMySql(builder.Configuration.GetConnectionString("BrickInvDb"), new MariaDbServerVersion(new Version(11, 2, 2)))
         .LogTo(Console.WriteLine, LogLevel.Information)
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors()

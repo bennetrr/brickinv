@@ -4,14 +4,12 @@ using Bennetr.BrickInv.Api.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
-using Contexts_AppContext = Bennetr.BrickInv.Api.Contexts.AppContext;
 
 #nullable disable
 
 namespace Bennetr.BrickInv.Api.Migrations.App
 {
-    [DbContext(typeof(Contexts_AppContext))]
+    [DbContext(typeof(BrickInvContext))]
     partial class AppContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
