@@ -36,6 +36,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Rebrickable\Rebrickable.csproj"/>
+        <ProjectReference Include="..\Bennetr.RebrickableDotNet\Bennetr.RebrickableDotNet.csproj" />
     </ItemGroup>
 </Project>

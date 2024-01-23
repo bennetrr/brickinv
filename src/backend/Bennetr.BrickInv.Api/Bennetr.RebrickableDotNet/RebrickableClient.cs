@@ -1,15 +1,15 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Rebrickable.Models;
+using Bennetr.RebrickableDotNet.Models;
 
-namespace Rebrickable;
+namespace Bennetr.RebrickableDotNet;
 
-public class RebrickableApi
+public class RebrickableClient
 {
     private readonly HttpClient _httpClient;
     private readonly Uri _rebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
 
-    public RebrickableApi()
+    public RebrickableClient()
     {
         _httpClient = new HttpClient
         {

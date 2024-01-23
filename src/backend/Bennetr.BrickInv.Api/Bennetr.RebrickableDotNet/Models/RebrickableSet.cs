@@ -1,4 +1,4 @@
-namespace Rebrickable.Models;
+namespace Bennetr.RebrickableDotNet.Models;
 
 public class RebrickableSet
 {

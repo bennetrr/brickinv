@@ -6,7 +6,7 @@ using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Rebrickable;
+using Bennetr.RebrickableDotNet;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
@@ -15,7 +15,7 @@ namespace Bennetr.BrickInv.Api.Controllers;
 [Authorize]
 public class SetController(BrickInvContext context) : ControllerBase
 {
-    private readonly RebrickableApi _rebrickableApi = new();
+    private readonly RebrickableClient _rebrickable = new();
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
@@ -41,11 +41,10 @@ public class SetController(BrickInvContext context) : ControllerBase
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
 
-        // Get the set from Rebrickable
-        var rebrickableSet = await _rebrickableApi.GetRebrickableSet("11d413dfbda310cc80c6e1f741bc6d0f", setId);
-        var rebrickableParts = await _rebrickableApi.GetRebrickableParts("11d413dfbda310cc80c6e1f741bc6d0f", setId);
-        var rebrickableMinifigs =
-            await _rebrickableApi.GetRebrickableMinifigs("11d413dfbda310cc80c6e1f741bc6d0f", setId);
+        // Get the set from Bennetr.RebrickableDotNet
+        var rebrickableSet = await _rebrickable.GetRebrickableSet("11d413dfbda310cc80c6e1f741bc6d0f", setId);
+        var rebrickableParts = await _rebrickable.GetRebrickableParts("11d413dfbda310cc80c6e1f741bc6d0f", setId);
+        var rebrickableMinifigs = await _rebrickable.GetRebrickableMinifigs("11d413dfbda310cc80c6e1f741bc6d0f", setId);
 
         var set = new Set
         {
