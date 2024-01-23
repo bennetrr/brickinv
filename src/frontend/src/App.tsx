@@ -16,7 +16,6 @@ AuthenticationService.addTokenChangeHandler(token => appStore.authenticationStor
 appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenticated);
 
 // TODO: Backend
-//       - Loosen up password requirements
 //       - Error handling and logging
 //       - Groups and Users
 //       - Space Blocks Permissions

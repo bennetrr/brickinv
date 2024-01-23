@@ -42,6 +42,16 @@ builder.Services
     .AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<IdentityContext>();
 
+builder.Services.Configure<IdentityOptions>(opt =>
+{
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireLowercase = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequiredLength = 6;
+    opt.Password.RequiredUniqueChars = 0;
+});
+
 // Swagger
 builder.Services
     .AddEndpointsApiExplorer();
