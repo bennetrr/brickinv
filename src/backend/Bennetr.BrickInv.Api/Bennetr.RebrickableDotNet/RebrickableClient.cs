@@ -1,6 +1,10 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Bennetr.RebrickableDotNet.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Bennetr.RebrickableDotNet.Models.Minifigs;
+using Bennetr.RebrickableDotNet.Models.Parts;
+using Bennetr.RebrickableDotNet.Models.Sets;
 
 namespace Bennetr.RebrickableDotNet;
 
@@ -8,6 +12,10 @@ public class RebrickableClient
 {
     private readonly HttpClient _httpClient;
     private readonly Uri _rebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+    };
 
     public RebrickableClient()
     {
@@ -20,37 +28,29 @@ public class RebrickableClient
             }
         };
     }
-
-    public async Task<RebrickableSet> GetRebrickableSet(string apiKey, string setId)
+    
+    private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, $"sets/{setId}/");
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Authorization", $"key {apiKey}");
 
         var result = await _httpClient.SendAsync(request);
         result.EnsureSuccessStatusCode();
-        return await result.Content.ReadFromJsonAsync<RebrickableSet>() ?? throw new InvalidOperationException();
+        return await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ?? throw new InvalidOperationException();
     }
 
-    public async Task<RebrickableSetParts> GetRebrickableParts(string apiKey, string setId)
+    public async Task<Set> GetSetAsync(string apiKey, string setId)
     {
-        var request =
-            new HttpRequestMessage(HttpMethod.Get, $"sets/{setId}/parts/?page_size=10000"); // TODO: Pagination
-        request.Headers.Add("Authorization", $"key {apiKey}");
-
-        var result = await _httpClient.SendAsync(request);
-        result.EnsureSuccessStatusCode();
-        return await result.Content.ReadFromJsonAsync<RebrickableSetParts>() ?? throw new InvalidOperationException();
+        return await MakeRequest<Set>(apiKey, $"sets/{setId}/");
     }
 
-    public async Task<RebrickableSetMinifigs> GetRebrickableMinifigs(string apiKey, string setId)
+    public async Task<SetParts> GetSetPartsAsync(string apiKey, string setId)
     {
-        var request =
-            new HttpRequestMessage(HttpMethod.Get, $"sets/{setId}/minifigs/?page_size=10000"); // TODO: Pagination
-        request.Headers.Add("Authorization", $"key {apiKey}");
+        return await MakeRequest<SetParts>(apiKey, $"sets/{setId}/parts/?page_size=10000"); // TODO: Pagination
+    }
 
-        var result = await _httpClient.SendAsync(request);
-        result.EnsureSuccessStatusCode();
-        return await result.Content.ReadFromJsonAsync<RebrickableSetMinifigs>() ??
-               throw new InvalidOperationException();
+    public async Task<SetMinifigs> GetSetMinifigsAsync(string apiKey, string setId)
+    {
+        return await MakeRequest<SetMinifigs>(apiKey, $"sets/{setId}/minifigs/?page_size=10000"); // TODO: Pagination
     }
 }

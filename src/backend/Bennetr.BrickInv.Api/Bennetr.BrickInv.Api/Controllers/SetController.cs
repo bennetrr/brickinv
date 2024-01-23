@@ -41,52 +41,54 @@ public class SetController(BrickInvContext context) : ControllerBase
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
 
-        // Get the set from Bennetr.RebrickableDotNet
-        var rebrickableSet = await _rebrickable.GetRebrickableSet("11d413dfbda310cc80c6e1f741bc6d0f", setId);
-        var rebrickableParts = await _rebrickable.GetRebrickableParts("11d413dfbda310cc80c6e1f741bc6d0f", setId);
-        var rebrickableMinifigs = await _rebrickable.GetRebrickableMinifigs("11d413dfbda310cc80c6e1f741bc6d0f", setId);
+        var apiKey = "11d413dfbda310cc80c6e1f741bc6d0f";  // TODO: Get from database
+
+        // Get the set from Rebrickable
+        var rebrickableSet = await _rebrickable.GetSetAsync(apiKey, setId);
+        var rebrickableParts = await _rebrickable.GetSetPartsAsync(apiKey, setId);
+        var rebrickableMinifigs = await _rebrickable.GetSetMinifigsAsync(apiKey, setId);
 
         var set = new Set
         {
             Id = Guid.NewGuid().ToString(),
             Created = DateTime.Now,
             Updated = DateTime.Now,
-            SetId = rebrickableSet.set_num,
-            SetName = rebrickableSet.name,
-            ReleaseYear = rebrickableSet.year,
-            ImageUri = new Uri(rebrickableSet.set_img_url),
-            TotalParts = rebrickableSet.num_parts,
+            SetId = rebrickableSet.SetNum,
+            SetName = rebrickableSet.Name,
+            ReleaseYear = rebrickableSet.Year,
+            ImageUri = new Uri(rebrickableSet.SetImgUrl),
+            TotalParts = rebrickableSet.NumParts,
             PresentParts = 0,
             Finished = false,
             ForSale = request.ForSale
         };
 
-        var parts = rebrickableParts.results
-            .Where(x => !x.is_spare)
+        var parts = rebrickableParts.Results
+            .Where(x => !x.IsSpare)
             .Select(x => new Part
             {
                 Id = Guid.NewGuid().ToString(),
                 Set = set,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
-                PartId = x.part.part_num,
-                PartName = x.part.name,
-                PartColor = x.color.name,
-                ImageUri = x.part.part_img_url is null ? null : new Uri(x.part.part_img_url),
-                TotalCount = x.quantity,
+                PartId = x.Part.PartNum,
+                PartName = x.Part.Name,
+                PartColor = x.Color.Name,
+                ImageUri = x.Part.PartImgUrl is null ? null : new Uri(x.Part.PartImgUrl),
+                TotalCount = x.Quantity,
                 PresentCount = 0
             }).Concat(
-                rebrickableMinifigs.results
+                rebrickableMinifigs.Results
                     .Select(x => new Part
                     {
                         Id = Guid.NewGuid().ToString(),
                         Set = set,
                         Created = DateTime.Now,
                         Updated = DateTime.Now,
-                        PartId = x.set_num,
-                        PartName = x.set_name,
-                        ImageUri = new Uri(x.set_img_url),
-                        TotalCount = x.quantity,
+                        PartId = x.SetNum,
+                        PartName = x.SetName,
+                        ImageUri = new Uri(x.SetImgUrl),
+                        TotalCount = x.Quantity,
                         PresentCount = 0
                     }));
 
