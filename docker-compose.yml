@@ -2,7 +2,7 @@
 
 services:
   mariadb:
-    image: mariadb:10.9.8-jammy
+    image: mariadb:11.2.2-jammy
     environment:
       MARIADB_ROOT_PASSWORD: 123456
     volumes:
