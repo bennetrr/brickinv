@@ -1,0 +1,53 @@
+name: Build and push container
+description: Build and optionally push a container image
+
+inputs:
+  registry-server:
+    description: Container registry server
+    required: false
+    default: docker.io
+  registry-username:
+    description: Container registry username
+    required: false
+  registry-password:
+    description: Container registry password
+    required: false
+  name:
+    description: Name of the container image
+    required: true
+  version:
+    description: Version of the container image (with prefix)
+    required: true
+  file:
+    description: Path to Dockerfile
+    required: false
+  context:
+    description: Working / context directory for the build process (without trailing slash)
+    required: false
+    default: .
+  push:
+    description: Whether to push the container image to the registry
+    required: true
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Login to container registery
+      uses: docker/login-action@v3
+      if: inputs.push == 'true'
+      with:
+        registry: ${{ inputs.registry-server }}
+        username: ${{ inputs.registry-username }}
+        password: ${{ inputs.registry-password }}
+        
+    - name: Build ${{ inputs.push && 'and push ' }}container
+      uses: docker/build-push-action@v5
+      with:
+        tags: ${{ inputs.registry-server }}/${{ inputs.name }}:${{ inputs.version }}
+        file: ${{ inputs.file }}
+        context: {{defaultContext}}:${{ inputs.context }}
+        push: ${{ inputs.push }}
