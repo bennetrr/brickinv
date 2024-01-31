@@ -6,7 +6,7 @@ inputs:
     description: Container registry server
     required: false
     default: docker.io
-  registry-username:
+  registry-user:
     description: Container registry username
     required: false
   registry-password:
@@ -29,6 +29,15 @@ inputs:
     description: Whether to push the container image to the registry
     required: true
     default: 'false'
+  wemogy-npm-server:
+    description: wemogy npm proxy server
+    required: false
+  wemogy-npm-user:
+    description: wemogy npm proxy username
+    required: false
+  wemogy-npm-password:
+    description: wemogy npm proxy password
+    required: false
 
 runs:
   using: composite
@@ -51,3 +60,7 @@ runs:
         file: ${{ inputs.file }}
         context: {{defaultContext}}:${{ inputs.context }}
         push: ${{ inputs.push }}
+        build-args: |
+          WEMOGY_NPM_SERVER=${{ inputs.wemogy-npm-server }}
+          WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
+          WEMOGY_NPM_PASSWORD${{ inputs.wemogy-npm-password }}

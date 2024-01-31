@@ -20,6 +20,9 @@ jobs:
           version: 0.0.0
           context: src/frontend
           push: 'true'
+          wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
+          wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
+          wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
 
   container-backend:
     name: Build backend container

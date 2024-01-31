@@ -46,12 +46,15 @@ jobs:
         uses: ./.github/actions/container
         with:
           registry-server: ghcr.io
-          registry-username: ${{ github.actor }}
+          registry-user: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           name: bennetrr/brickinv-frontend
           version: ${{ needs.setup.outputs.next-version-name }}
           context: src/frontend
           push: 'true'
+          wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
+          wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
+          wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
 
   container-backend:
     name: Build and push backend container
@@ -66,7 +69,7 @@ jobs:
         uses: ./.github/actions/container
         with:
           registry-server: ghcr.io
-          registry-username: ${{ github.actor }}
+          registry-user: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           name: bennetrr/brickinv-backend
           version: ${{ needs.setup.outputs.next-version-name }}
