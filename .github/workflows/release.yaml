@@ -32,7 +32,7 @@ jobs:
         uses: wemogy/next-version-action@2.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          
+
   container-frontend:
     name: Build and push frontend container
     needs: [ setup ]
@@ -75,22 +75,22 @@ jobs:
           version: ${{ needs.setup.outputs.next-version-name }}
           context: src/backend/Bennetr.BrickInv.Api/
           push: 'true'
-          
+
   docker-compose:
     name: Update versions in docker-compose.yml
     needs: [ setup ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    outputs: 
+    outputs:
       docker-compose: ${{ steps.save-docker-compose.outputs.docker-compose }}
     steps:
       - uses: actions/checkout@v4
-        
+
       - name: Update versions in docker-compose.yml
         run: |
           sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ next-version }}/g' docker-compose.yml
-      
+
       - name: Save docker-compose.yml
         id: save-docker-compose
         run: |
@@ -99,7 +99,7 @@ jobs:
             cat docker-compose.yml
             echo EOF
           } >> "$GITHUB_OUTPUT"
-      
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -125,7 +125,7 @@ jobs:
           prerelease: ${{ github.event.inputs.pre-release || false }}
           generateReleaseNotes: true
           commit: ${{ github.head_ref || github.ref_name }}
-          
+
   deploy:
     # Thanks to https://www.programonaut.com/how-to-deploy-a-git-repository-to-a-server-using-github-actions/
     name: Deploy to production

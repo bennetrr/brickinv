@@ -3,4 +3,4 @@
  */
 window.env = window.env || {};
 
-window.env.apiBaseUrl = 'http://localhost:5105';
+window.env.apiBaseUrl = '{{ apiBaseUrl }}';
