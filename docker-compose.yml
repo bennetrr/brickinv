@@ -1,23 +1,34 @@
-version: '3.8'
-
-volumes:
-  pocketbase_data:
+﻿name: brickinv
 
 services:
-  pocketbase:
-    image: ghcr.io/bennetrr/lego-pocketbase:v1.0.1
-    container_name: lego-pocketBase
+  mariadb:
+    image: mariadb:11.2.2-jammy
     restart: always
-    ports:
-      - "8200:8080"
+    environment:
+      MARIADB_ROOT_PASSWORD: 'wN%F3doRGFnh25MJ*D^N*vp*oV9ybp^zAwMkZaS%B3!yhsxv!#Kn@PCpo76zLRyu6EL#2$n8BzXpM&u*@h*kiVwY3m!5nUmf2VmMUmSVYm*bv48q2&pUKsRVe*Pe*9Yp'
     volumes:
-      - type: volume
-        source: pocketbase_data
-        target: /pb/
+      - "mariadb:/var/lib/mysql"
+      - "./setup.sql:/docker-entrypoint-initdb.d/setup.sql"
 
-  app:
-    image: ghcr.io/bennetrr/lego-app:v1.0.1
-    container_name: lego-app
+  frontend:
+    image: ghcr.io/bennetrr/brickinv-frontend:0.0.0
     restart: always
-    ports:
-      - "8201:80"
+    networks:
+      - reverse_proxy
+    volumes:
+      - "./env.js:/usr/share/nginx/html/env/env.js"
+
+  backend:
+    image: ghcr.io/bennetrr/brickinv-backend:0.0.0
+    restart: always
+    networks:
+      - reverse_proxy
+    links:
+      - mariadb
+
+networks:
+  reverse_proxy:
+    external: true
+
+volumes:
+    mariadb:

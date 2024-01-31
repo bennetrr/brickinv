@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:     
+  container-frontend:
+    name: Build frontend container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build container
+        uses: ./.github/actions/container
+        with:
+          name: bennetrr/brickinv-frontend
+          version: 0.0.0
+          context: src/frontend
+          push: 'true'
+          wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
+          wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
+          wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
+
+  container-backend:
+    name: Build backend container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build container
+        uses: ./.github/actions/container
+        with:
+          name: bennetrr/brickinv-backend
+          version: 0.0.0
+          context: src/backend/Bennetr.BrickInv.Api/
+          push: 'true'

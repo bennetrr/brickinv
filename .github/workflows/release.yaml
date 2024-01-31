@@ -1,0 +1,151 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - release/**
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version for the release (without v as prefix)
+        type: string
+        required: false
+        default: ''
+      pre-release:
+        description: Generate pre-release
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    outputs:
+      # Override version with the manually provided version if available
+      next-version: ${{ steps.release-version.outputs.next-version }}${{ github.event.inputs.version }}${{ github.event.inputs.pre-release && 'pre' || '' }}
+      next-version-name: ${{ steps.release-version.outputs.next-version-name }}${{ github.event.inputs.version && 'v' || '' }}${{ github.event.inputs.version }}${{ github.event.inputs.pre-release && 'pre' || '' }}
+    steps:
+      - id: release-version
+        name: Get release version
+        if: ${{ github.event.inputs.version == '' }}
+        uses: wemogy/next-version-action@2.0.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  container-frontend:
+    name: Build and push frontend container
+    needs: [ setup ]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and push container
+        uses: ./.github/actions/container
+        with:
+          registry-server: ghcr.io
+          registry-user: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: bennetrr/brickinv-frontend
+          version: ${{ needs.setup.outputs.next-version-name }}
+          context: src/frontend
+          push: 'true'
+          wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
+          wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
+          wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
+
+  container-backend:
+    name: Build and push backend container
+    needs: [ setup ]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and push container
+        uses: ./.github/actions/container
+        with:
+          registry-server: ghcr.io
+          registry-user: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: bennetrr/brickinv-backend
+          version: ${{ needs.setup.outputs.next-version-name }}
+          context: src/backend/Bennetr.BrickInv.Api/
+          push: 'true'
+
+  docker-compose:
+    name: Update versions in docker-compose.yml
+    needs: [ setup ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      docker-compose: ${{ steps.save-docker-compose.outputs.docker-compose }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update versions in docker-compose.yml
+        run: |
+          sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ next-version }}/g' docker-compose.yml
+
+      - name: Save docker-compose.yml
+        id: save-docker-compose
+        run: |
+          {
+            echo 'docker-compose<<EOF'
+            cat docker-compose.yml
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: docker-compose.yml
+          push: true
+
+  github-release:
+    name: Create GitHub release
+    needs:
+      - setup
+      - container-frontend
+      - container-backend
+      - docker-compose
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          name: Version ${{ needs.setup.outputs.next-version }}
+          tag: ${{ needs.setup.outputs.next-version-name }}
+          prerelease: ${{ github.event.inputs.pre-release || false }}
+          generateReleaseNotes: true
+          commit: ${{ github.head_ref || github.ref_name }}
+
+  deploy:
+    # Thanks to https://www.programonaut.com/how-to-deploy-a-git-repository-to-a-server-using-github-actions/
+    name: Deploy to production
+    needs:
+      - setup
+      - container-frontend
+      - container-backend
+      - docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.DEPLOY_SSH_HOST }} > ~/.ssh/known_hosts
+      - name: Pull
+        run: |
+          ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "
+            cd ${{ secrets.DEPLOY_WORKDIR }}
+            echo "${{ needs.docker-compose.outputs.docker-compose }}"
+            docker compose up -d
+            exit
+          "
