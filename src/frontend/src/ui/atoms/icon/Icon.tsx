@@ -11,7 +11,7 @@ function useFillInsteadOfColor<T>(component: T): T {
   return component;
 }
 
-type IconMap = { [key in keyof IIcons]: any };
+type IconMap = { [key in keyof IIcons as string]: any };
 
 export const iconMap: IconMap = {
   user: HeroIcons.UserIcon,
@@ -54,11 +54,9 @@ export const iconMap: IconMap = {
 };
 
 for (let key in iconMap) {
-  // @ts-ignore
   iconMap[key] = styled(iconMap[key])`
       * {
-          // @ts-ignore
-          ${iconMap[key].useFillInsteadOfColor ? 'fill' : 'color'}: ${props => props._color};
+          ${iconMap[key].useFillInsteadOfColor ? 'fill' : 'color'}: ${(props: any) => props._color};
       }
   `;
 }
