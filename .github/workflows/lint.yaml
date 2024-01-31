@@ -33,6 +33,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: src/frontend/package.json
+          cache-dependency-path: src/frontend/pnpm-lock.yaml
           cache: 'pnpm'
 
       - name: Install dependencies
