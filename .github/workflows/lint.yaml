@@ -28,7 +28,6 @@ jobs:
         with:
           package_json_file: src/frontend/package.json
 
-
       - name: Set up node
         uses: actions/setup-node@v4
         with:
@@ -40,6 +39,12 @@ jobs:
         working-directory: src/frontend
         run: |
           pnpm install
+        env:
+          NPM_REGISTRY: ${{ secrets.WEMOGY_NPM_SERVER }}
+          NPM_USER: ${{ secrets.WEMOGY_NPM_USER }}
+          NPM_PASS: ${{ secrets.WEMOGY_NPM_PASSWORD }}
+          NPM_EMAIL: it@wemogy.com
+          NPM_SCOPE: @wemogy
 
       - name: Run eslint
         uses: sibiraj-s/action-eslint@v3
