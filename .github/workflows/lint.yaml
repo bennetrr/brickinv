@@ -58,7 +58,7 @@ jobs:
           working-directory: src/frontend
           token: ${{ secrets.GITHUB_TOKEN }}
           all-files: true
-          eslint-args: '--ignore-path=.gitignore --report-unused-disable-directives --max-warnings 0'
+          eslint-args: '--ignore-path=src/frontend/.gitignore --report-unused-disable-directives --max-warnings 0'
           extensions: 'js,jsx,ts,tsx'
           annotations: true
           use-npx: true
