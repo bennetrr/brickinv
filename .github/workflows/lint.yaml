@@ -44,7 +44,7 @@ jobs:
           NPM_USER: ${{ secrets.WEMOGY_NPM_USER }}
           NPM_PASS: ${{ secrets.WEMOGY_NPM_PASSWORD }}
           NPM_EMAIL: it@wemogy.com
-          NPM_SCOPE: @wemogy
+          NPM_SCOPE: "@wemogy"
 
       - name: Run eslint
         uses: sibiraj-s/action-eslint@v3
