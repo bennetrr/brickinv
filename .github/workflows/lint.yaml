@@ -53,7 +53,7 @@ jobs:
           pnpm install
 
       - name: Run eslint
-        uses: sibiraj-s/action-eslint@v3
+        uses: sibiraj-s/action-eslint@2e3213f837c945a07368d53e42f4c16453c02087
         with:
           working-directory: src/frontend
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -61,3 +61,4 @@ jobs:
           eslint-args: '--ignore-path=.gitignore --report-unused-disable-directives --max-warnings 0'
           extensions: 'js,jsx,ts,tsx'
           annotations: true
+          use-npx: true
