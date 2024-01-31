@@ -1,12 +1,12 @@
-name: Release
+name: Test build
 
 on:
-  push:
+  pull_request:
     branches:
       - main
   workflow_dispatch:
 
-jobs:     
+jobs:
   container-frontend:
     name: Build frontend container
     runs-on: ubuntu-latest
