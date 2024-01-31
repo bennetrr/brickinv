@@ -35,16 +35,19 @@ jobs:
           cache-dependency-path: src/frontend/pnpm-lock.yaml
           cache: 'pnpm'
 
-      - name: Install dependencies
-        working-directory: src/frontend
-        run: |
-          pnpm install
+      - name: Authenticate to wemogy npm proxy
+        run: pnpx npm-cli-login
         env:
           NPM_REGISTRY: ${{ secrets.WEMOGY_NPM_SERVER }}
           NPM_USER: ${{ secrets.WEMOGY_NPM_USER }}
           NPM_PASS: ${{ secrets.WEMOGY_NPM_PASSWORD }}
           NPM_EMAIL: it@wemogy.com
           NPM_SCOPE: "@wemogy"
+
+      - name: Install dependencies
+        working-directory: src/frontend
+        run: |
+          pnpm install
 
       - name: Run eslint
         uses: sibiraj-s/action-eslint@v3
