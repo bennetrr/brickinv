@@ -21,8 +21,14 @@ const SetCard: React.FC<ISetCardProps> = ({ set }) => {
           style={{ borderTopLeftRadius: 'inherit', borderTopRightRadius: 'inherit', marginTop: 'auto' }}
         />
 
-        <StackLayout padding={0.5} borderTop={{ custom: 1 }} borderColor="grey300" backgroundColor="grey50"
-                     borderRadiusBottomLeft={{ custom: 'inherit' }} borderRadiusBottomRight={{ custom: 'inherit' }}>
+        <StackLayout
+          padding={0.5}
+          borderTop={{ custom: 1 }}
+          borderColor="grey300"
+          backgroundColor="grey50"
+          borderRadiusBottomLeft={{ custom: 'inherit' }}
+          borderRadiusBottomRight={{ custom: 'inherit' }}
+        >
           <Text variation12Grey500Medium>{set.setId}</Text>
           <Text variation14Gray900>{set.setName}</Text>
         </StackLayout>

@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;

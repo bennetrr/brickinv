@@ -21,8 +21,10 @@ block_comment = *
 block_comment_end = */
 
 # Exception for .sln files as they reformat themselves
-[*.sln]
+[{*.sln,*.sln.DotSettings.user,*.csproj}]
 charset = utf-8-bom
+indent_size = unset
+indent_style = unset
 
 [*.cs]
 indent_size = 4
