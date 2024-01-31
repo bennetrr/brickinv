@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Bennetr.RebrickableDotNet.Models.Minifigs;
 using Bennetr.RebrickableDotNet.Models.Parts;
 using Bennetr.RebrickableDotNet.Models.Sets;
@@ -11,11 +10,13 @@ namespace Bennetr.RebrickableDotNet;
 public class RebrickableClient
 {
     private readonly HttpClient _httpClient;
-    private readonly Uri _rebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
+
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
     };
+
+    private readonly Uri _rebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
 
     public RebrickableClient()
     {
@@ -28,7 +29,7 @@ public class RebrickableClient
             }
         };
     }
-    
+
     private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -36,7 +37,8 @@ public class RebrickableClient
 
         var result = await _httpClient.SendAsync(request);
         result.EnsureSuccessStatusCode();
-        return await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ?? throw new InvalidOperationException();
+        return await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ??
+               throw new InvalidOperationException();
     }
 
     public async Task<Set> GetSetAsync(string apiKey, string setId)

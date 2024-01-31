@@ -31,4 +31,4 @@ networks:
     external: true
 
 volumes:
-    mariadb:
+  mariadb:

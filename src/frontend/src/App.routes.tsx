@@ -2,8 +2,8 @@ import React, { ReactElement, useEffect } from 'react';
 import { RouteObject, useNavigate } from 'react-router-dom';
 import {
   DefaultPageTemplate,
-  LoginPage,
   ErrorPage,
+  LoginPage,
   PartOverviewPage,
   RegisterPage,
   SetDetailPage,

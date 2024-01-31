@@ -37,20 +37,20 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
   }, [handleSignUpClick]);
 
   return (
-      <StackLayout height100 width100 hCenter vCenter>
-        <StackLayout width={40} gap>
-          <LabeledView label="Email Address">
-            <TextInput
-                icon="envelopeOpen"
-                autoFocus
-                value={email}
-                onChange={setEmail}
-                onKeyPress={handleEnterPress}
-                automationId="register-email-field"
-            />
-          </LabeledView>
+    <StackLayout height100 width100 hCenter vCenter>
+      <StackLayout width={40} gap>
+        <LabeledView label="Email Address">
+          <TextInput
+            icon="envelopeOpen"
+            autoFocus
+            value={email}
+            onChange={setEmail}
+            onKeyPress={handleEnterPress}
+            automationId="register-email-field"
+          />
+        </LabeledView>
 
-          {/*<LabeledView label="Your name">
+        {/*<LabeledView label="Your name">
             <TextInput
                 icon="user"
                 value={username}
@@ -60,33 +60,33 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
             />
           </LabeledView>*/}
 
-          <LabeledView label="Password">
-            <TextInput
-                icon="key"
-                textContentType="password"
-                value={password}
-                onChange={setPassword}
-                onKeyPress={handleEnterPress}
-                automationId="register-password-field"
-            />
-          </LabeledView>
+        <LabeledView label="Password">
+          <TextInput
+            icon="key"
+            textContentType="password"
+            value={password}
+            onChange={setPassword}
+            onKeyPress={handleEnterPress}
+            automationId="register-password-field"
+          />
+        </LabeledView>
 
-          <Button
-              primary14
-              onPress={handleSignUpClick}
-              automationId="register-signup-button"
-          >
-            Sign up
-          </Button>
+        <Button
+          primary14
+          onPress={handleSignUpClick}
+          automationId="register-signup-button"
+        >
+          Sign up
+        </Button>
 
-          <Link to={'/login'}>
-            <StackLayout vCenter orientation="horizontal">
-              <Text cta>Already have an account?</Text>
-              <Icon chevronRight variation2PrimaryDark/>
-            </StackLayout>
-          </Link>
-        </StackLayout>
+        <Link to={'/login'}>
+          <StackLayout vCenter orientation="horizontal">
+            <Text cta>Already have an account?</Text>
+            <Icon chevronRight variation2PrimaryDark/>
+          </StackLayout>
+        </Link>
       </StackLayout>
+    </StackLayout>
   );
 };
 

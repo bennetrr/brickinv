@@ -23,56 +23,56 @@ const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {
   });
 
   return (
-      <>
-        <StackLayout>
-          <StackLayout orientation="horizontal" margin={2} gap>
-            <StackLayout stretch>
-              <TextInput
-                  stretch
-                  placeholder="Filter sets by name or number or add a new set"
-                  onChange={setSearchFieldText}
-                  value={searchFieldText}
-              />
-            </StackLayout>
-
-            <Button
-                iconButton
-                icon="plus"
-                onPress={handleAddSetPress}
-            >{''}</Button>
+    <>
+      <StackLayout>
+        <StackLayout orientation="horizontal" margin={2} gap>
+          <StackLayout stretch>
+            <TextInput
+              stretch
+              placeholder="Filter sets by name or number or add a new set"
+              onChange={setSearchFieldText}
+              value={searchFieldText}
+            />
           </StackLayout>
 
-          {sets.length !== 0 ?
-              <StackLayout wrap marginRightLeft={2} marginBottom={2} orientation="horizontal" gap={2}>
-                {sets.map(x => <SetCard set={x} key={x.id}/>)}
-              </StackLayout>
-              :
-              <StackLayout marginRightLeft={2} hCenter>
-                <Text>
-                  No sets found
-                </Text>
-
-                <Button
-                    borderless
-                    onPress={handleAddSetPress}
-                >
-                  Add a new set
-                </Button>
-
-                <RenderIf condition={searchFieldText !== ''}>
-                  <Button
-                      borderless
-                      onPress={() => setSearchFieldText('')}
-                  >
-                    Clear filters
-                  </Button>
-                </RenderIf>
-              </StackLayout>
-          }
+          <Button
+            iconButton
+            icon="plus"
+            onPress={handleAddSetPress}
+          >{''}</Button>
         </StackLayout>
 
-        <AddSetModal/>
-      </>
+        {sets.length !== 0 ?
+          <StackLayout wrap marginRightLeft={2} marginBottom={2} orientation="horizontal" gap={2}>
+            {sets.map(x => <SetCard set={x} key={x.id}/>)}
+          </StackLayout>
+          :
+          <StackLayout marginRightLeft={2} hCenter>
+            <Text>
+              No sets found
+            </Text>
+
+            <Button
+              borderless
+              onPress={handleAddSetPress}
+            >
+              Add a new set
+            </Button>
+
+            <RenderIf condition={searchFieldText !== ''}>
+              <Button
+                borderless
+                onPress={() => setSearchFieldText('')}
+              >
+                Clear filters
+              </Button>
+            </RenderIf>
+          </StackLayout>
+        }
+      </StackLayout>
+
+      <AddSetModal/>
+    </>
   );
 };
 

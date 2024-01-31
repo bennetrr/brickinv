@@ -1,6 +1,6 @@
 import { debug } from 'debug';
 import React from 'react';
-import { useRouteError, ErrorResponse, isRouteErrorResponse } from 'react-router-dom';
+import { ErrorResponse, isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { RenderIf } from '@wemogy/reactbase';
 import { useAppStore } from '$/domain';
@@ -14,15 +14,14 @@ const log = debug('App.Ui.ErrorPage');
 const ErrorPage: React.FC<IErrorPageProps> = () => {
   const error = useRouteError();
   const { authenticationStore } = useAppStore();
-  
-  log("Route Error: %O", error);
-  
+
+  log('Route Error: %O', error);
+
   let ErrorNode: React.FC;
-  
+
   if (error === 404) {
     ErrorNode = NotFoundError;
-  }
-  else if (!isRouteErrorResponse(error)) {
+  } else if (!isRouteErrorResponse(error)) {
     ErrorNode = UnexpectedError;
   } else {
     switch ((error as ErrorResponse).status) {
@@ -34,17 +33,17 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
         break;
     }
   }
-  
+
   return (
-      <StackLayout height100>
-        <RenderIf condition={authenticationStore.isAuthenticated}>
-          <MainNavBar/>
-        </RenderIf>
-        
-        <StackLayout width100 height100 vCenter hCenter>
-          <ErrorNode/>
-        </StackLayout>
+    <StackLayout height100>
+      <RenderIf condition={authenticationStore.isAuthenticated}>
+        <MainNavBar/>
+      </RenderIf>
+
+      <StackLayout width100 height100 vCenter hCenter>
+        <ErrorNode/>
       </StackLayout>
+    </StackLayout>
   );
 };
 

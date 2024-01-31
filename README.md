@@ -62,7 +62,8 @@ docker run mariadb:11.2.2-jammy -d \
 ```
 
 > [!NOTE]
-> If you change the password or the port in the command above, you need to update the `appsettings.Development.json` file!
+> If you change the password or the port in the command above, you need to update the `appsettings.Development.json`
+> file!
 
 In `src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api`
 
@@ -72,7 +73,8 @@ dotnet run --launch-profile http
 
 In `src/frontend`:
 
-Copy `public/env/env.template.js` to `public/env/env.local.js` and replace `{{ apiBaseUrl }}` with `http://localhost:5105` (or the URL of your local API).
+Copy `public/env/env.template.js` to `public/env/env.local.js` and replace `{{ apiBaseUrl }}`
+with `http://localhost:5105` (or the URL of your local API).
 
 Then run:
 
@@ -84,7 +86,8 @@ pnpm dev:local
 
 In `src/frontend`:
 
-Copy `public/env/env.template.js` to `public/env/env.prod.js` and replace `{{ apiBaseUrl }}` with the URL of your production API.
+Copy `public/env/env.template.js` to `public/env/env.prod.js` and replace `{{ apiBaseUrl }}` with the URL of your
+production API.
 
 Then run:
 

@@ -2,8 +2,6 @@ using Bennetr.BrickInv.Api.Contexts;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Wemogy.AspNet.Middlewares;
-using Wemogy.AspNet.Refit;
 using Wemogy.AspNet.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +21,8 @@ builder.Services.AddDefaultSetup(options);
 // Database
 builder.Services
     .AddDbContext<BrickInvContext>(opt => opt
-        .UseMySql(builder.Configuration.GetConnectionString("BrickInvDb"), new MariaDbServerVersion(new Version(11, 2, 2)))
+        .UseMySql(builder.Configuration.GetConnectionString("BrickInvDb"),
+            new MariaDbServerVersion(new Version(11, 2, 2)))
         .LogTo(Console.WriteLine, LogLevel.Information)
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors()

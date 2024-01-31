@@ -4,7 +4,7 @@ import { CreateSetRequest, UpdateSetRequest } from '$/domain/rest/requests';
 
 export default class SetService {
   public constructor(
-      private readonly axiosInstance: AxiosInstance
+    private readonly axiosInstance: AxiosInstance
   ) {
   }
 

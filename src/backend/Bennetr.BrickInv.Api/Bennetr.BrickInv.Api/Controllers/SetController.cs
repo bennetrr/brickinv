@@ -2,11 +2,11 @@ using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Models;
 using Bennetr.BrickInv.Api.Requests;
+using Bennetr.RebrickableDotNet;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bennetr.RebrickableDotNet;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
@@ -41,7 +41,7 @@ public class SetController(BrickInvContext context) : ControllerBase
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
 
-        var apiKey = "11d413dfbda310cc80c6e1f741bc6d0f";  // TODO: Get from database
+        var apiKey = "11d413dfbda310cc80c6e1f741bc6d0f"; // TODO: Get from database
 
         // Get the set from Rebrickable
         var rebrickableSet = await _rebrickable.GetSetAsync(apiKey, setId);

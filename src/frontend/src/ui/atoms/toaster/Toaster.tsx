@@ -7,49 +7,49 @@ class Toaster extends ToasterBase {
 
   public success(message: TranslationInformation) {
     return this.showToast(
-        {
-          text: message,
-          textVariation: 'variation14Green500Medium'
-        },
-        {
-          type: 'success',
-          icon: {
-            icon: 'checkCircle',
-            iconVariation: 'variation3Green500'
-          }
+      {
+        text: message,
+        textVariation: 'variation14Green500Medium'
+      },
+      {
+        type: 'success',
+        icon: {
+          icon: 'checkCircle',
+          iconVariation: 'variation3Green500'
         }
+      }
     );
   }
 
   public error(message: TranslationInformation) {
     return this.showToast(
-        {
-          text: message,
-          textVariation: 'variation14Red500Medium'
-        },
-        {
-          type: 'error',
-          icon: {
-            icon: 'exclamationCircle',
-            iconVariation: 'variation3Red500'
-          }
+      {
+        text: message,
+        textVariation: 'variation14Red500Medium'
+      },
+      {
+        type: 'error',
+        icon: {
+          icon: 'exclamationCircle',
+          iconVariation: 'variation3Red500'
         }
+      }
     );
   }
 
   public information(message: TranslationInformation) {
     return this.showToast(
-        {
-          text: message,
-          textVariation: 'variation14Gray500Medium'
-        },
-        {
-          type: undefined,
-          icon: {
-            icon: 'informationCircle',
-            iconVariation: 'variation3Grey500'
-          }
+      {
+        text: message,
+        textVariation: 'variation14Gray500Medium'
+      },
+      {
+        type: undefined,
+        icon: {
+          icon: 'informationCircle',
+          iconVariation: 'variation3Grey500'
         }
+      }
     );
   }
 }
