@@ -20,6 +20,8 @@ jobs:
   eslint:
     name: Run eslint on frontend
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     steps:
       - uses: actions/checkout@v4
 
@@ -54,6 +56,6 @@ jobs:
         with:
           working-directory: src/frontend
           token: ${{ secrets.GITHUB_TOKEN }}
-          eslint-args: '--ignore-path=.gitignore --quiet --report-unused-disable-directives --max-warnings 0'
+          eslint-args: '--ignore-path=.gitignore --report-unused-disable-directives --max-warnings 0'
           extensions: 'js,jsx,ts,tsx'
           annotations: true
