@@ -16,3 +16,36 @@ jobs:
       - name: Run eclint
         run: |
           npx eclint check .
+
+  eslint:
+    name: Run eslint on frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2.4.0
+        with:
+          package_json_file: src/frontend/package.json
+
+
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: src/frontend/package.json
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        working-directory: src/frontend
+        run: |
+          pnpm install
+
+      - name: Run eslint
+        uses: sibiraj-s/action-eslint@v3
+        with:
+          working-directory: src/frontend
+          token: ${{ secrets.GITHUB_TOKEN }}
+          all-files: true
+          eslint-args: '--ignore-path=.gitignore --quiet --report-unused-disable-directives --max-warnings 0'
+          extensions: 'js,jsx,ts,tsx'
+          annotations: true
