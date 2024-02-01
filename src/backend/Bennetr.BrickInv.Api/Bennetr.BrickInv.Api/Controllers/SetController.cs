@@ -20,14 +20,12 @@ public class SetController(BrickInvContext context) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
-        if (context.Sets == null) return NotFound();
         return (await context.Sets.ToListAsync()).Adapt<List<SetDto>>();
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<SetDto>> GetSet(string id)
     {
-        if (context.Sets == null) return NotFound();
         var set = await context.Sets.FindAsync(id);
 
         if (set == null) return NotFound();
@@ -92,7 +90,6 @@ public class SetController(BrickInvContext context) : ControllerBase
                         PresentCount = 0
                     }));
 
-        if (context.Sets == null) return Problem("Entity set 'AppContext.Sets'  is null.");
         context.Sets.Add(set);
         context.Parts.AddRange(parts);
 
@@ -113,7 +110,6 @@ public class SetController(BrickInvContext context) : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSet(string id)
     {
-        if (context.Sets == null) return NotFound();
         var set = await context.Sets.FindAsync(id);
         if (set == null) return NotFound();
 
@@ -127,7 +123,6 @@ public class SetController(BrickInvContext context) : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSet(string id, UpdateSetRequest request)
     {
-        if (context.Sets == null) return NotFound();
         var set = await context.Sets.FindAsync(id);
         if (set == null) return NotFound();
 
@@ -141,6 +136,6 @@ public class SetController(BrickInvContext context) : ControllerBase
 
     private bool SetExists(string id)
     {
-        return (context.Sets?.Any(e => e.Id == id)).GetValueOrDefault();
+        return context.Sets.Any(e => e.Id == id);
     }
 }

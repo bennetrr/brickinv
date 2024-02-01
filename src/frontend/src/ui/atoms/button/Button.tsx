@@ -91,7 +91,6 @@ const Button = ButtonBase.extendVariations({
     border: { custom: 1 }
   },
   iconButton: {
-    // TODO Ask Sebastian: Inherit from secondary14?
     backgroundColor: 'white',
     borderColor: 'grey300',
     border: { custom: 1 },

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bennetr.BrickInv.Api.Models;
 
-public class Group
+public class UserProfile
 {
     [MaxLength(36)]
     public string Id { get; set; } = string.Empty;
@@ -11,7 +11,10 @@ public class Group
 
     public DateTime Updated { get; set; }
 
-    public UserProfile Owner { get; set; } = null!;
+    public bool Finalized { get; set; }
 
-    public IEnumerable<UserProfile> Users { get; set; } = new List<UserProfile>();
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public string? Username { get; set; }
+
+    public Uri? ProfileImageUri { get; set; }
 }

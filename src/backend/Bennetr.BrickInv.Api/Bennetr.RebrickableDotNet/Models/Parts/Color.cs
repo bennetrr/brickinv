@@ -1,10 +1,12 @@
 namespace Bennetr.RebrickableDotNet.Models.Parts;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public class Color
 {
     public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string Rgb { get; set; } = null!;
+
+    public string Name { get; set; } = string.Empty;
+
+    public string Rgb { get; set; } = string.Empty;
+
     public bool IsTrans { get; set; }
 }

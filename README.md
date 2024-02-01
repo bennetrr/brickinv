@@ -11,6 +11,7 @@ A web application that helps to check if all parts of a LEGO set are present.
 - [ ] Space Blocks Permissions
 - [ ] Make use of ErrorHandlerMiddleware
 - [ ] Let user choose mariadb password
+- [ ] Add 2FA and Email verification
 
 ### Frontend
 
@@ -22,9 +23,14 @@ A web application that helps to check if all parts of a LEGO set are present.
 
 ### General
 
-- [ ] Ask Sebastian things that I don't understand
 - [ ] Ask Sebastian for feedback on code
 - [ ] Write documentation and tests (maybe)
+
+### Fragen
+
+- Wie funktioniert die ErrorHandlerMiddleware?
+- ReactBase Vererbung von styles ([Button.tsx](https://github.com/bennetrr/brickinv/blob/e123a12d34da3aa5fe2d34513cdcb9a41176ac8c/src/frontend/src/ui/atoms/button/Button.tsx#L94-L94))
+- Generell: Feedback zum Code
 
 ## Development
 

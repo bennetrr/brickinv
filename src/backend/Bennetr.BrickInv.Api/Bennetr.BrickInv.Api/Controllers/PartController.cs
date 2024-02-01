@@ -34,7 +34,6 @@ public class PartController(BrickInvContext context) : ControllerBase
     {
         var part = await context.Parts.Include(part => part.Set).FirstAsync(part => part.Id == id);
 
-        if (part == null) return NotFound();
         if (part.Set.Id != setId) return NotFound();
 
         if (request.PresentCount < 0 || request.PresentCount > part.TotalCount)
