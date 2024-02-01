@@ -12,6 +12,7 @@ A web application that helps to check if all parts of a LEGO set are present.
 - [ ] Make use of ErrorHandlerMiddleware
 - [ ] Let user choose mariadb password
 - [ ] Add 2FA and Email verification
+- [ ] User deletion
 
 ### Frontend
 
@@ -23,7 +24,6 @@ A web application that helps to check if all parts of a LEGO set are present.
 
 ### General
 
-- [ ] Ask Sebastian for feedback on code
 - [ ] Write documentation and tests (maybe)
 
 ### Fragen
