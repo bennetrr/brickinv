@@ -1,6 +1,6 @@
 using Bennetr.BrickInv.Api.Dtos;
 
-namespace Bennetr.BrickInv.Api.Requests;
+namespace Bennetr.BrickInv.Api.Responses;
 
 public class UpdatePartResponse
 {
