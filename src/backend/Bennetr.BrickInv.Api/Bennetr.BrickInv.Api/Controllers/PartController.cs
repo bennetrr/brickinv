@@ -16,15 +16,18 @@ public class PartController(BrickInvContext context) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts(string setId)
     {
-        return (await context.Parts.Where(x => x.Set.Id == setId).ToListAsync()).Adapt<List<PartDto>>();
+        var parts = await context.Parts
+            .Where(x => x.Set.Id == setId)
+            .ToListAsync();
+        return parts.Adapt<List<PartDto>>();
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<PartDto>> GetPart(string setId, string id)
     {
-        var part = await context.Parts.FindAsync(id);
-
-        if (part == null) return NotFound();
+        var part = await context.Parts
+            .Include(x => x.Set)
+            .FirstAsync(x => x.Id == id && x.Set.Id == setId);
 
         return part.Adapt<PartDto>();
     }
@@ -32,9 +35,9 @@ public class PartController(BrickInvContext context) : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePart(string setId, string id, UpdatePartRequest request)
     {
-        var part = await context.Parts.Include(part => part.Set).FirstAsync(part => part.Id == id);
-
-        if (part.Set.Id != setId) return NotFound();
+        var part = await context.Parts
+            .Include(x => x.Set)
+            .FirstAsync(x => x.Id == id && x.Set.Id == setId);
 
         if (request.PresentCount < 0 || request.PresentCount > part.TotalCount)
             return BadRequest("PresentCount must be between 0 and TotalCount");

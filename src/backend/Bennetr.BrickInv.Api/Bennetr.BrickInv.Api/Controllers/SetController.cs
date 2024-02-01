@@ -20,7 +20,8 @@ public class SetController(BrickInvContext context) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
-        return (await context.Sets.ToListAsync()).Adapt<List<SetDto>>();
+        var sets = await context.Sets.ToListAsync();
+        return sets.Adapt<List<SetDto>>();
     }
 
     [HttpGet("{id}")]
@@ -28,8 +29,7 @@ public class SetController(BrickInvContext context) : ControllerBase
     {
         var set = await context.Sets.FindAsync(id);
 
-        if (set == null) return NotFound();
-
+        if (set is null) return NotFound();
         return set.Adapt<SetDto>();
     }
 
@@ -39,7 +39,7 @@ public class SetController(BrickInvContext context) : ControllerBase
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
 
-        var apiKey = "11d413dfbda310cc80c6e1f741bc6d0f"; // TODO: Get from database
+        var apiKey = "11d413dfbda310cc80c6e1f741bc6d0f"; // TODO: Get from database or env
 
         // Get the set from Rebrickable
         var rebrickableSet = await _rebrickable.GetSetAsync(apiKey, setId);
@@ -92,26 +92,20 @@ public class SetController(BrickInvContext context) : ControllerBase
 
         context.Sets.Add(set);
         context.Parts.AddRange(parts);
+        await context.SaveChangesAsync();
 
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            if (SetExists(set.Id))
-                return Conflict();
-            throw;
-        }
-
-        return CreatedAtAction(nameof(GetSet), new { id = set.Id }, set.Adapt<SetDto>());
+        return CreatedAtAction(
+            nameof(GetSet),
+            new { id = set.Id },
+            set.Adapt<SetDto>()
+        );
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSet(string id)
     {
         var set = await context.Sets.FindAsync(id);
-        if (set == null) return NotFound();
+        if (set is null) return NotFound();
 
         context.Sets.Remove(set);
         context.Parts.RemoveRange(context.Parts.Where(x => x.Set.Id == id));
@@ -124,7 +118,7 @@ public class SetController(BrickInvContext context) : ControllerBase
     public async Task<IActionResult> UpdateSet(string id, UpdateSetRequest request)
     {
         var set = await context.Sets.FindAsync(id);
-        if (set == null) return NotFound();
+        if (set is null) return NotFound();
 
         set.Updated = DateTime.Now;
         set.ForSale = request.ForSale;
@@ -132,10 +126,5 @@ public class SetController(BrickInvContext context) : ControllerBase
         await context.SaveChangesAsync();
 
         return Accepted(set.Adapt<SetDto>());
-    }
-
-    private bool SetExists(string id)
-    {
-        return context.Sets.Any(e => e.Id == id);
     }
 }

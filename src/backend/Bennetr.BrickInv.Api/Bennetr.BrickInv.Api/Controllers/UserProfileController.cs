@@ -18,7 +18,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserProfileDto>>> GetUserProfiles()
     {
-        var userProfiles = await context.UserProfiles.Select(x => x.Finalized).ToListAsync();
+        var userProfiles = await context.UserProfiles
+            .Where(x => x.Finalized)
+            .ToListAsync();
         return userProfiles.Adapt<List<UserProfileDto>>();
     }
 

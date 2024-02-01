@@ -17,4 +17,7 @@ public class UserProfile
     public string? Username { get; set; }
 
     public Uri? ProfileImageUri { get; set; }
+
+    [MaxLength(32)]
+    public string? RebrickableApiKey { get; set; }
 }
