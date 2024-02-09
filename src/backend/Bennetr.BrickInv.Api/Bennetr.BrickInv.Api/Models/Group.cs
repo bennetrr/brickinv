@@ -11,7 +11,12 @@ public class Group
 
     public DateTime Updated { get; set; }
 
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public string Name { get; set; } = string.Empty;
+
+    public Uri? ImageUri { get; set; }
+
     public UserProfile Owner { get; set; } = null!;
 
-    public IEnumerable<UserProfile> Users { get; set; } = new List<UserProfile>();
+    public IEnumerable<UserProfile> Members { get; set; } = new List<UserProfile>();
 }
