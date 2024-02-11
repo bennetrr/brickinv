@@ -36,4 +36,8 @@
         <ProjectReference Include="..\Bennetr.BrickInv.EmailSender\Bennetr.BrickInv.EmailSender.csproj" />
         <ProjectReference Include="..\Bennetr.RebrickableDotNet\Bennetr.RebrickableDotNet.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
 </Project>
