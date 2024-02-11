@@ -59,12 +59,13 @@ dotnet restore
 In repository root:
 
 ```bash
-docker run mariadb:11.2.2-jammy -d \
+docker run -d \
   --name brickinv-mariadb-dev \
-  --expose 3306:3306 \
+  --publish 3306:3306 \
   --env 'MARIADB_ROOT_PASSWORD=3gEju5UGRPbSbJ$r#wvYDn$g%6ryH5' \
   --volume brickinv-mariadb-dev:/var/lib/mysql \
-  --volume ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+  --volume ./setup.sql:/docker-entrypoint-initdb.d/setup.sql \
+  mariadb:11.2.2-jammy
 ```
 
 > [!NOTE]

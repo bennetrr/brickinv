@@ -3,6 +3,8 @@ using MimeKit;
 
 namespace Bennetr.BrickInv.EmailSender;
 
+// Thanks to https://code-maze.com/aspnetcore-send-email/
+
 public class EmailSender(EmailConfiguration emailConfig) : IEmailSender
 {
     public void SendEmail(Message message)
