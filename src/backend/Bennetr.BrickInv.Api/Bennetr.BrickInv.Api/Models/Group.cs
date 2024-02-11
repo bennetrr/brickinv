@@ -18,5 +18,5 @@ public class Group
 
     public UserProfile Owner { get; set; } = null!;
 
-    public IEnumerable<UserProfile> Members { get; set; } = new List<UserProfile>();
+    public List<UserProfile> Members { get; set; } = [];
 }

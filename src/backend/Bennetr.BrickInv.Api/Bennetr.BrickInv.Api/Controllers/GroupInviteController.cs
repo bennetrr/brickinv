@@ -1,23 +1,33 @@
+using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Models;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.BrickInv.EmailSender;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
-public partial class GroupController
+[Route("[controller]s")]
+[ApiController]
+[Authorize]
+public class GroupInviteController(BrickInvContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender) : ControllerBase
 {
-    [HttpPost("{groupId}/invite")]
-    public async Task<ActionResult> CreateGroupInvite(string groupId, CreateGroupInviteRequest request)
+    [HttpPost]
+    public async Task<ActionResult> CreateGroupInvite(CreateGroupInviteRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
 
         var group = await context.Groups
-            .Where(x => x.Id == groupId)
+            .Include(x => x.Members)
+            .Where(x => x.Id == request.GroupId)
             .Where(x => x.Owner.Id == currentUser.Id)
             .FirstAsync();
+
+        if (request.RecipientUserId == currentUser.Id) return BadRequest("invitingSelf");
+        if (group.Members.Any(x => x.Id == request.RecipientUserId)) return BadRequest("invitingMember");
 
         var issuerUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
         if (issuerUserProfile is null) return BadRequest();
@@ -42,7 +52,7 @@ public partial class GroupController
         if (recipientUser is null) return NotFound();
 
         var message = new Message(
-            [recipientUser.Email],
+            [recipientUser.Email!],
             $"{issuerUserProfile} invited you to a BrickInv group",
             $"""
                 <!doctype html>
@@ -62,7 +72,7 @@ public partial class GroupController
                     <a href="https://localhost:5173/invite/{invite.Id}/accept">Accept the invitation</a>
 
                     <p style="font-size: 12px">
-                        The link expires 48h after the invitation was created. If you don't want to join the group, just ignore this email.
+                        The link expires 48h after the invitation was created. If you don't want to join the group, you can <a href="https://localhost:5173/invite/{invite.Id}/reject">reject the invitation</a>.
                     </p>
                 </body>
                 </html>
@@ -72,5 +82,43 @@ public partial class GroupController
 
         await context.SaveChangesAsync();
         return Created();
+    }
+
+    // Accept the invite
+    [HttpPut("{inviteId}")]
+    public async Task<ActionResult> AcceptGroupInvite(string inviteId)
+    {
+        var currentUser = await userManager.GetUserAsync(HttpContext.User);
+        if (currentUser is null) return Unauthorized();
+
+        var invite = await context.GroupInvites
+            .Include(x => x.Recipient)
+            .Where(x => x.Id == inviteId)
+            .Where(x => x.Recipient.Id == currentUser.Id)
+            .FirstAsync();
+
+        var group = await context.Groups
+            .Include(x => x.Members)
+            .Where(x => x.Id == invite.Group.Id)
+            .FirstAsync();
+
+        group.Members.Add(invite.Recipient);
+        context.GroupInvites.Remove(invite);
+
+        await context.SaveChangesAsync();
+        return Accepted();
+    }
+
+    // Reject group invite
+    public async Task<ActionResult> RejectGroupInvite(string inviteId)
+    {
+        var invite = await context.GroupInvites
+            .Where(x => x.Id == inviteId)
+            .FirstAsync();
+
+        context.GroupInvites.Remove(invite);
+
+        await context.SaveChangesAsync();
+        return NoContent();
     }
 }

@@ -11,9 +11,7 @@ public class GroupInvite
 
     public Group Group { get; set; } = null!;
 
-    [MaxLength(36)]
     public UserProfile Issuer { get; set; } = null!;
 
-    [MaxLength(36)]
     public UserProfile Recipient { get; set; } = null!;
 }

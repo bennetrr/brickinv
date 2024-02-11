@@ -2,7 +2,6 @@ using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Models;
 using Bennetr.BrickInv.Api.Requests;
-using Bennetr.BrickInv.EmailSender;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +13,7 @@ namespace Bennetr.BrickInv.Api.Controllers;
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public partial class GroupController(BrickInvContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender) : ControllerBase
+public class GroupController(BrickInvContext context, UserManager<IdentityUser> userManager) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GroupDto>>> GetGroups()

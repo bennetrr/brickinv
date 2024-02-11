@@ -17,9 +17,11 @@ public class PartController(BrickInvContext context) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts(string setId)
     {
+        // TODO: Check for permission
         var parts = await context.Parts
             .Where(x => x.Set.Id == setId)
             .ToListAsync();
+
         return parts.Adapt<List<PartDto>>();
     }
 
@@ -28,7 +30,9 @@ public class PartController(BrickInvContext context) : ControllerBase
     {
         var part = await context.Parts
             .Include(x => x.Set)
-            .FirstAsync(x => x.Id == id && x.Set.Id == setId);
+            .Where(x => x.Id == id)
+            .Where(x => x.Set.Id == setId)
+            .FirstAsync();
 
         return part.Adapt<PartDto>();
     }

@@ -21,6 +21,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
         var userProfiles = await context.UserProfiles
             .Where(x => x.Finalized)
             .ToListAsync();
+
         return userProfiles.Adapt<List<UserProfileDto>>();
     }
 
