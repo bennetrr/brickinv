@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>default</LangVersion>
+        <UserSecretsId>be9fde9f-76d6-4fcc-a155-ca1158a4ab43</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -32,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Bennetr.BrickInv.EmailSender\Bennetr.BrickInv.EmailSender.csproj" />
         <ProjectReference Include="..\Bennetr.RebrickableDotNet\Bennetr.RebrickableDotNet.csproj"/>
     </ItemGroup>
 </Project>
