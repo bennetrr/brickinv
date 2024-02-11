@@ -42,7 +42,7 @@ public partial class GroupController
         if (recipientUser is null) return NotFound();
 
         var message = new Message(
-            [recipientUser.Id],
+            [recipientUser.Email],
             $"{issuerUserProfile} invited you to a BrickInv group",
             $"""
                 <!doctype html>
@@ -68,6 +68,7 @@ public partial class GroupController
                 </html>
                 """
         );
+        emailSender.SendEmail(message);
 
         await context.SaveChangesAsync();
         return Created();

@@ -30,7 +30,6 @@ public class EmailSender(EmailConfiguration emailConfig) : IEmailSender
         try
         {
             client.Connect(emailConfig.Server, emailConfig.Port, true);
-            client.AuthenticationMechanisms.Remove("XOAUTH2");
             client.Authenticate(emailConfig.Username, emailConfig.Password);
 
             client.Send(mailMessage);
