@@ -12,4 +12,6 @@ public class BrickInvContext(DbContextOptions<BrickInvContext> options) : DbCont
     public DbSet<UserProfile> UserProfiles { get; set; } = default!;
 
     public DbSet<Group> Groups { get; set; } = default!;
+
+    public DbSet<GroupInvite> GroupInvites { get; set; } = default!;
 }
