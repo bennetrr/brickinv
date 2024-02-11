@@ -28,4 +28,6 @@ public class Set
     public bool ForSale { get; set; }
 
     public bool Finished { get; set; }
+
+    public Group Group { get; set; } = null!;
 }

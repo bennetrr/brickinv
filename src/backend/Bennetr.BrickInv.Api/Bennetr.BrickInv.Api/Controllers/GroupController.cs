@@ -13,13 +13,13 @@ namespace Bennetr.BrickInv.Api.Controllers;
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public class GroupController(BrickInvContext context, UserManager<IdentityUser> userManager) : ControllerBase
+public partial class GroupController(BrickInvContext context, UserManager<IdentityUser> userManager) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GroupDto>>> GetGroups()
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return new List<GroupDto>();
+        if (currentUser is null) return Unauthorized();
 
         var groups = await context.Groups
             .Where(x => x.Owner.Id == currentUser.Id || x.Members.Any(y => y.Id == currentUser.Id))
@@ -28,25 +28,25 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
         return groups.Adapt<List<GroupDto>>();
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<GroupDto>> GetGroup(string id)
+    [HttpGet("{groupId}")]
+    public async Task<ActionResult<GroupDto>> GetGroup(string groupId)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return NotFound();
+        if (currentUser is null) return Unauthorized();
 
-        var userProfile = await context.Groups
-            .Where(x => x.Id == id)
+        var group = await context.Groups
+            .Where(x => x.Id == groupId)
             .Where(x => x.Owner.Id == currentUser.Id || x.Members.Any(y => y.Id == currentUser.Id))
             .FirstAsync();
 
-        return userProfile.Adapt<GroupDto>();
+        return group.Adapt<GroupDto>();
     }
 
     [HttpPost]
     public async Task<ActionResult<GroupDto>> CreateGroup(CreateGroupRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return BadRequest();
+        if (currentUser is null) return Unauthorized();
 
         var currentUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
         if (currentUserProfile is null) return BadRequest();
@@ -71,32 +71,55 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
         );
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteGroup()
-    {
-        /*
-         * - Delete group
-         * - Delete sets and parts of these groups
-         */
-        throw new NotImplementedException();
-    }
-
-    [HttpPut]
-    public async Task<IActionResult> UpdateGroup(UpdateUserProfileRequest request)
+    [HttpDelete("{groupId}")]
+    public async Task<IActionResult> DeleteGroup(string groupId)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return NotFound();
+        if (currentUser is null) return Unauthorized();
 
-        var userProfile = await context.UserProfiles.FindAsync(currentUser.Id);
-        if (userProfile is null) return NotFound();
+        // Delete groups
+        var groupToDelete = await context.Groups
+            .Where(group => group.Id == groupId)
+            .Where(group => group.Owner.Id == currentUser.Id)
+            .FirstAsync();
 
-        userProfile.Username = request.Username;
-        userProfile.ProfileImageUri = request.ProfileImageUri;
-        userProfile.Finalized = true;
-        userProfile.Updated = DateTime.Now;
+        context.Groups.Remove(groupToDelete);
+
+        // Delete sets
+        var sets = await context.Sets
+            .Where(set => set.Group.Id == groupId)
+            .ToListAsync();
+
+        context.Sets.RemoveRange(sets);
+
+        // Delete parts
+        var parts = await context.Parts
+            .Where(part => sets.Exists(set => part.Set.Id == set.Id))
+            .ToListAsync();
+
+        context.Parts.RemoveRange(parts);
+
+        await context.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpPut("{groupId}")]
+    public async Task<IActionResult> UpdateGroup(string groupId, UpdateGroupRequest request)
+    {
+        var currentUser = await userManager.GetUserAsync(HttpContext.User);
+        if (currentUser is null) return Unauthorized();
+
+        var group = await context.Groups
+            .Where(x => x.Id == groupId)
+            .Where(x => x.Owner.Id == currentUser.Id)
+            .FirstAsync();
+
+        group.Name = request.Name;
+        group.ImageUri = request.ImageUri;
+        group.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();
 
-        return Accepted(userProfile.Adapt<UserProfileDto>());
+        return Accepted(group.Adapt<UserProfileDto>());
     }
 }
