@@ -7,12 +7,16 @@ A web application that helps to check if all parts of a LEGO set are present.
 ### Backend
 
 - [ ] Error handling and logging
+- [ ] Remove duplicated code
+  - [ ] CQRS?
 - [ ] Groups and Users
-- [ ] Space Blocks Permissions
-- [ ] Make use of ErrorHandlerMiddleware
-- [ ] Let user choose mariadb password
+  - [ ] Control permissions
+  - [ ] Delete users
 - [ ] Add 2FA and Email verification
-- [ ] User deletion
+- [ ] Improve production and development setup
+  - [ ] Better documentation
+  - [ ] Environment Variables
+  - [ ] Migrations
 
 ### Frontend
 
