@@ -1,12 +1,13 @@
+using Bennetr.BrickInv.Api;
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.EmailSender;
+using Bennetr.RebrickableDotNet;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wemogy.AspNet.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var options = new StartupOptions();
 
 // Middlewares
@@ -15,7 +16,7 @@ options.AddMiddleware<HttpsRedirectionMiddleware>();
 // Swagger
 options.AddOpenApi("v1");
 
-
+// Default setup
 builder.Services.AddDefaultSetup(options);
 
 // Database
@@ -55,11 +56,17 @@ builder.Services.Configure<IdentityOptions>(opt =>
 builder.Services.AddEndpointsApiExplorer();
 
 // Mail
-builder.Services.AddSingleton(builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>()!);
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services
+    .AddSingleton(builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>()!)
+    .AddScoped<IEmailSender, EmailSender>();
 
+// Rebrickable
+builder.Services
+    .AddSingleton(builder.Configuration.GetSection("AppConfig").Get<AppConfig>()!)
+    .AddScoped<IRebrickableClient, RebrickableClient>();
+
+// Build
 var app = builder.Build();
-
 app.UseDefaultSetup(app.Environment, options);
 
 app.MapGroup("/auth").MapIdentityApi<IdentityUser>();

@@ -7,7 +7,7 @@ using Bennetr.RebrickableDotNet.Models.Sets;
 
 namespace Bennetr.RebrickableDotNet;
 
-public class RebrickableClient
+public class RebrickableClient : IRebrickableClient
 {
     private readonly HttpClient _httpClient;
 

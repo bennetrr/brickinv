@@ -25,12 +25,12 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
         return userProfiles.Adapt<List<UserProfileDto>>();
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<UserProfileDto>> GetUserProfile(string id)
+    [HttpGet("{userId}")]
+    public async Task<ActionResult<UserProfileDto>> GetUserProfile(string userId)
     {
-        var userProfile = await context.UserProfiles.FindAsync(id);
-
+        var userProfile = await context.UserProfiles.FindAsync(userId);
         if (userProfile == null) return NotFound();
+
         return userProfile.Adapt<UserProfileDto>();
     }
 
@@ -38,7 +38,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     public async Task<ActionResult<UserProfileDto>> CreateUserProfile()
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return NotFound();
+        if (currentUser is null) return Unauthorized();
 
         var userProfile = new UserProfile
         {
@@ -61,31 +61,59 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     [HttpDelete]
     public async Task<IActionResult> DeleteUserProfile()
     {
-        /*
-         * - Delete user profile
-         * - Delete user from ASP.NET Identity
-         * - Delete groups with user as admin
-         * - Delete sets and parts of these groups
-         */
-        throw new NotImplementedException();
+        var currentUser = await userManager.GetUserAsync(HttpContext.User);
+        if (currentUser is null) return Unauthorized();
+
+        // Delete user profile
+        var currentUserProfile = await context.UserProfiles
+            .Where(x => x.Id == currentUser.Id)
+            .FirstAsync();
+
+        context.UserProfiles.Remove(currentUserProfile);
+
+        // Delete groups
+        var groups = await context.Groups
+            .Where(group => group.Owner.Id == currentUser.Id)
+            .ToListAsync();
+
+        context.Groups.RemoveRange(groups);
+
+        // Delete sets
+        var sets = await context.Sets
+            .Where(set => groups.Exists(group => set.Group.Id == group.Id))
+            .ToListAsync();
+
+        context.Sets.RemoveRange(sets);
+
+        // Delete parts
+        var parts = await context.Parts
+            .Where(part => sets.Exists(set => part.Set.Id == set.Id))
+            .ToListAsync();
+
+        context.Parts.RemoveRange(parts);
+
+        // Delete user from Identity
+        await userManager.DeleteAsync(currentUser);
+
+        await context.SaveChangesAsync();
+        return NoContent();
     }
 
     [HttpPut]
     public async Task<IActionResult> UpdateUserProfile(UpdateUserProfileRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return NotFound();
+        if (currentUser is null) return Unauthorized();
 
-        var userProfile = await context.UserProfiles.FindAsync(currentUser.Id);
-        if (userProfile is null) return NotFound();
+        var currentUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
+        if (currentUserProfile is null) return BadRequest("userProfileNotFound");
 
-        userProfile.Username = request.Username;
-        userProfile.ProfileImageUri = request.ProfileImageUri;
-        userProfile.Finalized = true;
-        userProfile.Updated = DateTime.Now;
+        currentUserProfile.Username = request.Username;
+        currentUserProfile.ProfileImageUri = request.ProfileImageUri;
+        currentUserProfile.Finalized = true;
+        currentUserProfile.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();
-
-        return Accepted(userProfile.Adapt<UserProfileDto>());
+        return Accepted(currentUserProfile.Adapt<UserProfileDto>());
     }
 }

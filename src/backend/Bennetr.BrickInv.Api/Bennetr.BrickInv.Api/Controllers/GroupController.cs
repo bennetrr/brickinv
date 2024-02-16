@@ -22,6 +22,8 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
         if (currentUser is null) return Unauthorized();
 
         var groups = await context.Groups
+            .Include(x => x.Owner)
+            .Include(x => x.Members)
             .Where(x => x.Owner.Id == currentUser.Id || x.Members.Any(y => y.Id == currentUser.Id))
             .ToListAsync();
 
@@ -35,6 +37,8 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
         if (currentUser is null) return Unauthorized();
 
         var group = await context.Groups
+            .Include(x => x.Owner)
+            .Include(x => x.Members)
             .Where(x => x.Id == groupId)
             .Where(x => x.Owner.Id == currentUser.Id || x.Members.Any(y => y.Id == currentUser.Id))
             .FirstAsync();
@@ -49,7 +53,7 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
         if (currentUser is null) return Unauthorized();
 
         var currentUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
-        if (currentUserProfile is null) return BadRequest();
+        if (currentUserProfile is null) return BadRequest("userProfileNotFound");
 
         var group = new Group
         {
@@ -104,7 +108,7 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     }
 
     [HttpPut("{groupId}")]
-    public async Task<IActionResult> UpdateGroup(string groupId, UpdateGroupRequest request)
+    public async Task<ActionResult<GroupDto>> UpdateGroup(string groupId, UpdateGroupRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -120,6 +124,26 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
 
         await context.SaveChangesAsync();
 
-        return Accepted(group.Adapt<UserProfileDto>());
+        return Accepted(group.Adapt<GroupDto>());
+    }
+
+    [HttpGet("{groupId}/invites")]
+    public async Task<ActionResult<IEnumerable<GroupInviteDto>>> GetGroupInvites(string groupId)
+    {
+        var currentUser = await userManager.GetUserAsync(HttpContext.User);
+        if (currentUser is null) return Unauthorized();
+
+        await context.Groups
+            .Where(x => x.Id == groupId)
+            .Where(x => x.Owner.Id == currentUser.Id)
+            .FirstAsync();
+
+        var groupInvites = await context.GroupInvites
+            .Include(x => x.Recipient)
+            .Include(x => x.Issuer)
+            .Where(x => x.Group.Id == groupId)
+            .ToListAsync();
+
+        return groupInvites.Adapt<List<GroupInviteDto>>();
     }
 }

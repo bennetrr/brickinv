@@ -19,4 +19,7 @@ public class Group
     public UserProfile Owner { get; set; } = null!;
 
     public List<UserProfile> Members { get; set; } = [];
+
+    [MaxLength(32)]
+    public string? RebrickableApiKey { get; set; }
 }
