@@ -13,6 +13,12 @@ public class EmailSender(EmailConfiguration emailConfig) : IEmailSender
         Send(emailMessage);
     }
 
+    public async Task SendEmailAsync(Message message)
+    {
+        var emailMessage = CreateEmailMessage(message);
+        await SendAsync(emailMessage);
+    }
+
     private MimeMessage CreateEmailMessage(Message message)
     {
         var emailMessage = new MimeMessage();
@@ -37,6 +43,22 @@ public class EmailSender(EmailConfiguration emailConfig) : IEmailSender
         finally
         {
             client.Disconnect(true);
+        }
+    }
+
+    private async Task SendAsync(MimeMessage mailMessage)
+    {
+        using var client = new SmtpClient();
+        try
+        {
+            await client.ConnectAsync(emailConfig.Server, emailConfig.Port, true);
+            await client.AuthenticateAsync(emailConfig.Username, emailConfig.Password);
+
+            await client.SendAsync(mailMessage);
+        }
+        finally
+        {
+            await client.DisconnectAsync(true);
         }
     }
 }
