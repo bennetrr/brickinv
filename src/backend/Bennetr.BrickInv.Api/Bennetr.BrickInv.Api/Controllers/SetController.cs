@@ -1,6 +1,7 @@
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Models;
+using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.RebrickableDotNet;
 using Mapster;
@@ -8,14 +9,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public partial class SetController(BrickInvContext context, UserManager<IdentityUser> userManager, IRebrickableClient rebrickable, AppConfig appConfig) : ControllerBase
+public partial class SetController(BrickInvContext context, UserManager<IdentityUser> userManager, IRebrickableClient rebrickable, IOptions<AppOptions> options) : ControllerBase
 {
+    private readonly AppOptions _options = options.Value;
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
@@ -60,7 +64,7 @@ public partial class SetController(BrickInvContext context, UserManager<Identity
 
         // Get the API key:
         // Both the user and the group can override the default API key, the user's is more important
-        var apiKey = currentUserProfile.RebrickableApiKey ?? group.RebrickableApiKey ?? appConfig.RebrickableApiKey;
+        var apiKey = currentUserProfile.RebrickableApiKey ?? group.RebrickableApiKey ?? _options.RebrickableApiKey;
 
         // Prepare the set id
         var setId = request.SetId.Trim();

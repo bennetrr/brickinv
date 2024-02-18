@@ -1,21 +1,25 @@
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Models;
+using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.Api.Requests;
-using Bennetr.BrickInv.EmailSender;
+using Bennetr.BrickInv.Api.Services.Email;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public class GroupInviteController(BrickInvContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender) : ControllerBase
+public class GroupInviteController(BrickInvContext context, UserManager<IdentityUser> userManager, IProfileEmailSender emailSender, IOptions<AppOptions> options) : ControllerBase
 {
+    private readonly AppOptions _options = options.Value;
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GroupInviteDto>>> GetGroupInvites()
     {
@@ -81,43 +85,19 @@ public class GroupInviteController(BrickInvContext context, UserManager<Identity
         };
 
         context.GroupInvites.Add(invite);
-        await context.SaveChangesAsync();
 
         // Send email
         var recipientUser = await userManager.FindByIdAsync(request.RecipientUserId);
-        if (recipientUser is null) return NotFound();
+        if (recipientUser?.Email is null) return NotFound();
 
-        var message = new Message(
-            [recipientUser.Email!],
-            $"{issuerUserProfile} invited you to a BrickInv group",
-            $"""
-                <!doctype html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8"/>
-                    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-                </head>
-                <body>
-                    <p>
-                        Hi {recipientUserProfile.Username},<br>
-                        {issuerUserProfile.Username} invited you to their group {group.Name}!<br>
-                        <br>
-                        Click the button below to join the group.
-                    </p>
-
-                    <a href="https://localhost:5173/invite/{invite.Id}/accept">
-                        Accept the invitation
-                    </a>
-
-                    <p style="font-size: 12px">
-                        The link expires 48h after the invitation was created. If you don't want to join the group, you can <a href="https://localhost:5173/invite/{invite.Id}/reject">reject the invitation</a>.
-                    </p>
-                </body>
-                </html>
-                """
+        await emailSender.SendGroupInviteEmailAsync(
+            recipientUser.Email,
+            invite,
+            $"{_options.AppBaseUrl}/invite/{invite.Id}/accept",
+            $"{_options.AppBaseUrl}/invite/{invite.Id}/reject"
         );
-        await emailSender.SendEmailAsync(message);
 
+        await context.SaveChangesAsync();
         return Created();
     }
 

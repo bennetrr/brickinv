@@ -1,6 +1,6 @@
-using Bennetr.BrickInv.Api;
 using Bennetr.BrickInv.Api.Contexts;
-using Bennetr.BrickInv.EmailSender;
+using Bennetr.BrickInv.Api.Options;
+using Bennetr.BrickInv.Api.Services.Email;
 using Bennetr.RebrickableDotNet;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
@@ -48,22 +48,26 @@ builder.Services.Configure<IdentityOptions>(opt =>
     opt.Password.RequireLowercase = false;
     opt.Password.RequireUppercase = false;
     opt.Password.RequireNonAlphanumeric = false;
-    opt.Password.RequiredLength = 6;
+    opt.Password.RequiredLength = 10;
     opt.Password.RequiredUniqueChars = 0;
 });
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 
+// Config
+builder.Services
+    .Configure<EmailOptions>(builder.Configuration.GetSection("Email"))
+    .Configure<AppOptions>(builder.Configuration.GetSection("AppConfig"));
+
 // Mail
 builder.Services
-    .AddSingleton(builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>()!)
-    .AddScoped<IEmailSender, EmailSender>();
+    .AddTransient<IGenericEmailSender, GenericEmailSender>()
+    .AddTransient<IProfileEmailSender, ProfileEmailSender>()
+    .AddTransient<IEmailSender<IdentityUser>, IdentityEmailSender>();
 
 // Rebrickable
-builder.Services
-    .AddSingleton(builder.Configuration.GetSection("AppConfig").Get<AppConfig>()!)
-    .AddScoped<IRebrickableClient, RebrickableClient>();
+builder.Services.AddTransient<IRebrickableClient, RebrickableClient>();
 
 // Build
 var app = builder.Build();

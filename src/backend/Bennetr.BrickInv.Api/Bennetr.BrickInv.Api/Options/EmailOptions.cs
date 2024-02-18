@@ -1,6 +1,6 @@
-namespace Bennetr.BrickInv.EmailSender;
+namespace Bennetr.BrickInv.Api.Options;
 
-public class EmailConfiguration
+public class EmailOptions
 {
     public string SenderAddress { get; set; } = string.Empty;
 

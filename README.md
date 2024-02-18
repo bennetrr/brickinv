@@ -6,17 +6,12 @@ A web application that helps to check if all parts of a LEGO set are present.
 
 ### Backend
 
-- [ ] Error handling and logging
-- [ ] Remove duplicated code
-  - [ ] CQRS?
-- [ ] Groups and Users
-  - [ ] Control permissions
-  - [ ] Delete users
-- [ ] Add 2FA and Email verification
-- [ ] Improve production and development setup
-  - [ ] Better documentation
-  - [ ] Environment Variables
-  - [ ] Migrations
+- Implement file storage for user and group images
+- Remove code duplication (CQRS?)
+- Write endpoint documentation
+- Improve prod and dev setup
+  - Document exposed ports, environment variables and config files
+  - Add easy way to run migrations
 
 ### Frontend
 
@@ -26,14 +21,9 @@ A web application that helps to check if all parts of a LEGO set are present.
 - [ ] Customize theme
 - [ ] Move components into own files
 
-### General
-
-- [ ] Write documentation and tests (maybe)
-
 ### Fragen
 
 - Wie funktioniert die ErrorHandlerMiddleware?
-- Controller dokumentieren (Statuscodes)?
 - ReactBase: Vererbung von styles ([Button.tsx](https://github.com/bennetrr/brickinv/blob/e123a12d34da3aa5fe2d34513cdcb9a41176ac8c/src/frontend/src/ui/atoms/button/Button.tsx#L94-L94))
 - Generell: Feedback zum Code
 

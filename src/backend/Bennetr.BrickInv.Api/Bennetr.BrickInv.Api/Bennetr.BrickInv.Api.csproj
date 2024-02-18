@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MailKit" Version="4.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1"/>
@@ -33,7 +34,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Bennetr.BrickInv.EmailSender\Bennetr.BrickInv.EmailSender.csproj" />
         <ProjectReference Include="..\Bennetr.RebrickableDotNet\Bennetr.RebrickableDotNet.csproj"/>
     </ItemGroup>
 

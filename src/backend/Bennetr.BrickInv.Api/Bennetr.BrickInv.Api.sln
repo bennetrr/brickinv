@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.BrickInv.Api", "Ben
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.RebrickableDotNet", "Bennetr.RebrickableDotNet\Bennetr.RebrickableDotNet.csproj", "{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.BrickInv.EmailSender", "Bennetr.BrickInv.EmailSender\Bennetr.BrickInv.EmailSender.csproj", "{C22F7DF5-746B-444E-A430-5AD8B46ADFD8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,10 +18,6 @@ Global
 		{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFCFFD81-96AE-4A79-8231-EEEC7860EDE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C22F7DF5-746B-444E-A430-5AD8B46ADFD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C22F7DF5-746B-444E-A430-5AD8B46ADFD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C22F7DF5-746B-444E-A430-5AD8B46ADFD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C22F7DF5-746B-444E-A430-5AD8B46ADFD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
