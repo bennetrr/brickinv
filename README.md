@@ -2,11 +2,12 @@
 
 A web application that helps to check if all parts of a LEGO set are present.
 
+Primary color: #354566
+
 ## TODOs
 
 ### Backend
 
-- Implement file storage for user and group images
 - Remove code duplication (CQRS?)
 - Write endpoint documentation
 - Improve prod and dev setup

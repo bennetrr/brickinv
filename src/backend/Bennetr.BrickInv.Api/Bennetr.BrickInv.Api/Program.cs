@@ -40,7 +40,8 @@ builder.Services
 builder.Services
     .AddAuthorization()
     .AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<IdentityContext>();
+    .AddEntityFrameworkStores<IdentityContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(opt =>
 {
@@ -50,6 +51,7 @@ builder.Services.Configure<IdentityOptions>(opt =>
     opt.Password.RequireNonAlphanumeric = false;
     opt.Password.RequiredLength = 10;
     opt.Password.RequiredUniqueChars = 0;
+    opt.SignIn.RequireConfirmedEmail = true;
 });
 
 // Swagger
@@ -62,6 +64,7 @@ builder.Services
 
 // Mail
 builder.Services
+    .AddTransient<IHtmlEmailGenerator, HtmlEmailGenerator>()
     .AddTransient<IGenericEmailSender, GenericEmailSender>()
     .AddTransient<IProfileEmailSender, ProfileEmailSender>()
     .AddTransient<IEmailSender<IdentityUser>, IdentityEmailSender>();
@@ -73,6 +76,6 @@ builder.Services.AddTransient<IRebrickableClient, RebrickableClient>();
 var app = builder.Build();
 app.UseDefaultSetup(app.Environment, options);
 
-app.MapGroup("/auth").MapIdentityApi<IdentityUser>();
+app.MapGroup("/auth").MapIdentityApi<IdentityUser>().WithTags("Identity");
 
 app.Run();
