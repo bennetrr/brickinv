@@ -16,7 +16,11 @@ namespace Bennetr.BrickInv.Api.Controllers;
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public class GroupInviteController(BrickInvContext context, UserManager<IdentityUser> userManager, IProfileEmailSender emailSender, IOptions<AppOptions> options) : ControllerBase
+public class GroupInviteController(
+    BrickInvContext context,
+    UserManager<IdentityUser> userManager,
+    IProfileEmailSender emailSender,
+    IOptions<AppOptions> options) : ControllerBase
 {
     private readonly AppOptions _options = options.Value;
 

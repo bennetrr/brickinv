@@ -30,16 +30,6 @@ public class RebrickableClient : IRebrickableClient
         };
     }
 
-    private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Authorization", $"key {apiKey}");
-
-        var result = await _httpClient.SendAsync(request);
-        result.EnsureSuccessStatusCode();
-        return await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ?? throw new InvalidOperationException();
-    }
-
     public async Task<Set> GetSetAsync(string apiKey, string setId)
     {
         return await MakeRequest<Set>(apiKey, $"sets/{setId}/");
@@ -53,5 +43,16 @@ public class RebrickableClient : IRebrickableClient
     public async Task<SetMinifigs> GetSetMinifigsAsync(string apiKey, string setId)
     {
         return await MakeRequest<SetMinifigs>(apiKey, $"sets/{setId}/minifigs/?page_size=10000"); // TODO: Pagination
+    }
+
+    private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Add("Authorization", $"key {apiKey}");
+
+        var result = await _httpClient.SendAsync(request);
+        result.EnsureSuccessStatusCode();
+        return await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ??
+               throw new InvalidOperationException();
     }
 }

@@ -1,4 +1,3 @@
-using System.Web;
 using Bennetr.BrickInv.Api.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -6,7 +5,10 @@ using static System.Web.HttpUtility;
 
 namespace Bennetr.BrickInv.Api.Services.Email;
 
-public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGenerator emailGenerator, IOptions<AppOptions> options) : IEmailSender<IdentityUser>
+public class IdentityEmailSender(
+    IGenericEmailSender emailSender,
+    IHtmlEmailGenerator emailGenerator,
+    IOptions<AppOptions> options) : IEmailSender<IdentityUser>
 {
     private readonly AppOptions _options = options.Value;
 
@@ -16,7 +18,8 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
         var userId = confirmationLinkQuery.Get("userId");
         var code = confirmationLinkQuery.Get("code");
 
-        var newConfirmationLink = $"{_options.AppBaseUrl}/confirm-email?userId={UrlEncode(userId)}&code={UrlEncode(code)}";
+        var newConfirmationLink =
+            $"{_options.AppBaseUrl}/confirm-email?userId={UrlEncode(userId)}&code={UrlEncode(code)}";
 
         await emailSender.SendEmailAsync(email, "BrickInv account confirmation",
             emailGenerator.Generate(
@@ -38,20 +41,20 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
                  </div>
                  """,
                 $"""
-                <p>
-                  If you can't click the button, copy the following link into your browser: <br>
-                  <span class="text-small">{newConfirmationLink}</span>
-                </p>
+                 <p>
+                   If you can't click the button, copy the following link into your browser: <br>
+                   <span class="text-small">{newConfirmationLink}</span>
+                 </p>
 
-                <p>
-                  The link expires in 24 hours.
-                </p>
+                 <p>
+                   The link expires in 24 hours.
+                 </p>
 
-                <p>
-                  If you didn't create an account at BrickInv, you can just ignore this email.
-                  The user who created the account will not be able to use it, and it will be deleted after some time.
-                </p>
-                """
+                 <p>
+                   If you didn't create an account at BrickInv, you can just ignore this email.
+                   The user who created the account will not be able to use it, and it will be deleted after some time.
+                 </p>
+                 """
             )
         );
     }

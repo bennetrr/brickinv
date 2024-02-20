@@ -8,7 +8,7 @@ import {
   SetDetailPage,
   SetOverviewPage
 } from '$/ui';
-import { protect, onlyUnauthenticated, redirect } from '$/utils'
+import { onlyUnauthenticated, protect, redirect } from '$/utils';
 
 const appRoutes: RouteObject[] = [
   {

@@ -16,7 +16,11 @@ namespace Bennetr.BrickInv.Api.Controllers;
 [Route("[controller]s")]
 [ApiController]
 [Authorize]
-public partial class SetController(BrickInvContext context, UserManager<IdentityUser> userManager, IRebrickableClient rebrickable, IOptions<AppOptions> options) : ControllerBase
+public partial class SetController(
+    BrickInvContext context,
+    UserManager<IdentityUser> userManager,
+    IRebrickableClient rebrickable,
+    IOptions<AppOptions> options) : ControllerBase
 {
     private readonly AppOptions _options = options.Value;
 

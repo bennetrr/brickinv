@@ -2,7 +2,8 @@ using Bennetr.BrickInv.Api.Models;
 
 namespace Bennetr.BrickInv.Api.Services.Email;
 
-public class ProfileEmailSender(IHtmlEmailGenerator emailGenerator, IGenericEmailSender emailSender) : IProfileEmailSender
+public class ProfileEmailSender(IHtmlEmailGenerator emailGenerator, IGenericEmailSender emailSender)
+    : IProfileEmailSender
 {
     public async Task SendGroupInviteEmailAsync(string email, GroupInvite invite, string acceptLink)
     {

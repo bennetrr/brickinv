@@ -1,10 +1,7 @@
-using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.BrickInv.Api.Responses;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,7 +43,8 @@ public partial class SetController
     }
 
     [HttpPut("{setId}/parts/{partId}")]
-    public async Task<ActionResult<UpdatePartResponse>> UpdatePart(string setId, string partId, UpdatePartRequest request)
+    public async Task<ActionResult<UpdatePartResponse>> UpdatePart(string setId, string partId,
+        UpdatePartRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -58,7 +56,8 @@ public partial class SetController
             .Where(x => x.Set.Group.Owner.Id == currentUser.Id || x.Set.Group.Members.Any(y => y.Id == currentUser.Id))
             .FirstAsync();
 
-        if (request.PresentCount < 0 || request.PresentCount > part.TotalCount) return BadRequest("presentCountOutOfRange");
+        if (request.PresentCount < 0 || request.PresentCount > part.TotalCount)
+            return BadRequest("presentCountOutOfRange");
 
         var oldPresentCount = part.PresentCount;
         part.PresentCount = request.PresentCount;

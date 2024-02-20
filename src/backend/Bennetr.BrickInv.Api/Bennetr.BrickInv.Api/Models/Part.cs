@@ -4,8 +4,7 @@ namespace Bennetr.BrickInv.Api.Models;
 
 public class Part
 {
-    [MaxLength(36)]
-    public string Id { get; set; } = string.Empty;
+    [MaxLength(36)] public string Id { get; set; } = string.Empty;
 
     public Set Set { get; set; } = null!;
 
@@ -13,8 +12,7 @@ public class Part
 
     public DateTime Updated { get; set; }
 
-    [MaxLength(10)]
-    public string PartId { get; set; } = string.Empty;
+    [MaxLength(10)] public string PartId { get; set; } = string.Empty;
 
     // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
     public string PartName { get; set; } = string.Empty;

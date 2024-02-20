@@ -2,6 +2,7 @@ using Bennetr.BrickInv.Api.Options;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MimeKit.Text;
 
 namespace Bennetr.BrickInv.Api.Services.Email;
 
@@ -23,7 +24,7 @@ public class GenericEmailSender(IOptions<EmailOptions> options) : IGenericEmailS
         emailMessage.From.Add(new MailboxAddress(_options.SenderName, _options.SenderAddress));
         emailMessage.To.Add(new MailboxAddress(string.Empty, toEmail));
         emailMessage.Subject = subject;
-        emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
+        emailMessage.Body = new TextPart(TextFormat.Html) { Text = htmlMessage };
 
         return emailMessage;
     }

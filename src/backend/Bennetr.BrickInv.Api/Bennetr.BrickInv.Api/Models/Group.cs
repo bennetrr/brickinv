@@ -4,8 +4,7 @@ namespace Bennetr.BrickInv.Api.Models;
 
 public class Group
 {
-    [MaxLength(36)]
-    public string Id { get; set; } = string.Empty;
+    [MaxLength(36)] public string Id { get; set; } = string.Empty;
 
     public DateTime Created { get; set; }
 
@@ -20,6 +19,5 @@ public class Group
 
     public List<UserProfile> Members { get; set; } = [];
 
-    [MaxLength(32)]
-    public string? RebrickableApiKey { get; set; }
+    [MaxLength(32)] public string? RebrickableApiKey { get; set; }
 }

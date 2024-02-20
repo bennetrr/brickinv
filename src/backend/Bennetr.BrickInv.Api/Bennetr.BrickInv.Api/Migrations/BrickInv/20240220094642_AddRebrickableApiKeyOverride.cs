@@ -1,30 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Bennetr.BrickInv.Api.Migrations.BrickInv
+namespace Bennetr.BrickInv.Api.Migrations.BrickInv;
+
+/// <inheritdoc />
+public partial class AddRebrickableApiKeyOverride : Migration
 {
     /// <inheritdoc />
-    public partial class AddRebrickableApiKeyOverride : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<string>(
-                name: "RebrickableApiKey",
-                table: "Groups",
-                type: "varchar(32)",
+        migrationBuilder.AddColumn<string>(
+                "RebrickableApiKey",
+                "Groups",
+                "varchar(32)",
                 maxLength: 32,
                 nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-        }
+            .Annotation("MySql:CharSet", "utf8mb4");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "RebrickableApiKey",
-                table: "Groups");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            "RebrickableApiKey",
+            "Groups");
     }
 }

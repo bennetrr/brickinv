@@ -25,7 +25,8 @@ Primary color: #354566
 ### Fragen
 
 - Wie funktioniert die ErrorHandlerMiddleware?
-- ReactBase: Vererbung von styles ([Button.tsx](https://github.com/bennetrr/brickinv/blob/e123a12d34da3aa5fe2d34513cdcb9a41176ac8c/src/frontend/src/ui/atoms/button/Button.tsx#L94-L94))
+- ReactBase: Vererbung von
+  styles ([Button.tsx](https://github.com/bennetrr/brickinv/blob/e123a12d34da3aa5fe2d34513cdcb9a41176ac8c/src/frontend/src/ui/atoms/button/Button.tsx#L94-L94))
 - Generell: Feedback zum Code
 
 ## Development

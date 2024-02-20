@@ -1,240 +1,232 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
+namespace Bennetr.BrickInv.Api.Migrations.BrickInv;
 
-namespace Bennetr.BrickInv.Api.Migrations.BrickInv
+/// <inheritdoc />
+public partial class InitialCreate : Migration
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
+        migrationBuilder.AlterDatabase()
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "GroupInvites",
-                columns: table => new
+        migrationBuilder.CreateTable(
+                "GroupInvites",
+                table => new
                 {
-                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                    Id = table.Column<string>("varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    GroupId = table.Column<string>(type: "varchar(36)", nullable: true)
+                    Created = table.Column<DateTime>("datetime(6)", nullable: false),
+                    GroupId = table.Column<string>("varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IssuerId = table.Column<string>(type: "varchar(36)", nullable: true)
+                    IssuerId = table.Column<string>("varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RecipientId = table.Column<string>(type: "varchar(36)", nullable: true)
+                    RecipientId = table.Column<string>("varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupInvites", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                constraints: table => { table.PrimaryKey("PK_GroupInvites", x => x.Id); })
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
+        migrationBuilder.CreateTable(
+                "Groups",
+                table => new
                 {
-                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                    Id = table.Column<string>("varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Created = table.Column<DateTime>("datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>("datetime(6)", nullable: false),
+                    Name = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ImageUri = table.Column<string>(type: "longtext", nullable: true)
+                    ImageUri = table.Column<string>("longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OwnerId = table.Column<string>(type: "varchar(36)", nullable: true)
+                    OwnerId = table.Column<string>("varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                constraints: table => { table.PrimaryKey("PK_Groups", x => x.Id); })
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Sets",
-                columns: table => new
+        migrationBuilder.CreateTable(
+                "Sets",
+                table => new
                 {
-                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                    Id = table.Column<string>("varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    SetId = table.Column<string>(type: "longtext", nullable: false)
+                    Created = table.Column<DateTime>("datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>("datetime(6)", nullable: false),
+                    SetId = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    SetName = table.Column<string>(type: "longtext", nullable: false)
+                    SetName = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ReleaseYear = table.Column<int>(type: "int", nullable: false),
-                    ImageUri = table.Column<string>(type: "longtext", nullable: false)
+                    ReleaseYear = table.Column<int>("int", nullable: false),
+                    ImageUri = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    TotalParts = table.Column<int>(type: "int", nullable: false),
-                    PresentParts = table.Column<int>(type: "int", nullable: false),
-                    ForSale = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Finished = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    GroupId = table.Column<string>(type: "varchar(36)", nullable: false)
+                    TotalParts = table.Column<int>("int", nullable: false),
+                    PresentParts = table.Column<int>("int", nullable: false),
+                    ForSale = table.Column<bool>("tinyint(1)", nullable: false),
+                    Finished = table.Column<bool>("tinyint(1)", nullable: false),
+                    GroupId = table.Column<string>("varchar(36)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sets_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
+                        "FK_Sets_Groups_GroupId",
+                        x => x.GroupId,
+                        "Groups",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
-                .Annotation("MySql:CharSet", "utf8mb4");
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "UserProfiles",
-                columns: table => new
+        migrationBuilder.CreateTable(
+                "UserProfiles",
+                table => new
                 {
-                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                    Id = table.Column<string>("varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Finalized = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Username = table.Column<string>(type: "longtext", nullable: true)
+                    Created = table.Column<DateTime>("datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>("datetime(6)", nullable: false),
+                    Finalized = table.Column<bool>("tinyint(1)", nullable: false),
+                    Username = table.Column<string>("longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProfileImageUri = table.Column<string>(type: "longtext", nullable: true)
+                    ProfileImageUri = table.Column<string>("longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RebrickableApiKey = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: true)
+                    RebrickableApiKey = table.Column<string>("varchar(32)", maxLength: 32, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    GroupId = table.Column<string>(type: "varchar(36)", nullable: true)
+                    GroupId = table.Column<string>("varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserProfiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserProfiles_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id");
+                        "FK_UserProfiles_Groups_GroupId",
+                        x => x.GroupId,
+                        "Groups",
+                        "Id");
                 })
-                .Annotation("MySql:CharSet", "utf8mb4");
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Parts",
-                columns: table => new
+        migrationBuilder.CreateTable(
+                "Parts",
+                table => new
                 {
-                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                    Id = table.Column<string>("varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    SetId = table.Column<string>(type: "varchar(36)", nullable: true)
+                    SetId = table.Column<string>("varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    PartId = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    Created = table.Column<DateTime>("datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>("datetime(6)", nullable: false),
+                    PartId = table.Column<string>("varchar(10)", maxLength: 10, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PartName = table.Column<string>(type: "longtext", nullable: false)
+                    PartName = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PartColor = table.Column<string>(type: "longtext", nullable: true)
+                    PartColor = table.Column<string>("longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ImageUri = table.Column<string>(type: "longtext", nullable: true)
+                    ImageUri = table.Column<string>("longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    TotalCount = table.Column<int>(type: "int", nullable: false),
-                    PresentCount = table.Column<int>(type: "int", nullable: false)
+                    TotalCount = table.Column<int>("int", nullable: false),
+                    PresentCount = table.Column<int>("int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Parts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Parts_Sets_SetId",
-                        column: x => x.SetId,
-                        principalTable: "Sets",
-                        principalColumn: "Id");
+                        "FK_Parts_Sets_SetId",
+                        x => x.SetId,
+                        "Sets",
+                        "Id");
                 })
-                .Annotation("MySql:CharSet", "utf8mb4");
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_GroupId",
-                table: "GroupInvites",
-                column: "GroupId");
+        migrationBuilder.CreateIndex(
+            "IX_GroupInvites_GroupId",
+            "GroupInvites",
+            "GroupId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_IssuerId",
-                table: "GroupInvites",
-                column: "IssuerId");
+        migrationBuilder.CreateIndex(
+            "IX_GroupInvites_IssuerId",
+            "GroupInvites",
+            "IssuerId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_RecipientId",
-                table: "GroupInvites",
-                column: "RecipientId");
+        migrationBuilder.CreateIndex(
+            "IX_GroupInvites_RecipientId",
+            "GroupInvites",
+            "RecipientId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Groups_OwnerId",
-                table: "Groups",
-                column: "OwnerId");
+        migrationBuilder.CreateIndex(
+            "IX_Groups_OwnerId",
+            "Groups",
+            "OwnerId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Parts_SetId",
-                table: "Parts",
-                column: "SetId");
+        migrationBuilder.CreateIndex(
+            "IX_Parts_SetId",
+            "Parts",
+            "SetId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Sets_GroupId",
-                table: "Sets",
-                column: "GroupId");
+        migrationBuilder.CreateIndex(
+            "IX_Sets_GroupId",
+            "Sets",
+            "GroupId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_UserProfiles_GroupId",
-                table: "UserProfiles",
-                column: "GroupId");
+        migrationBuilder.CreateIndex(
+            "IX_UserProfiles_GroupId",
+            "UserProfiles",
+            "GroupId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_GroupInvites_Groups_GroupId",
-                table: "GroupInvites",
-                column: "GroupId",
-                principalTable: "Groups",
-                principalColumn: "Id");
+        migrationBuilder.AddForeignKey(
+            "FK_GroupInvites_Groups_GroupId",
+            "GroupInvites",
+            "GroupId",
+            "Groups",
+            principalColumn: "Id");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_GroupInvites_UserProfiles_IssuerId",
-                table: "GroupInvites",
-                column: "IssuerId",
-                principalTable: "UserProfiles",
-                principalColumn: "Id");
+        migrationBuilder.AddForeignKey(
+            "FK_GroupInvites_UserProfiles_IssuerId",
+            "GroupInvites",
+            "IssuerId",
+            "UserProfiles",
+            principalColumn: "Id");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_GroupInvites_UserProfiles_RecipientId",
-                table: "GroupInvites",
-                column: "RecipientId",
-                principalTable: "UserProfiles",
-                principalColumn: "Id");
+        migrationBuilder.AddForeignKey(
+            "FK_GroupInvites_UserProfiles_RecipientId",
+            "GroupInvites",
+            "RecipientId",
+            "UserProfiles",
+            principalColumn: "Id");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Groups_UserProfiles_OwnerId",
-                table: "Groups",
-                column: "OwnerId",
-                principalTable: "UserProfiles",
-                principalColumn: "Id");
-        }
+        migrationBuilder.AddForeignKey(
+            "FK_Groups_UserProfiles_OwnerId",
+            "Groups",
+            "OwnerId",
+            "UserProfiles",
+            principalColumn: "Id");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserProfiles_Groups_GroupId",
-                table: "UserProfiles");
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropForeignKey(
+            "FK_UserProfiles_Groups_GroupId",
+            "UserProfiles");
 
-            migrationBuilder.DropTable(
-                name: "GroupInvites");
+        migrationBuilder.DropTable(
+            "GroupInvites");
 
-            migrationBuilder.DropTable(
-                name: "Parts");
+        migrationBuilder.DropTable(
+            "Parts");
 
-            migrationBuilder.DropTable(
-                name: "Sets");
+        migrationBuilder.DropTable(
+            "Sets");
 
-            migrationBuilder.DropTable(
-                name: "Groups");
+        migrationBuilder.DropTable(
+            "Groups");
 
-            migrationBuilder.DropTable(
-                name: "UserProfiles");
-        }
+        migrationBuilder.DropTable(
+            "UserProfiles");
     }
 }
