@@ -4,5 +4,5 @@ namespace Bennetr.BrickInv.Api.Services.Email;
 
 public interface IProfileEmailSender
 {
-    Task SendGroupInviteEmailAsync(string email, GroupInvite invite, string acceptLink, string rejectLink);
+    Task SendGroupInviteEmailAsync(string email, GroupInvite invite, string acceptLink);
 }

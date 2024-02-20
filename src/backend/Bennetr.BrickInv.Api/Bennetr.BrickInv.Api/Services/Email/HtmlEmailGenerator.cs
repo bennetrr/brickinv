@@ -74,6 +74,10 @@ public class HtmlEmailGenerator(IOptions<AppOptions> options) : IHtmlEmailGenera
                        font-size: 40px;
                      }
 
+                     .text-small {
+                       font-size: 12px;
+                     }
+
                      .footer {
                        padding: 16px;
                        background: #222d42;

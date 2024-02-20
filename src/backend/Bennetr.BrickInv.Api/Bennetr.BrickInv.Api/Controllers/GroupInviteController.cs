@@ -93,8 +93,7 @@ public class GroupInviteController(BrickInvContext context, UserManager<Identity
         await emailSender.SendGroupInviteEmailAsync(
             recipientUser.Email,
             invite,
-            $"{_options.AppBaseUrl}/invite/{invite.Id}/accept",
-            $"{_options.AppBaseUrl}/invite/{invite.Id}/reject"
+            $"{_options.AppBaseUrl}/invite/{invite.Id}/accept"
         );
 
         await context.SaveChangesAsync();

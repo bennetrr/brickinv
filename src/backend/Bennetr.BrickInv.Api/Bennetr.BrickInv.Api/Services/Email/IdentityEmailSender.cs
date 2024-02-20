@@ -2,6 +2,7 @@ using System.Web;
 using Bennetr.BrickInv.Api.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using static System.Web.HttpUtility;
 
 namespace Bennetr.BrickInv.Api.Services.Email;
 
@@ -11,13 +12,13 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
 
     public async Task SendConfirmationLinkAsync(IdentityUser user, string email, string confirmationLink)
     {
-        var confirmationLinkQuery = HttpUtility.ParseQueryString(HttpUtility.HtmlDecode(new Uri(confirmationLink).Query));
+        var confirmationLinkQuery = ParseQueryString(HtmlDecode(new Uri(confirmationLink).Query));
         var userId = confirmationLinkQuery.Get("userId");
         var code = confirmationLinkQuery.Get("code");
 
-        var newConfirmationLink = $"{_options.AppBaseUrl}/confirm-email?userId={HttpUtility.UrlEncode(userId)}&code={HttpUtility.UrlEncode(code)}";
+        var newConfirmationLink = $"{_options.AppBaseUrl}/confirm-email?userId={UrlEncode(userId)}&code={UrlEncode(code)}";
 
-        await emailSender.SendEmailAsync(email, "Brickinv account confirmation",
+        await emailSender.SendEmailAsync(email, "BrickInv account confirmation",
             emailGenerator.Generate(
                 $"""
                  <p>
@@ -39,7 +40,7 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
                 $"""
                 <p>
                   If you can't click the button, copy the following link into your browser: <br>
-                  {newConfirmationLink}
+                  <span class="text-small">{newConfirmationLink}</span>
                 </p>
 
                 <p>
@@ -57,7 +58,7 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
 
     public async Task SendPasswordResetLinkAsync(IdentityUser user, string email, string resetLink)
     {
-        await emailSender.SendEmailAsync(email, "Brickinv password reset",
+        await emailSender.SendEmailAsync(email, "BrickInv password reset",
             emailGenerator.Generate(
                 $"""
                  <p>
@@ -76,7 +77,8 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
                  """,
                 $"""
                  <p>
-                   If you can't click the button, copy the following link into your browser: {resetLink}
+                   If you can't click the button, copy the following link into your browser:
+                   <span class="text-small">{resetLink}</span>
                  </p>
 
                  <p>
@@ -84,7 +86,7 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
                  </p>
 
                  <p>
-                   If you didn't request a password request, you can ignore this email.
+                   If you didn't request a password reset, you can ignore this email.
                  </p>
                  """
             )
@@ -93,9 +95,9 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
 
     public async Task SendPasswordResetCodeAsync(IdentityUser user, string email, string resetCode)
     {
-        var resetUrl = $"{_options}/reset-password";
+        var resetLink = $"{_options.AppBaseUrl}/reset-password?email={UrlEncode(email)}&code={UrlEncode(resetCode)}";
 
-        await emailSender.SendEmailAsync(email, "Brickinv password reset",
+        await emailSender.SendEmailAsync(email, "BrickInv password reset",
             emailGenerator.Generate(
                 $"""
                  <p>
@@ -103,23 +105,19 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
                  </p>
 
                  <p>
-                   To reset your BrickInv password, click the button below and enter the code.
+                   To reset your BrickInv password, click the button below.
                  </p>
 
                  <div class="center">
-                   <a href="{resetCode}" role="button" class="button">
+                   <a href="{resetLink}" role="button" class="button">
                      Reset your password
                    </a>
-
-                   <span class="text-big">
-                    {resetCode}
-                   </span>
                  </div>
                  """,
                 $"""
                  <p>
-                   If you can't click the button, copy the following link into your browser: {resetUrl}<br>
-                   Then enter the code {resetCode}.
+                   If you can't click the button, copy the following link into your browser:<br>
+                   <span class="text-small">{resetLink}</span>
                  </p>
 
                  <p>
@@ -127,7 +125,7 @@ public class IdentityEmailSender(IGenericEmailSender emailSender, IHtmlEmailGene
                  </p>
 
                  <p>
-                   If you didn't request a password request, you can ignore this email.
+                   If you didn't request a password reset, you can ignore this email.
                  </p>
                  """
             )
