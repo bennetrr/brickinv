@@ -20,34 +20,34 @@ const App: React.FC = () => {
     if (!AuthenticationService.isAuthenticated) {
       return;
     }
-    
+
     appStore.setStore.querySets();
   }, [appStore.authenticationStore.isAuthenticated]);
 
   return (
-      <MobxProvider
-          appStore={appStore}
+    <MobxProvider
+      appStore={appStore}
+    >
+      <ReactBaseProvider
+        theme={DefaultTheme}
+        themeDependencies={{
+          useThemeModeHook: () => 'default',
+          themeDeclaration
+        }}
       >
-        <ReactBaseProvider
-            theme={DefaultTheme}
-            themeDependencies={{
-              useThemeModeHook: () => 'default',
-              themeDeclaration
-            }}
-        >
-          <RouterProvider
-              router={appRouter}
-          />
-          
-          <Toaster
-              closeButton
-              richColors
-              position="top-right"
-              style={{ top: 16, right: 16 }}
-          />
-        </ReactBaseProvider>
-      </MobxProvider>
+        <RouterProvider
+          router={appRouter}
+        />
+
+        <Toaster
+          closeButton
+          richColors
+          position="top-right"
+          style={{ top: 16, right: 16 }}
+        />
+      </ReactBaseProvider>
+    </MobxProvider>
   );
-}
+};
 
 export default observer(App);

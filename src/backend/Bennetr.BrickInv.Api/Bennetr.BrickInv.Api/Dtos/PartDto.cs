@@ -2,15 +2,15 @@ namespace Bennetr.BrickInv.Api.Dtos;
 
 public class PartDto
 {
-    public string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
     public DateTime Created { get; set; }
 
     public DateTime Updated { get; set; }
 
-    public string PartId { get; set; }
+    public string PartId { get; set; } = string.Empty;
 
-    public string PartName { get; set; }
+    public string PartName { get; set; } = string.Empty;
 
     public string? PartColor { get; set; }
 

@@ -20,6 +20,7 @@
     "@wemogy/reactbase": "^0.8.0",
     "axios": "^1.6.7",
     "debug": "^4.3.4",
+    "eslint-plugin-mobx": "^0.0.9",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",

@@ -5,9 +5,13 @@ namespace Bennetr.BrickInv.Api.Contexts;
 
 public class BrickInvContext(DbContextOptions<BrickInvContext> options) : DbContext(options)
 {
-    public DbSet<Set> Sets { get; set; } = null!;
+    public DbSet<Set> Sets { get; set; } = default!;
 
-    public DbSet<Part> Parts { get; set; } = null!;
+    public DbSet<Part> Parts { get; set; } = default!;
 
-    public DbSet<Group> Groups { get; set; } = null!;
+    public DbSet<UserProfile> UserProfiles { get; set; } = default!;
+
+    public DbSet<Group> Groups { get; set; } = default!;
+
+    public DbSet<GroupInvite> GroupInvites { get; set; } = default!;
 }

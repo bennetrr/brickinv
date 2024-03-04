@@ -4,7 +4,7 @@ import { UpdatePartRequest, UpdatePartResponse } from '$/domain/rest/requests';
 
 export default class PartService {
   public constructor(
-      private readonly axiosInstance: AxiosInstance
+    private readonly axiosInstance: AxiosInstance
   ) {
   }
 

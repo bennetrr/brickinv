@@ -6,10 +6,10 @@ import IDefaultPageTemplateProps from './IDefaultPageTemplateProps';
 
 const DefaultPageTemplate: React.FC<IDefaultPageTemplateProps> = ({}) => {
   return (
-      <StackLayout>
-        <MainNavBar/>
-        <Outlet/>
-      </StackLayout>
+    <StackLayout>
+      <MainNavBar/>
+      <Outlet/>
+    </StackLayout>
   );
 };
 

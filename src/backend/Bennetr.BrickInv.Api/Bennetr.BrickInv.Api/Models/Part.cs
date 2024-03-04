@@ -1,20 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Bennetr.BrickInv.Api.Models;
 
 public class Part
 {
-    public string Id { get; set; }
+    [MaxLength(36)] public string Id { get; set; } = string.Empty;
 
-    public Set Set { get; set; }
+    public Set Set { get; set; } = null!;
 
     public DateTime Created { get; set; }
 
     public DateTime Updated { get; set; }
 
-    public string PartId { get; set; }
+    [MaxLength(10)] public string PartId { get; set; } = string.Empty;
 
-    public string PartName { get; set; }
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public string PartName { get; set; } = string.Empty;
 
-    public string? PartColor { get; set; }
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public string? PartColor { get; set; } = string.Empty;
 
     public Uri? ImageUri { get; set; }
 

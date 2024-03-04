@@ -38,9 +38,9 @@ class AuthenticationService {
     }
 
     this.setToken(
-        accessToken,
-        refreshToken,
-        DateTime.fromISO(expiresAt)
+      accessToken,
+      refreshToken,
+      DateTime.fromISO(expiresAt)
     );
 
     if (DateTime.fromISO(expiresAt) < DateTime.now()) {
@@ -80,9 +80,9 @@ class AuthenticationService {
         log('Login successful (%i): %O', response.status, response);
 
         this.setToken(
-            response.data.accessToken,
-            response.data.refreshToken,
-            DateTime.now().plus({ seconds: response.data.expiresIn })
+          response.data.accessToken,
+          response.data.refreshToken,
+          DateTime.now().plus({ seconds: response.data.expiresIn })
         );
         this.scheduleRefresh(response.data.expiresIn);
         return 'success';
@@ -118,9 +118,9 @@ class AuthenticationService {
 
     log('Refresh successful (%i): %O', response.status, response);
     this.setToken(
-        response.data.accessToken,
-        response.data.refreshToken,
-        DateTime.now().plus({ seconds: response.data.expiresIn })
+      response.data.accessToken,
+      response.data.refreshToken,
+      DateTime.now().plus({ seconds: response.data.expiresIn })
     );
 
     this.scheduleRefresh(response.data.expiresIn);

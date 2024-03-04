@@ -40,53 +40,53 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
   }, [handleSignInClick]);
 
   return (
-      <StackLayout height100 hCenter vCenter>
-        <StackLayout width={40} gap>
-          <LabeledView label="Email Address">
-            <TextInput
-                icon="envelopeOpen"
-                autoFocus
-                value={email}
-                onChange={setEmail}
-                onKeyPress={handleEnterPress}
-                automationId="login-email-field"
-            />
-          </LabeledView>
+    <StackLayout height100 hCenter vCenter>
+      <StackLayout width={40} gap>
+        <LabeledView label="Email Address">
+          <TextInput
+            icon="envelopeOpen"
+            autoFocus
+            value={email}
+            onChange={setEmail}
+            onKeyPress={handleEnterPress}
+            automationId="login-email-field"
+          />
+        </LabeledView>
 
-          <LabeledView label="Password">
-            <TextInput
-                icon="key"
-                textContentType="password"
-                value={password}
-                onChange={setPassword}
-                onKeyPress={handleEnterPress}
-                automationId="login-password-field"
-            />
-          </LabeledView>
+        <LabeledView label="Password">
+          <TextInput
+            icon="key"
+            textContentType="password"
+            value={password}
+            onChange={setPassword}
+            onKeyPress={handleEnterPress}
+            automationId="login-password-field"
+          />
+        </LabeledView>
 
-          <Button
-              primary14
-              onPress={handleSignInClick}
-              automationId="login-signin-button"
-          >
-            Sign in
-          </Button>
+        <Button
+          primary14
+          onPress={handleSignInClick}
+          automationId="login-signin-button"
+        >
+          Sign in
+        </Button>
 
-          <Link to={'/register'}>
-            <StackLayout vCenter orientation="horizontal">
-              <Text cta>No account yet?</Text>
-              <Icon chevronRight variation2PrimaryDark/>
-            </StackLayout>
-          </Link>
+        <Link to={'/register'}>
+          <StackLayout vCenter orientation="horizontal">
+            <Text cta>No account yet?</Text>
+            <Icon chevronRight variation2PrimaryDark/>
+          </StackLayout>
+        </Link>
 
-          <Link to={'/reset-password'}>
-            <StackLayout vCenter orientation="horizontal">
-              <Text cta>Forgot your password?</Text>
-              <Icon chevronRight variation2PrimaryDark/>
-            </StackLayout>
-          </Link>
-        </StackLayout>
+        <Link to={'/reset-password'}>
+          <StackLayout vCenter orientation="horizontal">
+            <Text cta>Forgot your password?</Text>
+            <Icon chevronRight variation2PrimaryDark/>
+          </StackLayout>
+        </Link>
       </StackLayout>
+    </StackLayout>
   );
 };
 

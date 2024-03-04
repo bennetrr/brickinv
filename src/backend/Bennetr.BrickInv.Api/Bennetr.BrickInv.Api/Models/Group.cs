@@ -1,16 +1,23 @@
-using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bennetr.BrickInv.Api.Models;
 
 public class Group
 {
-    public string Id { get; set; }
+    [MaxLength(36)] public string Id { get; set; } = string.Empty;
 
     public DateTime Created { get; set; }
 
     public DateTime Updated { get; set; }
 
-    public IdentityUser Owner { get; set; }
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public string Name { get; set; } = string.Empty;
 
-    public IEnumerable<IdentityUser> Users { get; set; }
+    public Uri? ImageUri { get; set; }
+
+    public UserProfile Owner { get; set; } = null!;
+
+    public List<UserProfile> Members { get; set; } = [];
+
+    [MaxLength(32)] public string? RebrickableApiKey { get; set; }
 }
