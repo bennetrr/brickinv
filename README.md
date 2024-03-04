@@ -14,7 +14,6 @@ Primary color: #354566
   - Document exposed ports, environment variables and config files
   - Add easy way to run migrations
   - Fix deploy
-  - Use matrix strategy for arm / amd build
 
 ### Frontend
 

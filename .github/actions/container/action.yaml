@@ -29,6 +29,9 @@ inputs:
     description: Whether to push the container image to the registry
     required: true
     default: 'false'
+  platform:
+    description: The platform to build the container image for, e.g. linux/amd64, linux/arm64
+    default: linux/amd64
   wemogy-npm-server:
     description: wemogy npm proxy server
     required: false
@@ -63,7 +66,7 @@ runs:
         file: ${{ inputs.file }}
         context: ${{ inputs.context }}
         push: ${{ inputs.push }}
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ inputs.platform }}
         build-args: |
           WEMOGY_NPM_SERVER=${{ inputs.wemogy-npm-server }}
           WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
