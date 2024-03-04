@@ -2,7 +2,7 @@ name: brickinv
 
 services:
   mariadb:
-    image: mariadb:11.2.2-jammy
+    image: mariadb:11.3.2-jammy
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: 'wN%F3doRGFnh25MJ*D^N*vp*oV9ybp^zAwMkZaS%B3!yhsxv!#Kn@PCpo76zLRyu6EL#2$n8BzXpM&u*@h*kiVwY3m!5nUmf2VmMUmSVYm*bv48q2&pUKsRVe*Pe*9Yp'

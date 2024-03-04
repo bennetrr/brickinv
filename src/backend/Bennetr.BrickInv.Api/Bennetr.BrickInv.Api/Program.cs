@@ -23,14 +23,14 @@ builder.Services.AddDefaultSetup(options);
 builder.Services
     .AddDbContext<BrickInvContext>(opt => opt
         .UseMySql(builder.Configuration.GetConnectionString("BrickInvDb"),
-            new MariaDbServerVersion(new Version(11, 2, 2)))
+            new MariaDbServerVersion(new Version(11, 3, 2)))
         .LogTo(Console.WriteLine, builder.Environment.IsDevelopment() ? LogLevel.Debug : LogLevel.Warning)
         .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
         .EnableDetailedErrors(builder.Environment.IsDevelopment())
     )
     .AddDbContext<IdentityContext>(opt => opt
         .UseMySql(builder.Configuration.GetConnectionString("IdentityDb"),
-            new MariaDbServerVersion(new Version(11, 2, 2)))
+            new MariaDbServerVersion(new Version(11, 3, 2)))
         .LogTo(Console.WriteLine, builder.Environment.IsDevelopment() ? LogLevel.Debug : LogLevel.Warning)
         .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
         .EnableDetailedErrors(builder.Environment.IsDevelopment())
