@@ -5,7 +5,6 @@ inputs:
   registry-server:
     description: Container registry server
     required: false
-    default: docker.io
   registry-user:
     description: Container registry username
     required: false
@@ -14,10 +13,12 @@ inputs:
     required: false
   name:
     description: Name of the container image
-    required: true
+    required: false
+    default: 'some-image'
   version:
     description: Version of the container image (with prefix)
-    required: true
+    required: false
+    default: 'v0.0.0'
   file:
     description: Path to Dockerfile
     required: false
@@ -28,9 +29,11 @@ inputs:
   push:
     description: Whether to push the container image to the registry
     required: true
-    default: 'false'
-  platform:
-    description: The platform to build the container image for, e.g. amd64, arm64
+  docker-platform:
+    description: The platform to build the container image for, e.g. linux/amd64, linux/arm64
+    default: linux/amd64
+  dotnet-platform:
+    description: The platform to build the dotnet package for, e.g. amd64, arm64
     default: amd64
   wemogy-npm-server:
     description: wemogy npm proxy server
@@ -66,9 +69,9 @@ runs:
         file: ${{ inputs.file }}
         context: ${{ inputs.context }}
         push: ${{ inputs.push }}
-        platforms: linux/${{ inputs.platform }}
+        platforms: linux/${{ inputs.docker-platform }}
         build-args: |
           WEMOGY_NPM_SERVER=${{ inputs.wemogy-npm-server }}
           WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
           WEMOGY_NPM_PASSWORD=${{ inputs.wemogy-npm-password }}
-          TARGET_ARCH=${{ inputs.platform }}
+          DOTNET_TARGET_ARCH=${{ inputs.dotnet-platform }}

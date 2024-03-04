@@ -10,28 +10,42 @@ jobs:
   container-frontend:
     name: Build frontend container
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { docker: linux/amd64, dotnet: amd64 }
+          - { docker: linux/arm64, dotnet: arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64 }
     steps:
       - uses: actions/checkout@v4
 
       - name: Build container
         uses: ./.github/actions/container
         with:
-          name: bennetrr/brickinv-frontend
-          version: 0.0.0
           context: src/frontend
           wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
           wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
           wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
+          docker-platform: ${{ matrix.platform.docker }}
+          dotnet-platform: ${{ matrix.platform.dotnet }}
 
   container-backend:
     name: Build backend container
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { docker: linux/amd64, dotnet: amd64 }
+          - { docker: linux/arm64, dotnet: arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64 }
     steps:
       - uses: actions/checkout@v4
 
       - name: Build container
         uses: ./.github/actions/container
         with:
-          name: bennetrr/brickinv-backend
-          version: 0.0.0
           context: src/backend/Bennetr.BrickInv.Api/
+          docker-platform: ${{ matrix.platform.docker }}
+          dotnet-platform: ${{ matrix.platform.dotnet }}
