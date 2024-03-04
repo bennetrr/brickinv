@@ -64,7 +64,7 @@ runs:
           latest=false
           prefix=v
         tags: |
-          type=raw,value=${{ version }}
+          type=raw,value=${{ inputs.version }}
           type=sha
 
     - name: Set up QEMU
