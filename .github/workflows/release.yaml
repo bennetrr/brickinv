@@ -145,7 +145,7 @@ jobs:
         run: |
           ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "
             cd ${{ secrets.DEPLOY_WORKDIR }}
-            echo "${{ needs.docker-compose.outputs.docker-compose }}"
+            echo "${{ needs.docker-compose.outputs.docker-compose }}" > docker-compose.yml
             docker compose up -d
             exit
           "
