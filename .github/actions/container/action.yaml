@@ -42,6 +42,9 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
     - name: Setup buildx
       uses: docker/setup-buildx-action@v3
 
@@ -60,6 +63,7 @@ runs:
         file: ${{ inputs.file }}
         context: ${{ inputs.context }}
         push: ${{ inputs.push }}
+        platforms: linux/amd64,linux/arm64
         build-args: |
           WEMOGY_NPM_SERVER=${{ inputs.wemogy-npm-server }}
           WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
