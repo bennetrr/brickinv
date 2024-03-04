@@ -50,7 +50,7 @@ runs:
       if: ${{ inputs.push == 'true' }}
       with:
         registry: ${{ inputs.registry-server }}
-        username: ${{ inputs.registry-username }}
+        username: ${{ inputs.registry-user }}
         password: ${{ inputs.registry-password }}
 
     - name: Build ${{ inputs.push && 'and push ' }}container
