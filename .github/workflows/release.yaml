@@ -78,7 +78,10 @@ jobs:
 
   docker-compose:
     name: Update versions in docker-compose.yml
-    needs: [ setup ]
+    needs:
+      - setup
+      - container-frontend
+      - container-backend
     runs-on: ubuntu-latest
     permissions:
       contents: write
