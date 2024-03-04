@@ -69,7 +69,7 @@ runs:
         file: ${{ inputs.file }}
         context: ${{ inputs.context }}
         push: ${{ inputs.push }}
-        platforms: linux/${{ inputs.docker-platform }}
+        platforms: ${{ inputs.docker-platform }}
         build-args: |
           WEMOGY_NPM_SERVER=${{ inputs.wemogy-npm-server }}
           WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
