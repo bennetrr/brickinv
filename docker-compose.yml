@@ -21,6 +21,8 @@ services:
   backend:
     image: ghcr.io/bennetrr/brickinv-backend:0.0.0
     restart: always
+    env_file:
+      - backend.env
     networks:
       - reverse_proxy
     links:
