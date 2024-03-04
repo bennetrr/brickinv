@@ -13,6 +13,7 @@ Primary color: #354566
 - Improve prod and dev setup
   - Document exposed ports, environment variables and config files
   - Add easy way to run migrations
+  - Fix deploy
 
 ### Frontend
 
