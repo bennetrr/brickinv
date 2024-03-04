@@ -33,8 +33,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  container-frontend:
-    name: Build and push frontend container
+  build-frontend:
+    name: Build frontend containers
     needs: [ setup ]
     runs-on: ubuntu-latest
     permissions:
@@ -49,8 +49,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build and push container
-        uses: ./.github/actions/container
+      - name: Build container
+        uses: ./.github/actions/containers/build
         with:
           registry-server: ghcr.io
           registry-user: ${{ github.actor }}
@@ -63,10 +63,9 @@ jobs:
           wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
           wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
           docker-platform: ${{ matrix.platform.docker }}
-          dotnet-platform: ${{ matrix.platform.dotnet }}
 
-  container-backend:
-    name: Build and push backend container
+  build-backend:
+    name: Build backend containers
     needs: [ setup ]
     runs-on: ubuntu-latest
     permissions:
@@ -81,8 +80,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build and push container
-        uses: ./.github/actions/container
+      - name: Build container
+        uses: ./.github/actions/containers/build
         with:
           registry-server: ghcr.io
           registry-user: ${{ github.actor }}
@@ -94,12 +93,50 @@ jobs:
           docker-platform: ${{ matrix.platform.docker }}
           dotnet-platform: ${{ matrix.platform.dotnet }}
 
+  merge-frontend:
+    name: Merge frontend containers
+    needs: [ setup, build-frontend ]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Merge and push containers
+        uses: ./.github/actions/containers/merge
+        with:
+          registry-server: ghcr.io
+          registry-user: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: bennetrr/brickinv-frontend
+          version: ${{ needs.setup.outputs.next-version-name }}
+
+  merge-backend:
+    name: Merge backend containers
+    needs: [ setup, build-backend ]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Merge and push container
+        uses: ./.github/actions/containers/merge
+        with:
+          registry-server: ghcr.io
+          registry-user: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: bennetrr/brickinv-backend
+          version: ${{ needs.setup.outputs.next-version-name }}
+
   docker-compose:
     name: Update versions in docker-compose.yml
     needs:
       - setup
-      - container-frontend
-      - container-backend
+      - merge-frontend
+      - merge-backend
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -129,8 +166,8 @@ jobs:
     name: Create GitHub release
     needs:
       - setup
-      - container-frontend
-      - container-backend
+      - merge-frontend
+      - merge-backend
       - docker-compose
     runs-on: ubuntu-latest
     permissions:
@@ -150,8 +187,8 @@ jobs:
     name: Deploy to production
     needs:
       - setup
-      - container-frontend
-      - container-backend
+      - merge-frontend
+      - merge-backend
       - docker-compose
     runs-on: ubuntu-latest
     steps:
