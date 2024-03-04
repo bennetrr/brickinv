@@ -71,3 +71,4 @@ runs:
           WEMOGY_NPM_SERVER=${{ inputs.wemogy-npm-server }}
           WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
           WEMOGY_NPM_PASSWORD=${{ inputs.wemogy-npm-password }}
+          TARGET_ARCH=${{ inputs.platform }}
