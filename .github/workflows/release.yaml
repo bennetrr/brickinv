@@ -41,11 +41,11 @@ jobs:
       packages: write
       contents: read
     strategy:
-      fail-fast: false
       matrix:
         platform:
-          - amd64
-          - arm64
+          - { docker: linux/amd64, dotnet: amd64 }
+          - { docker: linux/arm64, dotnet: arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64 }
     steps:
       - uses: actions/checkout@v4
 
@@ -59,10 +59,11 @@ jobs:
           version: ${{ needs.setup.outputs.next-version-name }}
           context: src/frontend
           push: 'true'
-          platform: ${{ matrix.platform }}
           wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
           wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
           wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
+          docker-platform: ${{ matrix.platform.docker }}
+          dotnet-platform: ${{ matrix.platform.dotnet }}
 
   container-backend:
     name: Build and push backend container
@@ -72,11 +73,11 @@ jobs:
       packages: write
       contents: read
     strategy:
-      fail-fast: false
       matrix:
         platform:
-          - amd64
-          - arm64
+          - { docker: linux/amd64, dotnet: amd64 }
+          - { docker: linux/arm64, dotnet: arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64 }
     steps:
       - uses: actions/checkout@v4
 
@@ -90,7 +91,8 @@ jobs:
           version: ${{ needs.setup.outputs.next-version-name }}
           context: src/backend/Bennetr.BrickInv.Api/
           push: 'true'
-          platform: ${{ matrix.platform }}
+          docker-platform: ${{ matrix.platform.docker }}
+          dotnet-platform: ${{ matrix.platform.dotnet }}
 
   docker-compose:
     name: Update versions in docker-compose.yml
@@ -101,8 +103,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    outputs:
-      docker-compose: ${{ steps.save-docker-compose.outputs.docker-compose }}
     steps:
       - uses: actions/checkout@v4
 
@@ -164,7 +164,7 @@ jobs:
         run: |
           ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "
             cd ${{ secrets.DEPLOY_WORKDIR }}
-            echo "${{ needs.docker-compose.outputs.docker-compose }}" > docker-compose.yml
+            sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ needs.setup.outputs.next-version-name }}/g' docker-compose.yml
             docker compose up -d
             exit
           "
