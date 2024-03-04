@@ -3,6 +3,7 @@ WORKDIR /app
 EXPOSE 80
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+RUN echo $BUILDPLATFORM $TARGETPLATFORM; exit 1
 WORKDIR /src
 COPY ["Bennetr.BrickInv.Api/Bennetr.BrickInv.Api.csproj", "Bennetr.BrickInv.Api/"]
 COPY ["Bennetr.RebrickableDotNet/Bennetr.RebrickableDotNet.csproj", "Bennetr.RebrickableDotNet/"]
