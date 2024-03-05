@@ -1,8 +1,9 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime-base
 WORKDIR /app
 EXPOSE 80
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build-base
 ARG DOTNET_TARGET_ARCH
 ARG DOTNET_EF_TARGET_ARCH
 
@@ -13,18 +14,28 @@ RUN dotnet restore -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api/Bennetr.BrickInv
 
 COPY . .
 WORKDIR "/src/Bennetr.BrickInv.Api"
+
+
+FROM build-base as build-app
 RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/build
 
-ENV PATH="${PATH}:/root/.dotnet/tools"
-RUN dotnet tool install --global dotnet-ef
-RUN dotnet ef migrations bundle --runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context IdentityContext -o /app/migrations/identity-db-migration
-RUN dotnet ef migrations bundle --no-build --runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context BrickInvContext -o /app/migrations/brickinv-db-migration
 
-FROM build AS publish
+FROM build-app AS publish-app
 RUN dotnet publish -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+
+FROM build-base as build-migration
+ENV PATH="${PATH}:/root/.dotnet/tools"
+RUN dotnet tool install --global dotnet-ef
+
+RUN RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Debug
+
+RUN dotnet ef migrations bundle --no-build --runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context IdentityContext -o /app/migrations/identity-db-migration
+RUN dotnet ef migrations bundle --no-build --runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context BrickInvContext -o /app/migrations/brickinv-db-migration
+
+
+FROM runtime-base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-COPY --from=publish /app/migrations .
+COPY --from=publish-app /app/publish .
+COPY --from=build-migration /app/migrations .
 ENTRYPOINT ["dotnet", "Bennetr.BrickInv.Api.dll"]
