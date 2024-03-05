@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build container
-        uses: ./.github/actions/container
+        uses: ./.github/actions/containers/build
         with:
           context: src/frontend
           wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build container
-        uses: ./.github/actions/container
+        uses: ./.github/actions/containers/build
         with:
           context: src/backend/Bennetr.BrickInv.Api/
           docker-platform: ${{ matrix.platform.docker }}
