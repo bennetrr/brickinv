@@ -109,7 +109,7 @@ runs:
       if: ${{ inputs.push == 'true' }}
       uses: actions/upload-artifact@v4
       with:
-        name: digests-${{ env.PLATFORM_PAIR }}
+        name: digests-${{ env.REGISTRY_IMAGE }}-${{ env.PLATFORM_PAIR }}
         path: /tmp/digests/*
         if-no-files-found: error
         retention-days: 1
