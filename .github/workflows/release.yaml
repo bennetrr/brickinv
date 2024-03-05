@@ -45,6 +45,7 @@ jobs:
         platform:
           - { docker: linux/amd64, dotnet: amd64 }
           - { docker: linux/arm64, dotnet: arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64 }
     steps:
       - uses: actions/checkout@v4
 
@@ -75,6 +76,7 @@ jobs:
         platform:
           - { docker: linux/amd64, dotnet: amd64 }
           - { docker: linux/arm64, dotnet: arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64 }
     steps:
       - uses: actions/checkout@v4
 

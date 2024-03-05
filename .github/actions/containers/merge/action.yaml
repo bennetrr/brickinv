@@ -32,7 +32,7 @@ runs:
       uses: actions/download-artifact@v4
       with:
         path: /tmp/digests
-        pattern: digests-*
+        pattern: digests-${{ env.REGISTRY_IMAGE }}-*
         merge-multiple: true
 
     - name: Docker meta
