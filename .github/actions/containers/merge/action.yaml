@@ -25,14 +25,16 @@ runs:
   steps:
     - name: Prepare
       run: |
-        echo "REGISTRY_IMAGE=${{ inputs.registry-server }}/${{ inputs.name }}" >> $GITHUB_ENV
+        registry_image=${{ inputs.registry-server }}/${{ inputs.name }}
+        echo "REGISTRY_IMAGE=$registry_image" >> $GITHUB_ENV
+        echo "FULL_IMAGE_NAME=${registry_image//\//-}" >> $GITHUB_ENV
       shell: bash
 
     - name: Download digests
       uses: actions/download-artifact@v4
       with:
         path: /tmp/digests
-        pattern: digests-${{ inputs.name }}-*
+        pattern: digests-${{ env.FULL_IMAGE_NAME }}-*
         merge-multiple: true
 
     - name: Docker meta
