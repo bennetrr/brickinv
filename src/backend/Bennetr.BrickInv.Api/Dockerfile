@@ -28,7 +28,7 @@ FROM build-base as build-migration
 ENV PATH="${PATH}:/root/.dotnet/tools"
 RUN dotnet tool install --global dotnet-ef
 
-RUN RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Debug
+RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Debug
 
 RUN dotnet ef migrations bundle --no-build --runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context IdentityContext -o /app/migrations/identity-db-migration
 RUN dotnet ef migrations bundle --no-build --runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context BrickInvContext -o /app/migrations/brickinv-db-migration
