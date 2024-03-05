@@ -25,13 +25,14 @@ RUN dotnet publish -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Relea
 
 
 FROM build-base as build-migration
+WORKDIR "/src/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api"
 ENV PATH="${PATH}:/root/.dotnet/tools"
 RUN dotnet tool install --global dotnet-ef
 
 RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Debug
 
-RUN dotnet ef migrations bundle --no-build --target-runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context IdentityContext -o /app/migrations/identity-db-migration
-RUN dotnet ef migrations bundle --no-build --target-runtime $DOTNET_EF_TARGET_ARCH --project "Bennetr.BrickInv.Api.csproj" --startup-project "Bennetr.BrickInv.Api.csproj" --context BrickInvContext -o /app/migrations/brickinv-db-migration
+RUN dotnet ef migrations bundle --no-build --target-runtime $DOTNET_EF_TARGET_ARCH --context IdentityContext -o /app/migrations/identity-db-migration
+RUN dotnet ef migrations bundle --no-build --target-runtime $DOTNET_EF_TARGET_ARCH --context BrickInvContext -o /app/migrations/brickinv-db-migration
 
 
 FROM runtime-base AS final
