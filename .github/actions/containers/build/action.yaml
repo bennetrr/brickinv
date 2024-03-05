@@ -33,6 +33,9 @@ inputs:
   dotnet-platform:
     description: The platform to build the dotnet package for, e.g. amd64, arm64
     default: amd64
+  dotnet-ef-platform:
+    description: The platform to build the database migrations for, e.g. linux-x64, linux-arm64
+    default: amd64
   wemogy-npm-server:
     description: wemogy npm proxy server
     required: false
@@ -97,6 +100,7 @@ runs:
           WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
           WEMOGY_NPM_PASSWORD=${{ inputs.wemogy-npm-password }}
           DOTNET_TARGET_ARCH=${{ inputs.dotnet-platform }}
+          DOTNET_EF_TARGET_ARCH=${{ inputs.dotnet-ef-platform }}
 
     - name: Export digest
       if: ${{ inputs.push == 'true' }}
