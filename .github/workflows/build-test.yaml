@@ -23,12 +23,12 @@ jobs:
       - name: Build container
         uses: ./.github/actions/containers/build
         with:
+          push: 'false'
           context: src/frontend
           wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
           wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
           wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
           docker-platform: ${{ matrix.platform.docker }}
-          dotnet-platform: ${{ matrix.platform.dotnet }}
 
   container-backend:
     name: Build backend container
@@ -46,6 +46,7 @@ jobs:
       - name: Build container
         uses: ./.github/actions/containers/build
         with:
+          push: 'false'
           context: src/backend/Bennetr.BrickInv.Api/
           docker-platform: ${{ matrix.platform.docker }}
           dotnet-platform: ${{ matrix.platform.dotnet }}
