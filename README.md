@@ -21,17 +21,17 @@ The frontend is configurable with the `env.js` file.
 The backend is configurable with everything supported by ASP.NET.
 For development, the .NET user secret manager is recommended, for production a `.env` file.
 
-| `.env`-Name                       | `.json`-Name                  | Type     | Description                                                                          |
-|-----------------------------------|-------------------------------|----------|--------------------------------------------------------------------------------------|
-| `EMAIL__SENDER_ADDRESS`           | `Email.SenderAddress`         | `string` | Email address that the emails are sent from                                          |
-| `EMAIL__SENDER_NAME`              | `Email.SenderName`            | `string` | Name that is displayed as email sender                                               |
-| `EMAIL__SERVER`                   | `Email.Server`                | `string` | SMTP Server address                                                                  |
-| `EMAIL__PORT`                     | `Email.Port`                  | `string` | SMTP Server port                                                                     |
-| `EMAIL__USERNAME`                 | `Email.Username`              | `string` | Username to log in at the SMTP Server                                                |
-| `EMAIL__PASSWORD`                 | `Email.Password`              | `string` | Password to log in at the SMTP Server                                                |
-| `APP_CONFIG__REBRICKABLE_API_KEY` | `AppConfig.RebrickableApiKey` | `string` | API key for Rebrickable, used for retrieving information about Lego sets             |
-| `APP_CONFIG__APP_BASE_URL`        | `AppConfig.AppBaseUrl`        | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:5137` |
-| `APP_CONFIG__IMPRINT_URL`         | `AppConfig.ImprintUrl`        | `string` | URL to an imprint, used in emails                                                    |
+| `.env`-Name                    | `.json`-Name                  | Type     | Description                                                                          |
+|--------------------------------|-------------------------------|----------|--------------------------------------------------------------------------------------|
+| `Email__SenderAddress`         | `Email.SenderAddress`         | `string` | Email address that the emails are sent from                                          |
+| `Email__SenderName`            | `Email.SenderName`            | `string` | Name that is displayed as email sender                                               |
+| `Email__Server`                | `Email.Server`                | `string` | SMTP Server address                                                                  |
+| `Email__Port`                  | `Email.Port`                  | `string` | SMTP Server port                                                                     |
+| `Email__Username`              | `Email.Username`              | `string` | Username to log in at the SMTP Server                                                |
+| `Email__Password`              | `Email.Password`              | `string` | Password to log in at the SMTP Server                                                |
+| `AppConfig__RebrickableApiKey` | `AppConfig.RebrickableApiKey` | `string` | API key for Rebrickable, used for retrieving information about Lego sets             |
+| `AppConfig__AppBaseUrl`        | `AppConfig.AppBaseUrl`        | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:5137` |
+| `AppConfig__ImprintUrl`        | `AppConfig.ImprintUrl`        | `string` | URL to an imprint, used in emails                                                    |
 
 ## Development
 
