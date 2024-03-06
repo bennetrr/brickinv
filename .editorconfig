@@ -28,3 +28,8 @@ indent_style = unset
 
 [*.cs]
 indent_size = 4
+
+[src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api/Migrations/*]
+charset = unset
+indent_size = unset
+indent_style = unset
