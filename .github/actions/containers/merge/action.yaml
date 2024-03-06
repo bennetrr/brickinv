@@ -44,7 +44,6 @@ runs:
         images: ${{ env.REGISTRY_IMAGE }}
         flavor: |
           latest=false
-          prefix=v
         tags: |
           type=raw,value=${{ inputs.version }}
           type=sha

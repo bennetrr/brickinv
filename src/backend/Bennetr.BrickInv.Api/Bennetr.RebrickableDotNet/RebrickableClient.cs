@@ -52,7 +52,8 @@ public class RebrickableClient : IRebrickableClient
 
         var result = await _httpClient.SendAsync(request);
         result.EnsureSuccessStatusCode();
-        return await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ??
-               throw new InvalidOperationException();
+        return
+            await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ??
+            throw new InvalidOperationException();
     }
 }
