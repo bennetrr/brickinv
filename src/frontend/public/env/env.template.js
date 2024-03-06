@@ -3,4 +3,4 @@
  */
 window.env = window.env || {};
 
-window.env.apiBaseUrl = '{{ apiBaseUrl }}';
+window.env.apiBaseUrl = '';

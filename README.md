@@ -2,33 +2,35 @@
 
 A web application that helps to check if all parts of a LEGO set are present.
 
-Primary color: #354566
-
-## TODOs
-
-### Backend
-
-- Remove code duplication (CQRS?)
-- Write endpoint documentation
-- Improve prod and dev setup
-  - Document exposed ports, environment variables and config files
-  - Add easy way to run migrations
-  - Fix deploy
+## Configuration
 
 ### Frontend
 
-- [ ] Loading, success and error indicators
-- [ ] Error handling and logging
-- [ ] Test for and fix small errors
-- [ ] Customize theme
-- [ ] Move components into own files
+The frontend is configurable with the `env.js` file.
 
-### Fragen
+> [!CAUTION]
+> The contents of this file are available in `window.env` in the browser, so don't store any confidential information in there.
 
-- Wie funktioniert die ErrorHandlerMiddleware?
-- ReactBase: Vererbung von
-  styles ([Button.tsx](https://github.com/bennetrr/brickinv/blob/e123a12d34da3aa5fe2d34513cdcb9a41176ac8c/src/frontend/src/ui/atoms/button/Button.tsx#L94-L94))
-- Generell: Feedback zum Code
+| Name         | Type     | Description                                                                              |
+|--------------|----------|------------------------------------------------------------------------------------------|
+| `apiBaseUrl` | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:5105` |
+
+### Backend
+
+The backend is configurable with everything supported by ASP.NET.
+For development, the .NET user secret manager is recommended, for production a `.env` file.
+
+| `.env`-Name                       | `.json`-Name                  | Type     | Description                                                                          |
+|-----------------------------------|-------------------------------|----------|--------------------------------------------------------------------------------------|
+| `EMAIL__SENDER_ADDRESS`           | `Email.SenderAddress`         | `string` | Email address that the emails are sent from                                          |
+| `EMAIL__SENDER_NAME`              | `Email.SenderName`            | `string` | Name that is displayed as email sender                                               |
+| `EMAIL__SERVER`                   | `Email.Server`                | `string` | SMTP Server address                                                                  |
+| `EMAIL__PORT`                     | `Email.Port`                  | `string` | SMTP Server port                                                                     |
+| `EMAIL__USERNAME`                 | `Email.Username`              | `string` | Username to log in at the SMTP Server                                                |
+| `EMAIL__PASSWORD`                 | `Email.Password`              | `string` | Password to log in at the SMTP Server                                                |
+| `APP_CONFIG__REBRICKABLE_API_KEY` | `AppConfig.RebrickableApiKey` | `string` | API key for Rebrickable, used for retrieving information about Lego sets             |
+| `APP_CONFIG__APP_BASE_URL`        | `AppConfig.AppBaseUrl`        | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:5137` |
+| `APP_CONFIG__IMPRINT_URL`         | `AppConfig.ImprintUrl`        | `string` | URL to an imprint, used in emails                                                    |
 
 ## Development
 
@@ -37,80 +39,89 @@ Primary color: #354566
 - `dotnet-sdk@8`
 - `node@21`
 - `pnpm`
+- `docker`
 
-### Install dependencies
+### Setup
 
-In `src/frontend`:
+Install frontend dependencies:
 
 ```bash
+# working directory: src/frontend
 pnpm install
 ```
 
-In `src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api`
+Install backend dependencies:
 
 ```bash
+# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
 dotnet restore
 ```
 
-### Run development server with local API
+### Run development server against local API
 
-In repository root:
+Start database:
 
 ```bash
+# working directory: repository root
 docker run -d \
   --name brickinv-mariadb-dev \
   --publish 3306:3306 \
   --env 'MARIADB_ROOT_PASSWORD=3gEju5UGRPbSbJ$r#wvYDn$g%6ryH5' \
   --volume brickinv-mariadb-dev:/var/lib/mysql \
   --volume ./setup.sql:/docker-entrypoint-initdb.d/setup.sql \
-  mariadb:11.2.2-jammy
+  mariadb:11.3.2-jammy
 ```
 
 > [!NOTE]
-> If you change the password or the port in the command above, you need to update the `appsettings.Development.json`
-> file!
+> If you change the password or the port in the command above,
+> you need to update the `appsettings.Development.json` file!
 
-In `src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api`
+To configure the backend, use the [.NET User Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=windows#secret-manager) with the options from the [Configuration](#backend) section.
+
+Then, start the backend:
 
 ```bash
+# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
 dotnet run --launch-profile http
 ```
 
-In `src/frontend`:
+The backend is exposed at `http://localhost:5105`
 
-Copy `public/env/env.template.js` to `public/env/env.local.js` and replace `{{ apiBaseUrl }}`
-with `http://localhost:5105` (or the URL of your local API).
+To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.local.js` and replace the empty strings with your own values.
+The configuration fields are documented in the [Configuration](#frontend) section.
 
-Then run:
+To start the frontend, run:
 
 ```bash
+# working directory: src/frontend
 pnpm dev:local
 ```
 
 ### Run development server with production API
 
-In `src/frontend`:
+To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.prod.js` and replace the empty strings with your own values.
+The configuration fields are documented in the [Configuration](#frontend) section.
 
-Copy `public/env/env.template.js` to `public/env/env.prod.js` and replace `{{ apiBaseUrl }}` with the URL of your
-production API.
-
-Then run:
+To start the frontend, run:
 
 ```bash
+# working directory: src/frontend
 pnpm dev:prod
 ```
 
 ## Production
 
-### Run the production build
+### Setup
 
-Download the following files:
+Download the following files from the [latest release branch](https://github.com/bennetrr/brickinv/tree/release/v2.0):
 
 - `docker-compose.yml`
 - `setup.sql`
-- `src/frontend/public/env/env.template.js`
+- `src/frontend/public/env/env.template.js` as `env.js`
+- `backend.env`
 
-Rename `env.template.js` to `env.js` and replace `{{ apiBaseUrl }}` with the URL of your production API.
+Replace the empty strings in the `env.js` and `backend.env` files with your own values.
+The configuration fields are documented in the [Configuration](#configuration) section.
 
 Then start the containers by running:
 
@@ -118,17 +129,19 @@ Then start the containers by running:
 docker compose up -d
 ```
 
-Frontend and backend will be exposed into the `reverse_proxy` network.
-The data is saved in the named volume `brickinv_mariadb`.
+### Connections
 
-## Resources
+All services are exposed into the `reverse_proxy` network.
+The frontend is available under `brickinv-frontend-1:80`, the backend under `brickinv-backend-1:80`.
 
-- https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-8.0&tabs=visual-studio
-- https://learn.microsoft.com/en-us/aspnet/identity/overview/getting-started/introduction-to-aspnet-identity
-- https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-8.0
-- https://github.com/wemogy/libs-infrastructure-database
-- https://github.com/wemogy/libs-cqrs
-- https://github.com/wemogy/libs-aspnet
+The application data is saved in the named volume `brickinv_mariadb`.
 
-- https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-8.0&tabs=visual-studio
+### Database migration
 
+After the installation and after updates with database model changes,
+the database migration scripts need to be executed to apply the changes to your database.
+These scripts are shipped with the container. You can execute them with the following command:
+
+```bash
+docker compose exec backend sh -c './identity-db-migration && ./brickinv-db-migration'
+```
