@@ -102,35 +102,35 @@ public class IdentityEmailSender(
 
         await emailSender.SendEmailAsync(email, "BrickInv password reset",
             emailGenerator.Generate(
-               $"""
-               <p>
-                 Hi!
-               </p>
+                $"""
+                <p>
+                  Hi!
+                </p>
 
-               <p>
-                 To reset your BrickInv password, click the button below.
-               </p>
+                <p>
+                  To reset your BrickInv password, click the button below.
+                </p>
 
-               <div class="center">
-                 <a href="{resetLink}" role="button" class="button">
-                   Reset your password
-                 </a>
-               </div>
-               """,
-               $"""
-               <p>
-                 If you can't click the button, copy the following link into your browser:<br>
-                 <span class="text-small">{resetLink}</span>
-               </p>
+                <div class="center">
+                  <a href="{resetLink}" role="button" class="button">
+                    Reset your password
+                  </a>
+                </div>
+                """,
+                $"""
+                <p>
+                  If you can't click the button, copy the following link into your browser:<br>
+                  <span class="text-small">{resetLink}</span>
+                </p>
 
-               <p>
-                 The link expires in 24 hours.
-               </p>
+                <p>
+                  The link expires in 24 hours.
+                </p>
 
-               <p>
-                 If you didn't request a password reset, you can ignore this email.
-               </p>
-               """
+                <p>
+                  If you didn't request a password reset, you can ignore this email.
+                </p>
+                """
             )
         );
     }
