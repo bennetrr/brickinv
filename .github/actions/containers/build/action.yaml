@@ -14,11 +14,9 @@ inputs:
   name:
     description: Name of the container image
     required: false
-    default: 'some-image'
   version:
     description: Version of the container image (with prefix)
     required: false
-    default: 'v0.0.0'
   file:
     description: Path to Dockerfile
     required: false
@@ -34,6 +32,9 @@ inputs:
     default: linux/amd64
   dotnet-platform:
     description: The platform to build the dotnet package for, e.g. amd64, arm64
+    default: amd64
+  dotnet-ef-platform:
+    description: The platform to build the database migrations for, e.g. linux-x64, linux-arm64
     default: amd64
   wemogy-npm-server:
     description: wemogy npm proxy server
@@ -61,11 +62,11 @@ runs:
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
+      if: ${{ inputs.push == 'true' }}
       with:
         images: ${{ env.REGISTRY_IMAGE }}
         flavor: |
           latest=false
-          prefix=v
         tags: |
           type=raw,value=${{ inputs.version }}
           type=sha
@@ -88,9 +89,9 @@ runs:
       id: build
       uses: docker/build-push-action@v5
       with:
-        labels: ${{ steps.meta.outputs.labels }}
+        labels: ${{ steps.meta.outputs.labels || '' }}
         outputs: |
-          type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=${{ inputs.push }}
+          ${{ inputs.push == 'true' && 'type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true' || '' }}
         file: ${{ inputs.file }}
         context: ${{ inputs.context }}
         platforms: ${{ inputs.docker-platform }}
@@ -99,6 +100,7 @@ runs:
           WEMOGY_NPM_USER=${{ inputs.wemogy-npm-user }}
           WEMOGY_NPM_PASSWORD=${{ inputs.wemogy-npm-password }}
           DOTNET_TARGET_ARCH=${{ inputs.dotnet-platform }}
+          DOTNET_EF_TARGET_ARCH=${{ inputs.dotnet-ef-platform }}
 
     - name: Export digest
       if: ${{ inputs.push == 'true' }}

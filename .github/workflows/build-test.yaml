@@ -14,21 +14,21 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - { docker: linux/amd64, dotnet: amd64 }
-          - { docker: linux/arm64, dotnet: arm64 }
-          - { docker: linux/arm64/v8, dotnet: arm64 }
+          - { docker: linux/amd64 }
+          - { docker: linux/arm64 }
+          - { docker: linux/arm64/v8 }
     steps:
       - uses: actions/checkout@v4
 
       - name: Build container
-        uses: ./.github/actions/container
+        uses: ./.github/actions/containers/build
         with:
+          push: 'false'
           context: src/frontend
           wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
           wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
           wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
           docker-platform: ${{ matrix.platform.docker }}
-          dotnet-platform: ${{ matrix.platform.dotnet }}
 
   container-backend:
     name: Build backend container
@@ -37,15 +37,17 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - { docker: linux/amd64, dotnet: amd64 }
-          - { docker: linux/arm64, dotnet: arm64 }
-          - { docker: linux/arm64/v8, dotnet: arm64 }
+          - { docker: linux/amd64, dotnet: amd64, dotnet-ef: linux-x64 }
+          - { docker: linux/arm64, dotnet: arm64, dotnet-ef: linux-arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64, dotnet-ef: linux-arm64 }
     steps:
       - uses: actions/checkout@v4
 
       - name: Build container
-        uses: ./.github/actions/container
+        uses: ./.github/actions/containers/build
         with:
+          push: 'false'
           context: src/backend/Bennetr.BrickInv.Api/
           docker-platform: ${{ matrix.platform.docker }}
           dotnet-platform: ${{ matrix.platform.dotnet }}
+          dotnet-ef-platform: ${{ matrix.platform.dotnet-ef }}
