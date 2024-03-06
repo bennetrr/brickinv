@@ -9,7 +9,8 @@ A web application that helps to check if all parts of a LEGO set are present.
 The frontend is configurable with the `env.js` file.
 
 > [!CAUTION]
-> The contents of this file are available in `window.env` in the browser, so don't store any confidential information in there.
+> The contents of this file are available in `window.env` in the browser,
+> so don't store any confidential information in there.
 
 | Name         | Type     | Description                                                                              |
 |--------------|----------|------------------------------------------------------------------------------------------|
@@ -76,7 +77,9 @@ docker run -d \
 > If you change the password or the port in the command above,
 > you need to update the `appsettings.Development.json` file!
 
-To configure the backend, use the [.NET User Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=windows#secret-manager) with the options from the [Configuration](#backend) section.
+To configure the backend, use
+the [.NET User Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=windows#secret-manager)
+with the options from the [Configuration](#backend) section.
 
 Then, start the backend:
 
@@ -87,7 +90,8 @@ dotnet run --launch-profile http
 
 The backend is exposed at `http://localhost:5105`
 
-To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.local.js` and replace the empty strings with your own values.
+To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.local.js` and
+replace the empty strings with your own values.
 The configuration fields are documented in the [Configuration](#frontend) section.
 
 To start the frontend, run:
@@ -99,7 +103,8 @@ pnpm dev:local
 
 ### Run development server with production API
 
-To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.prod.js` and replace the empty strings with your own values.
+To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.prod.js` and
+replace the empty strings with your own values.
 The configuration fields are documented in the [Configuration](#frontend) section.
 
 To start the frontend, run:
