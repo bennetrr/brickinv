@@ -12,7 +12,8 @@ public class Part
 
     public DateTime Updated { get; set; }
 
-    [MaxLength(10)] public string PartId { get; set; } = string.Empty;
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public string PartId { get; set; } = string.Empty;
 
     // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
     public string PartName { get; set; } = string.Empty;
