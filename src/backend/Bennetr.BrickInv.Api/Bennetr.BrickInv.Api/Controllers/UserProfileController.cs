@@ -53,7 +53,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
 
         return CreatedAtAction(
             nameof(GetUserProfile),
-            new { id = userProfile.Id },
+            new { userId = userProfile.Id },
             userProfile.Adapt<UserProfileDto>()
         );
     }

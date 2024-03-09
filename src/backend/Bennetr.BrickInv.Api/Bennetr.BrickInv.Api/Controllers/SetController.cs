@@ -130,7 +130,7 @@ public partial class SetController(
 
         return CreatedAtAction(
             nameof(GetSet),
-            new { id = set.Id },
+            new { setId = set.Id },
             set.Adapt<SetDto>()
         );
     }
