@@ -96,8 +96,7 @@ public class GroupInviteController(
 
         await emailSender.SendGroupInviteEmailAsync(
             recipientUser.Email,
-            invite,
-            $"{_options.AppBaseUrl}/invite/{invite.Id}/accept"
+            invite
         );
 
         await context.SaveChangesAsync();
