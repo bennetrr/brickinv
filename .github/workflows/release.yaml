@@ -146,7 +146,7 @@ jobs:
 
       - name: Update versions in docker-compose.yml
         run: |
-          sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ needs.setup.outputs.next-version-name }}/g' docker-compose.yml
+          sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):v[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ needs.setup.outputs.next-version-name }}/g' docker-compose.yml
 
       - name: Save docker-compose.yml
         id: save-docker-compose
@@ -202,7 +202,7 @@ jobs:
         run: |
           ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "
             cd ${{ secrets.DEPLOY_WORKDIR }}
-            sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ needs.setup.outputs.next-version-name }}/g' docker-compose.yml
+            sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):v[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ needs.setup.outputs.next-version-name }}/g' docker-compose.yml
             docker compose up -d
             exit
           "
