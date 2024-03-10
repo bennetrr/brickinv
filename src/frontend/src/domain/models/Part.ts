@@ -1,5 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { MSTDateTime } from '$/utils';
+import { MSTDateTime } from '../../utils';
 import { DateTime } from 'luxon';
 
 const Part = types.model('Part', {

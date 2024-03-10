@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { StackLayout, Text } from '$/ui/atoms';
+import { StackLayout, Text } from '../../../../atoms';
 import ISetCardProps from './ISetCardProps';
 
 const SetCard: React.FC<ISetCardProps> = ({ set }) => {

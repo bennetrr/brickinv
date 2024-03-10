@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useAppStore } from '$/domain';
+import { useAppStore } from '../../domain';
 import redirect from './RedirectRoute';
 
 interface IProtectedRouteProps {

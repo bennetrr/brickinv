@@ -1,7 +1,7 @@
 import { RenderIf } from '@wemogy/reactbase';
 import useClipboard from 'react-use-clipboard';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Icon, LabeledView, LoadingIndicator, StackLayout, Text, toast } from '$/ui';
+import { Icon, LabeledView, LoadingIndicator, StackLayout, Text, toast } from '../../atoms';
 import IValueFieldProps from './IValueFieldProps';
 
 const ValueField: React.FC<IValueFieldProps> = ({

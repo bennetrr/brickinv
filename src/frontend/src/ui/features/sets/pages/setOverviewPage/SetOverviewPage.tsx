@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
 import { RenderIf, useModalStore } from '@wemogy/reactbase';
-import { useAppStore } from '$/domain';
-import { Button, StackLayout, Text, TextInput, toast } from '$/ui/atoms';
-import { AddSetModal, IAddSetModalParameters, SetCard } from '$/ui/features/sets/organisms';
+import { useAppStore } from '../../../../../domain';
+import { Button, StackLayout, Text, TextInput, toast } from '../../../..//atoms';
+import { AddSetModal, IAddSetModalParameters, SetCard } from '../../organisms';
 import ISetOverviewPageProps from './ISetOverviewPageProps';
 
 const SetOverviewPage: React.FC<ISetOverviewPageProps> = ({}) => {

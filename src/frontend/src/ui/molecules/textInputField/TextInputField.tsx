@@ -1,5 +1,5 @@
 import React from 'react';
-import { LabeledView, TextInput } from '$/ui';
+import { LabeledView, TextInput } from '../../atoms';
 import ITextInputFieldProps from './ITextInputFieldProps';
 
 const TextInputField: React.FC<ITextInputFieldProps> = ({

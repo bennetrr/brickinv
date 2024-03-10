@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthenticationService } from '$/domain';
-import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '$/ui/atoms';
+import { AuthenticationService } from '../../../../../domain';
+import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '../../../../atoms';
 import ILoginPageProps from './ILoginPageProps';
 
 const LoginPage: React.FC<ILoginPageProps> = ({}) => {

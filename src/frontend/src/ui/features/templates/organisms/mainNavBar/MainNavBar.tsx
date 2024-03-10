@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, StackLayout, Text } from '$/ui/atoms';
+import { Icon, StackLayout, Text } from '../../../../atoms';
 import IMainNavBarProps from './IMainNavBarProps';
 
 const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {

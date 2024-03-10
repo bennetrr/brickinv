@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { axiosInstance } from '$/domain/axiosInstance';
+import { axiosInstance } from '../axiosInstance';
 import { PartService, SetService } from './services';
 
 class ApiServiceFactory {

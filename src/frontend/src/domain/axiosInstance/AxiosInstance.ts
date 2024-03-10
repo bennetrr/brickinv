@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AuthenticationService } from '$/domain/authentication';
+import { AuthenticationService } from '../authentication';
 
 export const axiosInstance = axios.create({
   validateStatus: () => true,

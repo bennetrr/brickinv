@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackLayout, Text } from '$/ui/atoms';
+import { StackLayout, Text } from '../../../../atoms';
 import IUnexpectedErrorProps from './IUnexpectedErrorProps';
 
 const UnexpectedError: React.FC<IUnexpectedErrorProps> = () => {

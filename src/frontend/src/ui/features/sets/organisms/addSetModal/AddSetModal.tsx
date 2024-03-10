@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useModalStore } from '@wemogy/reactbase';
-import { useAppStore } from '$/domain';
-import { Button, Checkbox, Modal, StackLayout, Text, TextInput } from '$/ui/atoms';
+import { useAppStore } from '../../../../../domain';
+import { Button, Checkbox, Modal, StackLayout, Text, TextInput } from '../../../../atoms';
 import IAddSetModalProps from './IAddSetModalProps';
 import IAddSetModalParameters from './IAddSetModalParameters';
 

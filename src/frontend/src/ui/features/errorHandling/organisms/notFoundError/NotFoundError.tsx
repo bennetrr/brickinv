@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackLayout, Text } from '$/ui/atoms';
+import { StackLayout, Text } from '../../../../atoms';
 import INotFoundErrorProps from './INotFoundErrorProps';
 
 const NotFoundError: React.FC<INotFoundErrorProps> = () => {

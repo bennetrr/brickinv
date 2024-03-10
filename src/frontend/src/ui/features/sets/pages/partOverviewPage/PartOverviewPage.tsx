@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { RenderIf } from '@wemogy/reactbase';
 import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
-import { useAppStore } from '$/domain';
-import { Icon, StackLayout, Text } from '$/ui/atoms';
+import { useAppStore } from '../../../../../domain';
+import { Icon, StackLayout, Text } from '../../../../atoms';
 import IPartOverviewPageProps from './IPartOverviewPageProps';
 
 const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {

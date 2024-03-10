@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppStore } from '$/domain';
-import { Button, Checkbox, StackLayout, Text } from '$/ui/atoms';
-import { ValueField } from '$/ui/molecules';
+import { useAppStore } from '../../../../../domain';
+import { Button, Checkbox, StackLayout, Text } from '../../../../atoms';
+import { ValueField } from '../../../../molecules';
 import ISetDetailPageProps from './ISetDetailPageProps';
 
 const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {

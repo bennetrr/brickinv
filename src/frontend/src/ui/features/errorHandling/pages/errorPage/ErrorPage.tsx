@@ -3,10 +3,10 @@ import React from 'react';
 import { ErrorResponse, isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { RenderIf } from '@wemogy/reactbase';
-import { useAppStore } from '$/domain';
-import { StackLayout } from '$/ui/atoms';
-import { MainNavBar } from '$/ui/features/templates';
-import { NotFoundError, UnexpectedError } from '$/ui/features/errorHandling/organisms';
+import { useAppStore } from '../../../../../domain';
+import { StackLayout } from '../../../../atoms';
+import { MainNavBar } from '../../../templates';
+import { NotFoundError, UnexpectedError } from '../../organisms';
 import IErrorPageProps from './IErrorPageProps';
 
 const log = debug('App.Ui.ErrorPage');

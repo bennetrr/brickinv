@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { observer, Provider as MobxProvider } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ReactBaseProvider, Toaster } from '@wemogy/reactbase';
-import { DefaultTheme, themeDeclaration } from '$/ui';
-import { AppStore, AuthenticationService, setupAxiosInstance } from '$/domain';
+import { DefaultTheme, themeDeclaration } from './ui';
+import { AppStore, AuthenticationService, setupAxiosInstance } from './domain';
 import appRoutes from './App.routes.tsx';
 
 setupAxiosInstance(window.env.apiBaseUrl);

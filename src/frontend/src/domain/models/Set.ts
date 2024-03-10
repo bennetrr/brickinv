@@ -1,5 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { MSTDateTime } from '$/utils';
+import { MSTDateTime } from '../../utils';
 import { IPart } from './Part';
 
 function compareParts(a: IPart, b: IPart): 1 | 0 | -1 {

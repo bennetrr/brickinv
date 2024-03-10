@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { StackLayout } from '@wemogy/reactbase';
-import { MainNavBar } from '$/ui/features/templates/organisms';
+import { MainNavBar } from '../../organisms';
 import IDefaultPageTemplateProps from './IDefaultPageTemplateProps';
 
 const DefaultPageTemplate: React.FC<IDefaultPageTemplateProps> = ({}) => {

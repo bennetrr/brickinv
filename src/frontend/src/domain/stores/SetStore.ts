@@ -1,15 +1,15 @@
 import { applySnapshot, flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { Flow } from '@wemogy/reactbase';
 import { AxiosResponse } from 'axios';
-import { toast } from '$/ui';
-import { IPart, IPartSnapshotIn, ISet, ISetSnapshotIn, Part, Set } from '$/domain/models/';
+import { toast } from '../../ui';
+import { IPart, IPartSnapshotIn, ISet, ISetSnapshotIn, Part, Set } from '../models';
 import {
   ApiServiceFactory,
   CreateSetRequest,
   UpdatePartRequest,
   UpdatePartResponse,
   UpdateSetRequest
-} from '$/domain/rest';
+} from '../rest';
 
 const SetStore = types.model('SetStore', {
   items: types.array(Set)

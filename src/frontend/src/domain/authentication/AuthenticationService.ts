@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import _ from 'lodash';
 import debug from 'debug';
-import { axiosInstance } from '$/domain/axiosInstance';
+import { axiosInstance } from '../axiosInstance';
 
 const log = debug('App.AuthenticationService');
 
