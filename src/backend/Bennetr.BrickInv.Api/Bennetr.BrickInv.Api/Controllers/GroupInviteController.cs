@@ -112,16 +112,12 @@ public class GroupInviteController(
 
         var invite = await context.GroupInvites
             .Include(x => x.Recipient)
+            .Include(x => x.Group)
             .Where(x => x.Id == inviteId)
             .Where(x => x.Recipient.Id == currentUser.Id)
             .FirstAsync();
 
-        var group = await context.Groups
-            .Include(x => x.Members)
-            .Where(x => x.Id == invite.Group.Id)
-            .FirstAsync();
-
-        group.Members.Add(invite.Recipient);
+        invite.Group.Members.Add(invite.Recipient);
         context.GroupInvites.Remove(invite);
 
         await context.SaveChangesAsync();
