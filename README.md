@@ -81,6 +81,14 @@ To configure the backend, use
 the [.NET User Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=windows#secret-manager)
 with the options from the [Configuration](#backend) section.
 
+Before starting the backend, you need to run the database migration scripts:
+
+```bash
+# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
+dotnet ef database update --context BrickInvContext
+dotnet ef database update --context IdentityContext
+```
+
 Then, start the backend:
 
 ```bash
