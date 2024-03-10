@@ -10,9 +10,6 @@ using Wemogy.AspNet.Startup;
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
 
-// Middlewares
-options.AddMiddleware<HttpsRedirectionMiddleware>();
-
 // Swagger
 options.AddOpenApi("v1");
 
