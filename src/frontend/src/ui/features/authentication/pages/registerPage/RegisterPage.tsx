@@ -8,25 +8,28 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
-  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUpClick = useCallback(async () => {
+    if (!email && !password) {
+      return;
+    }
+
+    setIsLoading(true);
     const status = await AuthenticationService.register(email, password);
 
     if (status === 'success') {
       toast.success('Account created');
       navigate('/login');
-      return;
-    }
-
-    if (status === 'error') {
+    } else if (status === 'error') {
       toast.error('Login failed: Unexpected error. Please try again later!');
-      return;
+    } else {
+      status.forEach(toast.error);
     }
 
-    status.forEach(toast.error);
-  }, [email, /*username,*/ password, navigate]);
+    setIsLoading(false);
+  }, [email, password, navigate]);
 
   const handleEnterPress = useCallback(async (key: string) => {
     if (key !== 'Enter') {
@@ -75,6 +78,7 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
           primary14
           onPress={handleSignUpClick}
           automationId="register-signup-button"
+          isLoading={isLoading}
         >
           Sign up
         </Button>

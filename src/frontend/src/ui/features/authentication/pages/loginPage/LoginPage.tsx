@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AuthenticationService } from '../../../../../domain';
 import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '../../../../atoms';
 import ILoginPageProps from './ILoginPageProps';
@@ -9,26 +9,30 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignInClick = useCallback(async () => {
     if (!email && !password) {
       return;
     }
 
+    setIsLoading(true);
     const status = await AuthenticationService.login(email, password);
 
     switch (status) {
       case 'success':
         toast.success('Login successful');
         navigate('/');
-        return;
+        break;
       case 'unauthorized':
         toast.error('Email address or password are incorrect!');
-        return;
+        break;
       default:
         toast.error('Login failed: Unexpected error. Please try again later!');
-        return;
+        break;
     }
+
+    setIsLoading(false);
   }, [email, password, navigate]);
 
   const handleEnterPress = useCallback(async (key: string) => {
@@ -68,6 +72,7 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
           primary14
           onPress={handleSignInClick}
           automationId="login-signin-button"
+          isLoading={isLoading}
         >
           Sign in
         </Button>
