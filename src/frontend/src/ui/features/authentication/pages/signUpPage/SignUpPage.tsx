@@ -1,10 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthenticationService } from '../../../../../domain';
+import { AuthenticationService, InvalidCredentialsError } from '../../../../../domain';
 import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '../../../../atoms';
-import IRegisterPageProps from './IRegisterPageProps';
+import ISignUpPageProps from './ISignUpPageProps.ts';
+import _ from 'lodash';
+import ISignInPageNavigationState from '../signInPage/ISignInPageNavigationState.ts';
 
-const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
+const SignUpPage: React.FC<ISignUpPageProps> = ({}) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -12,23 +14,32 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUpClick = useCallback(async () => {
-    if (!email && !password) {
+    if (_.isEmpty(email) || _.isEmpty(password)) {
+      toast.error('Both email address and password need to be filled out.');
       return;
     }
 
     setIsLoading(true);
-    const status = await AuthenticationService.register(email, password);
+    try {
+      await AuthenticationService.signUp(email, password);
+    } catch (exc) {
+      if (exc instanceof InvalidCredentialsError) {
+        exc.messages.forEach(x => toast.error(x.message));
+        return;
+      }
 
-    if (status === 'success') {
-      toast.success('Account created');
-      navigate('/login');
-    } else if (status === 'error') {
-      toast.error('Login failed: Unexpected error. Please try again later!');
-    } else {
-      status.forEach(toast.error);
+      toast.error('Unexpected error. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
 
-    setIsLoading(false);
+    const navigationState: ISignInPageNavigationState = {
+      message: {
+        type: 'success',
+        text: 'Account was successfully created, you can now sign in.'
+      }
+    }
+    navigate('/sign-in', { state: navigationState });
   }, [email, password, navigate]);
 
   const handleEnterPress = useCallback(async (key: string) => {
@@ -49,19 +60,9 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
             value={email}
             onChange={setEmail}
             onKeyPress={handleEnterPress}
-            automationId="register-email-field"
+            automationId="sign-up-input-email"
           />
         </LabeledView>
-
-        {/*<LabeledView label="Your name">
-            <TextInput
-                icon="user"
-                value={username}
-                onChange={setUsername}
-                onKeyPress={handleEnterPress}
-                automationId="register-username-field"
-            />
-          </LabeledView>*/}
 
         <LabeledView label="Password">
           <TextInput
@@ -70,28 +71,35 @@ const RegisterPage: React.FC<IRegisterPageProps> = ({}) => {
             value={password}
             onChange={setPassword}
             onKeyPress={handleEnterPress}
-            automationId="register-password-field"
+            automationId="sign-up-input-password"
           />
         </LabeledView>
 
         <Button
           primary14
           onPress={handleSignUpClick}
-          automationId="register-signup-button"
+          automationId="sign-up-button-confirm"
           isLoading={isLoading}
         >
           Sign up
         </Button>
 
-        <Link to={'/login'}>
+        <Link to="/sign-in">
           <StackLayout vCenter orientation="horizontal">
-            <Text cta>Already have an account?</Text>
+            <Text cta>Already have an account? Sign in</Text>
             <Icon chevronRight variation2PrimaryDark/>
           </StackLayout>
         </Link>
+
+        <Link to={'/reset-password'}>
+        <StackLayout vCenter orientation="horizontal">
+          <Text cta>Forgot your password?</Text>
+          <Icon chevronRight variation2PrimaryDark/>
+        </StackLayout>
+      </Link>
       </StackLayout>
     </StackLayout>
   );
 };
 
-export default RegisterPage;
+export default SignUpPage;

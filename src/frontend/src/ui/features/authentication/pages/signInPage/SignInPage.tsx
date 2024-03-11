@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AuthenticationService } from '../../../../../domain';
+import { AuthenticationService, UnauthorizedError } from '../../../../../domain';
 import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '../../../../atoms';
-import ILoginPageProps from './ILoginPageProps';
-import ILoginPageHistoryState from './ILoginPageHistoryState';
+import ISignInPageProps from './ISignInPageProps.ts';
+import ISignInPageNavigationState from './ISignInPageNavigationState.ts';
+import _ from 'lodash';
 
-const LoginPage: React.FC<ILoginPageProps> = ({}) => {
+const SignInPage: React.FC<ISignInPageProps> = ({}) => {
   const navigate = useNavigate();
-  const navigationState = useLocation().state as ILoginPageHistoryState | null;
+  const navigationState = useLocation().state as ISignInPageNavigationState | null;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,27 +35,25 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
   }, []);
 
   const handleSignInClick = useCallback(async () => {
-    if (!email && !password) {
+    if (_.isEmpty(email) || _.isEmpty(password)) {
       return;
     }
 
     setIsLoading(true);
-    const status = await AuthenticationService.login(email, password);
+    try {
+      await AuthenticationService.signIn(email, password);
+    } catch (exc) {
+      if (exc instanceof UnauthorizedError) {
+        toast.error('Email address or password are incorrect.');
+        return;
+      }
 
-    switch (status) {
-      case 'success':
-        toast.success('Login successful');
-        navigate(navigationState?.redirectPath || '/');
-        break;
-      case 'unauthorized':
-        toast.error('Email address or password are incorrect!');
-        break;
-      default:
-        toast.error('Login failed: Unexpected error. Please try again later!');
-        break;
+      toast.error('Login failed: Unexpected error. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
 
-    setIsLoading(false);
+    navigate(navigationState?.redirectPath || '/');
   }, [email, password, navigate]);
 
   const handleEnterPress = useCallback(async (key: string) => {
@@ -99,9 +98,9 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
           Sign in
         </Button>
 
-        <Link to={'/register'}>
+        <Link to={'/sign-up'}>
           <StackLayout vCenter orientation="horizontal">
-            <Text cta>No account yet?</Text>
+            <Text cta>No account yet? Sign up now</Text>
             <Icon chevronRight variation2PrimaryDark/>
           </StackLayout>
         </Link>
@@ -117,4 +116,4 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
   );
 };
 
-export default LoginPage;
+export default SignInPage;

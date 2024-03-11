@@ -6,10 +6,10 @@ import {
   ForgotPasswordPage,
   GroupDetailPage,
   GroupOverviewPage,
-  LoginPage,
+  SignInPage,
   PartOverviewPage,
   PasswordResetPage,
-  RegisterPage,
+  SignUpPage,
   SetDetailPage,
   SetOverviewPage, SettingsPage
 } from './ui';
@@ -19,8 +19,8 @@ const appRoutes: RouteObject[] = [
   {
     errorElement: <ErrorPage/>,
     children: [
-      { path: '/login', element: onlyUnauthenticated(<LoginPage/>) },
-      { path: '/register', element: onlyUnauthenticated(<RegisterPage/>) },
+      { path: '/sign-in', element: onlyUnauthenticated(<SignInPage/>) },
+      { path: '/sign-up', element: onlyUnauthenticated(<SignUpPage/>) },
       { path: '/confirm-email', element: <EmailConfirmationPage/> },
       { path: '/forgot-password', element: <ForgotPasswordPage/> },
       { path: '/reset-password', element: <PasswordResetPage/> },

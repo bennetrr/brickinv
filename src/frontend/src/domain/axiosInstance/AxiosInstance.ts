@@ -10,7 +10,7 @@ export const axiosInstance = axios.create({
   }
 });
 
-AuthenticationService.addTokenChangeHandler(token => {
+AuthenticationService.registerTokenChangeHandler(token => {
   axiosInstance.defaults.headers.common.Authorization = token ? `Bearer ${token}` : undefined;
 });
 

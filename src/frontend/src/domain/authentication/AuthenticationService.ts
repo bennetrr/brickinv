@@ -2,22 +2,35 @@ import { DateTime } from 'luxon';
 import _ from 'lodash';
 import debug from 'debug';
 import { axiosInstance } from '../axiosInstance';
+import {
+  IInvalidCredentialsErrorMessage,
+  InvalidCredentialsError,
+  UnauthorizedError,
+  UnexpectedHttpError
+} from '../exceptions';
 
 const log = debug('App.AuthenticationService');
 
-type OnTokenChangeCallback = (token: string | undefined) => void;
+export type OnTokenChangeCallback = (token: string | undefined) => void;
 
 class AuthenticationService {
-  private _accessToken: string | undefined;
   private _refreshToken: string | undefined;
   private _expiresAt: DateTime | undefined;
   private _refreshTimeoutId: NodeJS.Timeout | undefined;
   private _onTokenChangeCallbacks: OnTokenChangeCallback[] = [];
 
+  private _accessToken: string | undefined;
+
+  /**
+   * Get the access token.
+   */
   public get accessToken(): string | undefined {
     return this._accessToken;
   }
 
+  /**
+   * Return whether a user is authenticated.
+   */
   public get isAuthenticated(): boolean {
     if (!this._accessToken || !this._expiresAt) {
       return false;
@@ -26,13 +39,16 @@ class AuthenticationService {
     return this._expiresAt >= DateTime.local();
   }
 
-  public initialize(): void {
+  /**
+   * Initialize the authentication service by trying to retrieve the token from the local storage and refresh the token.
+   */
+  public async initialize(): Promise<void> {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     const expiresAt = localStorage.getItem('expiresAt');
 
     if (!accessToken || !refreshToken || !expiresAt) {
-      this.logout();
+      this.signOut();
       return;
     }
 
@@ -42,41 +58,55 @@ class AuthenticationService {
       DateTime.fromISO(expiresAt)
     );
 
-    if (DateTime.fromISO(expiresAt) < DateTime.now()) {
-      void this.refresh();
-      return;
-    }
-
-    this.scheduleRefresh(DateTime.fromISO(expiresAt).diffNow('seconds').seconds);
+    await this.refresh();
   }
 
-  public async register(email: string, password: string): Promise<'success' | 'error' | string[]> {
+  /**
+   * Create an account with the given credentials.
+   *
+   * @param email The email address of the user.
+   * @param password The password of the user.
+   * @throws InvalidCredentialsError If the credentials were invalid.
+   * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
+   */
+  public async signUp(email: string, password: string): Promise<void> {
     const response = await axiosInstance.post('/auth/register', { email, password });
 
     switch (response.status) {
       case 200:
-        log('Registration successful (%i): %O', response.status, response);
-        return 'success';
+        log('Sign-up successful (%i): %O', response.status, response);
+        return;
       case 400:
-        log('Registration failed (%i): %O', response.status, response);
+        log('Sign-up failed (%i): %O', response.status, response);
 
-        const errors: string[] = [];
-        for (const errorElement in (response.data.errors as object)) {
-          errors.push(response.data.errors[errorElement]);
+        const errors = response.data.errors as { [key: string]: string };
+        const errorMessages: IInvalidCredentialsErrorMessage[] = [];
+
+        for (const errorElement in errors) {
+          errorMessages.push({ id: errorElement, message: errors[errorElement] });
         }
-        return errors;
+
+        throw new InvalidCredentialsError(errorMessages);
       default:
-        log('Registration successful (%i): %O', response.status, response);
-        return 'error';
+        log('Sign-up failed (%i): %O', response.status, response);
+        throw new UnexpectedHttpError();
     }
   }
 
-  public async login(email: string, password: string): Promise<'success' | 'unauthorized' | 'error'> {
+  /**
+   * Sign in with the given credentials.
+   *
+   * @param email The email address of the user.
+   * @param password The password of the user.
+   * @throws UnauthorizedError If the credentials were invalid.
+   * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
+   */
+  public async signIn(email: string, password: string): Promise<void> {
     const response = await axiosInstance.post('/auth/login', { email, password });
 
     switch (response.status) {
       case 200:
-        log('Login successful (%i): %O', response.status, response);
+        log('Sign-in successful (%i): %O', response.status, response);
 
         this.setToken(
           response.data.accessToken,
@@ -84,34 +114,67 @@ class AuthenticationService {
           DateTime.now().plus({ seconds: response.data.expiresIn })
         );
         this.scheduleRefresh(response.data.expiresIn);
-        return 'success';
+        return;
       case 401:
-        log('Login failed (%i): %O', response.status, response);
-        return 'unauthorized';
+        log('Sign-in failed (%i): %O', response.status, response);
+        throw new UnauthorizedError();
       default:
-        log('Login failed (%i): %O', response.status, response);
-        return 'error';
+        log('Sign-in failed (%i): %O', response.status, response);
+        throw new UnexpectedHttpError();
     }
   }
 
-  public logout(): void {
+  /**
+   * Sign the current user out by removing the tokens.
+   */
+  public signOut(): void {
     this.setToken(undefined, undefined, undefined);
   }
 
-  public addTokenChangeHandler(callback: OnTokenChangeCallback): void {
+  /**
+   * Register a callback function that is executed whenever the access token changes.
+   */
+  public registerTokenChangeHandler(callback: OnTokenChangeCallback): void {
     this._onTokenChangeCallbacks.push(callback);
   }
 
-  public removeTokenChangeHandler(callback: OnTokenChangeCallback): void {
+  /**
+   * Unregister a callback function that is registered.
+   */
+  public unregisterTokenChangeHandler(callback: OnTokenChangeCallback): void {
     _.remove<OnTokenChangeCallback>(this._onTokenChangeCallbacks, callback);
   }
 
+  /**
+   * Confirm the user's email address by sending the code to the API.
+   *
+   * @param userId The user's ID.
+   * @param code The code sent to the user per email.
+   * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
+   */
+  public async confirmEmail(userId: string, code: string): Promise<void> {
+    const response = await axiosInstance.get('/auth/confirmEmail', { params: { userId, code } });
+
+    if (response.status === 200) {
+      log('Email confirmation successful (%i): %O', response.status, response);
+      return;
+    }
+
+    log('Email confirmation failed (%i): %O', response.status, response);
+    throw new UnexpectedHttpError();
+  }
+
+  /**
+   * Refresh the access token.
+   *
+   * @private
+   */
   private async refresh(): Promise<void> {
     const response = await axiosInstance.post('/auth/refresh', { refreshToken: this._refreshToken });
 
     if (response.status !== 200) {
       log('Refresh failed (%i): %O', response.status, response);
-      this.logout();
+      this.signOut();
       return;
     }
 
@@ -126,7 +189,7 @@ class AuthenticationService {
   }
 
   /**
-   * Schedules a refresh of the access token.
+   * Schedule a refresh of the access token in the given time.
    *
    * @param timeout The timeout in seconds.
    * @private
@@ -135,39 +198,39 @@ class AuthenticationService {
     this._refreshTimeoutId = setTimeout(() => this.refresh(), timeout * 1000);
   }
 
-  private setToken(accessToken: string | undefined, refreshToken: string | undefined, expiresAt: DateTime | undefined): void {
+  /**
+   * Set the tokens to the new values. If at least one of the values is `undefined`, the user is logged out.
+   *
+   * @private
+   */
+  private setToken(accessToken?: string, refreshToken?: string, expiresAt?: DateTime): void {
     this._accessToken = accessToken;
     this._refreshToken = refreshToken;
     this._expiresAt = expiresAt;
 
-    if (!!this._accessToken && !!this._refreshToken && !!this._expiresAt) {
-      log('New token expires at %s', this._expiresAt!.toISO());
-
-      localStorage.setItem('accessToken', this._accessToken);
-      localStorage.setItem('refreshToken', this._refreshToken);
-      localStorage.setItem('expiresAt', this._expiresAt.toISO()!);
-    } else {
+    if (!this._accessToken || !this._refreshToken || !this._expiresAt) {
       log('Logged out');
 
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('expiresAt');
-      clearTimeout(this._refreshTimeoutId!);
+
+      clearTimeout(this._refreshTimeoutId);
+    } else {
+      const expiresAtIso = this._expiresAt.toISO();
+      if (!expiresAtIso) {
+        this.signOut();
+        return;
+      }
+
+      log('New token expires at %s', expiresAtIso);
+
+      localStorage.setItem('accessToken', this._accessToken);
+      localStorage.setItem('refreshToken', this._refreshToken);
+      localStorage.setItem('expiresAt', expiresAtIso);
     }
 
     this._onTokenChangeCallbacks.forEach(callback => callback(accessToken));
-  }
-
-  public async confirmEmail(userId: string, code: string): Promise<boolean> {
-    const response = await axiosInstance.get('/auth/confirmEmail', { params: { userId, code } })
-
-    if (response.status === 200) {
-      log('Email confirmation successful');
-      return true;
-    }
-
-    log('Email confirmation failed (%i): %O', response.status, response);
-    return false;
   }
 }
 

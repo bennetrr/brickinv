@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { LoadingIndicator, StackLayout, Text } from '../../../../atoms';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AuthenticationService } from '../../../../../domain/';
-import ILoginPageHistoryState from '../loginPage/ILoginPageHistoryState.ts';
+import ISignInPageNavigationState from '../signInPage/ISignInPageNavigationState.ts';
 
 const EmailConfirmationPage: React.FC<IEmailConfirmationPageProps> = ({}) => {
   const navigate = useNavigate();
@@ -15,36 +15,36 @@ const EmailConfirmationPage: React.FC<IEmailConfirmationPageProps> = ({}) => {
 
   useEffect(() => {
     (async () => {
-      const state = await (async () : Promise<ILoginPageHistoryState> => {
+      const state = await (async () : Promise<ISignInPageNavigationState> => {
         if (!userId || !code) {
           return {
             message: {
               type: 'error',
-              text: 'Invalid confirmation link. Please use the link from the email'
+              text: 'Invalid confirmation link. Please use the link from the email.'
             }
           };
         }
 
-        const confirmationSuccessful = await AuthenticationService.confirmEmail(userId, code);
-
-        if (!confirmationSuccessful) {
+        try {
+          await AuthenticationService.confirmEmail(userId, code);
+        } catch (exc) {
           return {
             message: {
               type: 'error',
-              text: 'Email confirmation failed: Unexpected error'
+              text: 'Email confirmation failed: Unexpected error. Please try again later.'
             }
-          };
+          }
         }
 
         return {
           message: {
           type: 'success',
-          text: 'Email confirmation successful. You can now log in'
+          text: 'Email confirmation successful. You can now log in.'
             }
         };
       })();
 
-      navigate('/login', { state } satisfies { state: ILoginPageHistoryState });
+      navigate('/sign-in', { state } satisfies { state: ISignInPageNavigationState });
     })();
   }, []);
 
