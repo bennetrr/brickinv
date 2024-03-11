@@ -69,7 +69,7 @@ const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
       <StackLayout>
         <Button
           navButton
-          icon={'chevronRight'}
+          icon="chevronRight"
           onPress={() => navigate('parts')}
         >
           Parts

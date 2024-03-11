@@ -26,7 +26,7 @@ const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
 
       <StackLayout stretch/>
 
-      <Link to={'/settings'}>
+      <Link to="/settings">
         <Icon icon="user" variation3GreyLight/>
       </Link>
     </StackLayout>
