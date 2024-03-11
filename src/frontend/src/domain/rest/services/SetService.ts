@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { ISetSnapshotIn } from '$/domain/models';
-import { CreateSetRequest, UpdateSetRequest } from '$/domain/rest/requests';
+import { ISetSnapshotIn } from '../../models';
+import { CreateSetRequest, UpdateSetRequest } from '../requests';
 
 export default class SetService {
   public constructor(

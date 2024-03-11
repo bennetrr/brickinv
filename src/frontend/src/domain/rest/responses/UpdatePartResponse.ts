@@ -1,4 +1,4 @@
-import { IPartSnapshotIn, ISetSnapshotIn } from '$/domain/models';
+import { IPartSnapshotIn, ISetSnapshotIn } from '../../models';
 
 export default class UpdatePartResponse {
   constructor(

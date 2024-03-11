@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { IPartSnapshotIn } from '$/domain/models';
-import { UpdatePartRequest, UpdatePartResponse } from '$/domain/rest/requests';
+import { IPartSnapshotIn } from '../../models';
+import { UpdatePartRequest, UpdatePartResponse } from '../requests';
 
 export default class PartService {
   public constructor(
