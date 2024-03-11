@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useAppStore } from '../../domain';
-import redirect from './RedirectRoute';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ISignInPageNavigationState } from '../../ui/';
 
 interface IProtectedRouteProps {
   element: ReactElement;
@@ -8,9 +9,11 @@ interface IProtectedRouteProps {
 
 const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ element }) => {
   const { authenticationStore } = useAppStore();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   if (!authenticationStore.isAuthenticated) {
-    return redirect('/sign-in');
+    navigate('/sign-in', { state: { redirectPath: pathname } } satisfies { state: ISignInPageNavigationState });
   }
 
   return element;
