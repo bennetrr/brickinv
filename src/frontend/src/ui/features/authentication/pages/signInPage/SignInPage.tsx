@@ -74,7 +74,7 @@ const SignInPage: React.FC<ISignInPageProps> = ({}) => {
             value={email}
             onChange={setEmail}
             onKeyPress={handleEnterPress}
-            automationId="login-email-field"
+            automationId="sign-in-input-email"
           />
         </LabeledView>
 
@@ -85,28 +85,28 @@ const SignInPage: React.FC<ISignInPageProps> = ({}) => {
             value={password}
             onChange={setPassword}
             onKeyPress={handleEnterPress}
-            automationId="login-password-field"
+            automationId="sign-in-input-password"
           />
         </LabeledView>
 
         <Button
           primary14
           onPress={handleSignInClick}
-          automationId="login-signin-button"
+          automationId="sign-in-button-confirm"
           isLoading={isLoading}
         >
           Sign in
         </Button>
 
         <Link to={'/sign-up'}>
-          <StackLayout vCenter orientation="horizontal">
+          <StackLayout vCenter orientation="horizontal" automationId="sign-in-link-sign-up">
             <Text cta>No account yet? Sign up now</Text>
             <Icon chevronRight variation2PrimaryDark/>
           </StackLayout>
         </Link>
 
-        <Link to={'/reset-password'}>
-          <StackLayout vCenter orientation="horizontal">
+        <Link to={'/forgot-password'}>
+          <StackLayout vCenter orientation="horizontal" automationId="sign-in-link-forgot-password">
             <Text cta>Forgot your password?</Text>
             <Icon chevronRight variation2PrimaryDark/>
           </StackLayout>
