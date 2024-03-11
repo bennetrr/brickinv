@@ -165,6 +165,44 @@ class AuthenticationService {
   }
 
   /**
+   * Request a password reset email to be sent to the given email address.
+   *
+   * @param email The user's email.
+   * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
+   */
+  public async requestPasswordReset(email: string): Promise<void> {
+    const response = await axiosInstance.post('/auth/forgotPassword', { email });
+
+    if (response.status === 200) {
+      log('Password reset request successful (%i): %O', response.status, response);
+      return;
+    }
+
+    log('Password reset request failed (%i): %O', response.status, response);
+    throw new UnexpectedHttpError();
+  }
+
+  /**
+   * Reset the password for the given user using the information that the user received via email.
+   *
+   * @param email The user's ID.
+   * @param resetCode The reset code from the email.
+   * @param newPassword The new password.
+   * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
+   */
+  public async resetPassword(email: string, resetCode: string, newPassword: string): Promise<void> {
+    const response = await axiosInstance.post('/auth/resetPassword', { email, resetCode, newPassword });
+
+    if (response.status === 200) {
+      log('Password reset successful (%i): %O', response.status, response);
+      return;
+    }
+
+    log('Password reset failed (%i): %O', response.status, response);
+    throw new UnexpectedHttpError();
+  }
+
+  /**
    * Refresh the access token.
    *
    * @private

@@ -15,7 +15,7 @@ const EmailConfirmationPage: React.FC<IEmailConfirmationPageProps> = ({}) => {
 
   useEffect(() => {
     (async () => {
-      const state = await (async () : Promise<ISignInPageNavigationState> => {
+      const state = await (async (): Promise<ISignInPageNavigationState> => {
         if (!userId || !code) {
           return {
             message: {
@@ -33,14 +33,14 @@ const EmailConfirmationPage: React.FC<IEmailConfirmationPageProps> = ({}) => {
               type: 'error',
               text: 'Email confirmation failed: Unexpected error. Please try again later.'
             }
-          }
+          };
         }
 
         return {
           message: {
-          type: 'success',
-          text: 'Email confirmation successful. You can now log in.'
-            }
+            type: 'success',
+            text: 'Email confirmation successful. You can now sign in.'
+          }
         };
       })();
 
