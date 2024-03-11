@@ -1,15 +1,37 @@
-import { Link, useNavigate } from 'react-router-dom';
 import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthenticationService } from '../../../../../domain';
 import { Button, Icon, LabeledView, StackLayout, Text, TextInput, toast } from '../../../../atoms';
 import ILoginPageProps from './ILoginPageProps';
+import ILoginPageHistoryState from './ILoginPageHistoryState';
 
 const LoginPage: React.FC<ILoginPageProps> = ({}) => {
   const navigate = useNavigate();
+  const navigationState = useLocation().state as ILoginPageHistoryState | null;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!navigationState || !navigationState.message) {
+      return;
+    }
+
+    const { type, text } = navigationState.message;
+
+    switch (type) {
+      case 'error':
+        toast.error(text);
+        break;
+      case 'info':
+        toast.information(text);
+        break;
+      case 'success':
+        toast.success(text);
+        break;
+    }
+  }, []);
 
   const handleSignInClick = useCallback(async () => {
     if (!email && !password) {
@@ -22,7 +44,7 @@ const LoginPage: React.FC<ILoginPageProps> = ({}) => {
     switch (status) {
       case 'success':
         toast.success('Login successful');
-        navigate('/');
+        navigate(navigationState?.redirectPath || '/');
         break;
       case 'unauthorized':
         toast.error('Email address or password are incorrect!');

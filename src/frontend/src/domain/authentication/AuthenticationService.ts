@@ -8,12 +8,11 @@ const log = debug('App.AuthenticationService');
 type OnTokenChangeCallback = (token: string | undefined) => void;
 
 class AuthenticationService {
+  private _accessToken: string | undefined;
   private _refreshToken: string | undefined;
   private _expiresAt: DateTime | undefined;
   private _refreshTimeoutId: NodeJS.Timeout | undefined;
   private _onTokenChangeCallbacks: OnTokenChangeCallback[] = [];
-
-  private _accessToken: string | undefined;
 
   public get accessToken(): string | undefined {
     return this._accessToken;
@@ -157,6 +156,18 @@ class AuthenticationService {
     }
 
     this._onTokenChangeCallbacks.forEach(callback => callback(accessToken));
+  }
+
+  public async confirmEmail(userId: string, code: string): Promise<boolean> {
+    const response = await axiosInstance.get('/auth/confirmEmail', { params: { userId, code } })
+
+    if (response.status === 200) {
+      log('Email confirmation successful');
+      return true;
+    }
+
+    log('Email confirmation failed (%i): %O', response.status, response);
+    return false;
   }
 }
 
