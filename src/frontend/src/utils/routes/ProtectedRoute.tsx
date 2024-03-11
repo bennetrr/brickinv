@@ -10,7 +10,7 @@ const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ element }) => {
   const { authenticationStore } = useAppStore();
 
   if (!authenticationStore.isAuthenticated) {
-    return redirect('/login');
+    return redirect('/sign-in');
   }
 
   return element;

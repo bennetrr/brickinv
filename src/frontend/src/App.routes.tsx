@@ -11,7 +11,9 @@ import {
   PasswordResetPage,
   SignUpPage,
   SetDetailPage,
-  SetOverviewPage, SettingsPage
+  SetOverviewPage,
+  SettingsPage,
+  AcceptGroupInvitePage
 } from './ui';
 import { onlyUnauthenticated, protect, redirect } from './utils';
 
@@ -24,7 +26,7 @@ const appRoutes: RouteObject[] = [
       { path: '/confirm-email', element: <EmailConfirmationPage/> },
       { path: '/forgot-password', element: <ForgotPasswordPage/> },
       { path: '/reset-password', element: <PasswordResetPage/> },
-      { path: '/invite/:inviteId/accept', element: protect(<PasswordResetPage/>) },
+      { path: '/invite/:inviteId/accept', element: protect(<AcceptGroupInvitePage/>) },
       {
         element: protect(<DefaultPageTemplate/>),
         children: [
