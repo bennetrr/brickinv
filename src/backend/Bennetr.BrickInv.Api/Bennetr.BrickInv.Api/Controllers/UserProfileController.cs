@@ -33,6 +33,15 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
         return userProfile.Adapt<UserProfileDto>();
     }
 
+    [HttpGet("current")]
+    public async Task<ActionResult<UserProfileDto>> GetCurrentUserProfile()
+    {
+        var currentUser = await userManager.GetUserAsync(HttpContext.User);
+        if (currentUser is null) return Unauthorized();
+
+        return await GetUserProfile(currentUser.Id);
+    }
+
     [HttpPost]
     public async Task<ActionResult<UserProfileDto>> CreateCurrentUserProfile(CreateUserProfileRequest request)
     {
