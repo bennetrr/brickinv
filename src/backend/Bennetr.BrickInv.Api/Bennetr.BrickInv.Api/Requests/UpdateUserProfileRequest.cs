@@ -5,4 +5,6 @@ public class UpdateUserProfileRequest
     public string Username { get; set; } = string.Empty;
 
     public Uri? ProfileImageUri { get; set; }
+
+    public string? RebrickableApiKey { get; set; }
 }

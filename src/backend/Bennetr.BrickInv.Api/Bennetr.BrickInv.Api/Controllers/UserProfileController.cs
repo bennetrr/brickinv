@@ -122,6 +122,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
 
         currentUserProfile.Username = request.Username;
         currentUserProfile.ProfileImageUri = request.ProfileImageUri;
+        currentUserProfile.RebrickableApiKey = request.RebrickableApiKey;
         currentUserProfile.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();

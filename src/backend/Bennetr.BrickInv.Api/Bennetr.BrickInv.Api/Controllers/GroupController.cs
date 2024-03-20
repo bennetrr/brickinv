@@ -120,6 +120,7 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
 
         group.Name = request.Name;
         group.ImageUri = request.ImageUri;
+        group.RebrickableApiKey = request.RebrickableApiKey;
         group.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();
