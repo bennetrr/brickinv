@@ -75,9 +75,28 @@ public partial class SetController(
         setId = setId.Contains('-') ? setId : $"{setId}-1";
 
         // Get the set from Rebrickable
-        var rebrickableSet = await rebrickable.GetSetAsync(apiKey, setId);
-        var rebrickableParts = await rebrickable.GetSetPartsAsync(apiKey, setId);
-        var rebrickableMinifigs = await rebrickable.GetSetMinifigsAsync(apiKey, setId);
+        RebrickableDotNet.Models.Sets.Set rebrickableSet;
+        SetParts rebrickableParts;
+        SetMinifigs rebrickableMinifigs;
+
+        try
+        {
+            rebrickableSet = await rebrickable.GetSetAsync(apiKey, setId);
+            rebrickableParts = await rebrickable.GetSetPartsAsync(apiKey, setId);
+            rebrickableMinifigs = await rebrickable.GetSetMinifigsAsync(apiKey, setId);
+        }
+        catch (HttpRequestException exc)
+        {
+            switch (exc.StatusCode)
+            {
+                case HttpStatusCode.NotFound:
+                    return NotFound("rebrickableSetNotFound");
+                case HttpStatusCode.Unauthorized:
+                    return Unauthorized("rebrickableApiKeyInvalid");
+                default:
+                    throw;
+            }
+        }
 
         var set = new Set
         {
