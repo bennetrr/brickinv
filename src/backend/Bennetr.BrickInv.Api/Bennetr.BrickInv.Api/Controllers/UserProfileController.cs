@@ -19,7 +19,6 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     public async Task<ActionResult<IEnumerable<UserProfileDto>>> GetUserProfiles()
     {
         var userProfiles = await context.UserProfiles
-            .Where(x => x.Finalized)
             .ToListAsync();
 
         return userProfiles.Adapt<List<UserProfileDto>>();
@@ -35,7 +34,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserProfileDto>> CreateUserProfile()
+    public async Task<ActionResult<UserProfileDto>> CreateCurrentUserProfile(CreateUserProfileRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -45,7 +44,8 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
             Id = currentUser.Id,
             Created = DateTime.Now,
             Updated = DateTime.Now,
-            Finalized = false
+            Username = request.Username,
+            ProfileImageUri = request.ProfileImageUri
         };
 
         context.UserProfiles.Add(userProfile);
@@ -59,7 +59,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteUserProfile()
+    public async Task<IActionResult> DeleteCurrentUserProfile()
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -100,7 +100,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUserProfile(UpdateUserProfileRequest request)
+    public async Task<IActionResult> UpdateCurrentUserProfile(UpdateUserProfileRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -110,7 +110,6 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
 
         currentUserProfile.Username = request.Username;
         currentUserProfile.ProfileImageUri = request.ProfileImageUri;
-        currentUserProfile.Finalized = true;
         currentUserProfile.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();
