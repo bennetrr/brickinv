@@ -42,9 +42,9 @@ public partial class SetController
         return part.Adapt<PartDto>();
     }
 
-    [HttpPut("{setId}/parts/{partId}")]
     public async Task<ActionResult<UpdatePartResponse>> UpdatePart(string setId, string partId,
         UpdatePartRequest request)
+    [HttpPatch("{setId}/parts/{partId}")]
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();

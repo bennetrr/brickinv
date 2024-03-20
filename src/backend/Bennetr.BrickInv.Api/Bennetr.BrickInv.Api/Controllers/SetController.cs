@@ -1,15 +1,20 @@
+using System.Net;
+using System.Net.Mime;
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Models;
 using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.RebrickableDotNet;
+using Bennetr.RebrickableDotNet.Models.Minifigs;
+using Bennetr.RebrickableDotNet.Models.Parts;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Part = Bennetr.BrickInv.Api.Models.Part;
 
 namespace Bennetr.BrickInv.Api.Controllers;
 
@@ -177,8 +182,8 @@ public partial class SetController(
         return NoContent();
     }
 
-    [HttpPut("{setId}")]
     public async Task<ActionResult<SetDto>> UpdateSet(string setId, UpdateSetRequest request)
+    [HttpPatch("{setId}")]
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -192,6 +197,10 @@ public partial class SetController(
         set.ForSale = request.ForSale;
 
         await context.SaveChangesAsync();
-        return Accepted(set.Adapt<SetDto>());
+        return AcceptedAtAction(
+            nameof(GetSet),
+            new { setId = set.Id },
+            set.Adapt<SetDto>()
+        );
     }
 }

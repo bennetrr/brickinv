@@ -100,11 +100,15 @@ public class GroupInviteController(
         );
 
         await context.SaveChangesAsync();
-        return Created();
+        return CreatedAtAction(
+            nameof(GetGroupInvite),
+            new { inviteId = invite.Id },
+            invite.Adapt<GroupInviteDto>()
+        );
     }
 
-    [HttpPut("{inviteId}")]
     public async Task<IActionResult> AcceptGroupInvite(string inviteId)
+    [HttpGet("{inviteId}/accept")]
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();

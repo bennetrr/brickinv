@@ -28,7 +28,7 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     public async Task<ActionResult<UserProfileDto>> GetUserProfile(string userId)
     {
         var userProfile = await context.UserProfiles.FindAsync(userId);
-        if (userProfile == null) return NotFound();
+        if (userProfile is null) return NotFound();
 
         return userProfile.Adapt<UserProfileDto>();
     }
@@ -111,14 +111,14 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
         return NoContent();
     }
 
-    [HttpPut]
     public async Task<IActionResult> UpdateCurrentUserProfile(UpdateUserProfileRequest request)
+    [HttpPatch]
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
 
         var currentUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
-        if (currentUserProfile is null) return BadRequest("userProfileNotFound");
+        if (currentUserProfile is null) return NotFound();
 
         currentUserProfile.Username = request.Username;
         currentUserProfile.ProfileImageUri = request.ProfileImageUri;
@@ -126,6 +126,11 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
         currentUserProfile.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();
-        return Accepted(currentUserProfile.Adapt<UserProfileDto>());
+
+        return AcceptedAtAction(
+            nameof(GetUserProfile),
+            new { userId = currentUser.Id },
+            currentUserProfile.Adapt<UserProfileDto>()
+        );
     }
 }

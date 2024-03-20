@@ -107,8 +107,8 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
         return NoContent();
     }
 
-    [HttpPut("{groupId}")]
     public async Task<ActionResult<GroupDto>> UpdateGroup(string groupId, UpdateGroupRequest request)
+    [HttpPatch("{groupId}")]
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -125,7 +125,11 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
 
         await context.SaveChangesAsync();
 
-        return Accepted(group.Adapt<GroupDto>());
+        return AcceptedAtAction(
+            nameof(GetGroup),
+            new { groupId = group.Id },
+            group.Adapt<GroupDto>()
+        );
     }
 
     [HttpGet("{groupId}/invites")]
