@@ -58,6 +58,21 @@ Install backend dependencies:
 dotnet restore
 ```
 
+### Creating migrations
+
+If any changes where made to the database models, a migration script needs to be created.
+The migration only needs to be created for the context that holds the changed models.
+The `{{ NAME }}` placeholder needs to be replaces before running the commands.
+
+```bash
+# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
+# Create migration for BrickInvContext
+dotnet ef migrations add {{ NAME }} -c BrickInvContext -o ./Migrations/BrickInv
+
+# Create migration for IdentityContext
+dotnet ef migrations add {{ NAME }} -c IdentityContext -o ./Migrations/Identity
+```
+
 ### Run development server against local API
 
 Start database:
