@@ -109,6 +109,14 @@ To start the frontend, run:
 pnpm dev:local
 ```
 
+To stop the database container and delete its data, run:
+
+```bash
+docker stop brickinv-mariadb-dev
+docker rm brickinv-mariadb-dev
+docker volume rm brickinv-mariadb-dev
+```
+
 ### Run development server with production API
 
 To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.prod.js` and
