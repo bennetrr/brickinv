@@ -1,17 +1,15 @@
+using System.Reflection;
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.Api.Services.Email;
 using Bennetr.RebrickableDotNet;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Wemogy.AspNet.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
-
-// Swagger
-options.AddOpenApi("v1");
 
 // Default setup
 builder.Services.AddDefaultSetup(options);
@@ -52,7 +50,19 @@ builder.Services.Configure<IdentityOptions>(opt =>
 });
 
 // Swagger
-builder.Services.AddEndpointsApiExplorer();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(opt =>
+    {
+        opt.SwaggerDoc("v2", new OpenApiInfo
+        {
+            Version = "v2",
+            Title = "BrickInv API"
+        });
+        opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+    });
+}
 
 // Config
 builder.Services
@@ -72,6 +82,15 @@ builder.Services.AddTransient<IRebrickableClient, RebrickableClient>();
 // Build
 var app = builder.Build();
 app.UseDefaultSetup(app.Environment, options);
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(opt =>
+    {
+        opt.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
+    });
+}
 
 app.MapGroup("/auth").MapIdentityApi<IdentityUser>().WithTags("Identity");
 
