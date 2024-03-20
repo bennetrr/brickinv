@@ -134,7 +134,7 @@ public class GroupInviteController(
         if (currentUser is null) return Unauthorized();
 
         var invite = await context.GroupInvites
-            .Where(x => x.Recipient.Id == currentUser.Id)
+            .Where(x => x.Recipient.Id == currentUser.Id || x.Issuer.Id == currentUser.Id)
             .Where(x => x.Id == inviteId)
             .FirstAsync();
 
