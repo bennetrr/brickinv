@@ -48,6 +48,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
 
+        var existingUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
+        if (existingUserProfile is not null) return Conflict();
+
         var userProfile = new UserProfile
         {
             Id = currentUser.Id,
