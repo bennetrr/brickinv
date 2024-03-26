@@ -3,13 +3,8 @@ import { Flow } from '@wemogy/reactbase';
 import { AxiosResponse } from 'axios';
 import { toast } from '../../ui';
 import { IPart, IPartSnapshotIn, ISet, ISetSnapshotIn, Part, Set } from '../models';
-import {
-  ApiServiceFactory,
-  CreateSetRequest,
-  UpdatePartRequest,
-  UpdatePartResponse,
-  UpdateSetRequest
-} from '../rest';
+import { ApiServiceFactory, CreateSetRequest, UpdatePartRequest, UpdateSetRequest } from '../rest';
+import { UpdatePartResponse } from '../rest/responses';
 
 const SetStore = types.model('SetStore', {
   items: types.array(Set)

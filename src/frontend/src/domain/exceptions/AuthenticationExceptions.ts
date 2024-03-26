@@ -10,9 +10,12 @@ export class InvalidCredentialsError extends Error {
     super();
     this.messages = messages;
   }
-
 }
 
 export class UnauthorizedError extends Error {
+
+}
+
+export class InsufficientPermissionsError extends Error {
 
 }
