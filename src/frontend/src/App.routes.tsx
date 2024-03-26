@@ -1,19 +1,19 @@
 import { RouteObject } from 'react-router-dom';
 import {
+  AcceptGroupInvitePage,
   DefaultPageTemplate,
   EmailConfirmationPage,
   ErrorPage,
   ForgotPasswordPage,
   GroupDetailPage,
   GroupOverviewPage,
-  SignInPage,
   PartOverviewPage,
   PasswordResetPage,
-  SignUpPage,
   SetDetailPage,
   SetOverviewPage,
   SettingsPage,
-  AcceptGroupInvitePage
+  SignInPage,
+  SignUpPage
 } from './ui';
 import { onlyUnauthenticated, protect, redirect } from './utils';
 

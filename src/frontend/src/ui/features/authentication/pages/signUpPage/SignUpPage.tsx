@@ -38,7 +38,7 @@ const SignUpPage: React.FC<ISignUpPageProps> = ({}) => {
         type: 'success',
         text: 'Account was successfully created, you can now sign in.'
       }
-    }
+    };
     navigate('/sign-in', { state: navigationState });
   }, [email, password, navigate]);
 
@@ -92,11 +92,11 @@ const SignUpPage: React.FC<ISignUpPageProps> = ({}) => {
         </Link>
 
         <Link to="/forgot-password">
-        <StackLayout vCenter orientation="horizontal" automationId="sign-up-link-forgot-password">
-          <Text cta>Forgot your password?</Text>
-          <Icon chevronRight variation2PrimaryDark/>
-        </StackLayout>
-      </Link>
+          <StackLayout vCenter orientation="horizontal" automationId="sign-up-link-forgot-password">
+            <Text cta>Forgot your password?</Text>
+            <Icon chevronRight variation2PrimaryDark/>
+          </StackLayout>
+        </Link>
       </StackLayout>
     </StackLayout>
   );

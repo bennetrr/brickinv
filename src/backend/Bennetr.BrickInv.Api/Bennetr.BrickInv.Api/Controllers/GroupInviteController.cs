@@ -26,7 +26,7 @@ public class GroupInviteController(
     private readonly AppOptions _options = options.Value;
 
     /// <summary>
-    /// Return all group invites where the current user is the recipient.
+    ///     Return all group invites where the current user is the recipient.
     /// </summary>
     /// <response code="200">Returns all group invites where the current user is the recipient</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -50,7 +50,7 @@ public class GroupInviteController(
     }
 
     /// <summary>
-    /// Return the group invite with the specified id.
+    ///     Return the group invite with the specified id.
     /// </summary>
     /// <response code="200">Returns the group invite with the specified id</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -77,15 +77,13 @@ public class GroupInviteController(
     }
 
     /// <summary>
-    /// Create a group invite.
+    ///     Create a group invite.
     /// </summary>
     /// <response code="201">Returns the created group invite</response>
     /// <response code="400">
-    /// With message `invitingSelf`: If the recipient is the current user
-    ///
-    /// With message `invitingMember`: If the recipient is already a member of the group
-    ///
-    /// With message `userProfileNotFound`: If the issuer (the current user) does not have a user profile
+    ///     With message `invitingSelf`: If the recipient is the current user
+    ///     With message `invitingMember`: If the recipient is already a member of the group
+    ///     With message `userProfileNotFound`: If the issuer (the current user) does not have a user profile
     /// </response>
     /// <response code="401">If the authentication token is not valid</response>
     /// <response code="404">If the group or the recipient are not found</response>
@@ -148,7 +146,7 @@ public class GroupInviteController(
     }
 
     /// <summary>
-    /// Accept the group invite with the specified id.
+    ///     Accept the group invite with the specified id.
     /// </summary>
     /// <response code="204">If the group invite was accepted successfully</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -177,7 +175,7 @@ public class GroupInviteController(
     }
 
     /// <summary>
-    /// Delete / reject the group invite with the specified id.
+    ///     Delete / reject the group invite with the specified id.
     /// </summary>
     /// <response code="204">If the group invite was accepted successfully</response>
     /// <response code="401">If the authentication token is not valid</response>

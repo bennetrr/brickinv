@@ -1,51 +1,50 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Bennetr.BrickInv.Api.Migrations.BrickInv
+namespace Bennetr.BrickInv.Api.Migrations.BrickInv;
+
+/// <inheritdoc />
+public partial class RemoveUserProfileFinalized : Migration
 {
     /// <inheritdoc />
-    public partial class RemoveUserProfileFinalized : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Finalized",
-                table: "UserProfiles");
+        migrationBuilder.DropColumn(
+            "Finalized",
+            "UserProfiles");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "PartId",
-                table: "Parts",
-                type: "longtext",
+        migrationBuilder.AlterColumn<string>(
+                "PartId",
+                "Parts",
+                "longtext",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "varchar(10)",
                 oldMaxLength: 10)
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-        }
+            .Annotation("MySql:CharSet", "utf8mb4")
+            .OldAnnotation("MySql:CharSet", "utf8mb4");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<bool>(
-                name: "Finalized",
-                table: "UserProfiles",
-                type: "tinyint(1)",
-                nullable: false,
-                defaultValue: false);
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.AddColumn<bool>(
+            "Finalized",
+            "UserProfiles",
+            "tinyint(1)",
+            nullable: false,
+            defaultValue: false);
 
-            migrationBuilder.AlterColumn<string>(
-                name: "PartId",
-                table: "Parts",
-                type: "varchar(10)",
+        migrationBuilder.AlterColumn<string>(
+                "PartId",
+                "Parts",
+                "varchar(10)",
                 maxLength: 10,
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "longtext")
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-        }
+            .Annotation("MySql:CharSet", "utf8mb4")
+            .OldAnnotation("MySql:CharSet", "utf8mb4");
     }
 }

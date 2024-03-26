@@ -11,7 +11,7 @@ namespace Bennetr.BrickInv.Api.Controllers;
 public partial class SetController
 {
     /// <summary>
-    /// Return all parts of the specified set.
+    ///     Return all parts of the specified set.
     /// </summary>
     /// <response code="200">Returns all parts of the specified set</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -39,7 +39,7 @@ public partial class SetController
     }
 
     /// <summary>
-    /// Return the part with the specified id.
+    ///     Return the part with the specified id.
     /// </summary>
     /// <response code="200">Returns the part with the specified id</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -64,7 +64,7 @@ public partial class SetController
     }
 
     /// <summary>
-    /// Update the part with the specified id.
+    ///     Update the part with the specified id.
     /// </summary>
     /// <response code="202">Returns the updated part and the corresponding set</response>
     /// <response code="400">With message `presentCountOutOfRange`: If the present count is not between 0 and the total count</response>

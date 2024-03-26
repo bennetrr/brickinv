@@ -60,7 +60,8 @@ if (builder.Environment.IsDevelopment())
             Version = "v2",
             Title = "BrickInv API"
         });
-        opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+        opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+            $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
     });
 }
 
@@ -86,10 +87,7 @@ app.UseDefaultSetup(app.Environment, options);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(opt =>
-    {
-        opt.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
-    });
+    app.UseSwaggerUI(opt => { opt.SwaggerEndpoint("/swagger/v2/swagger.json", "v2"); });
 }
 
 app.MapGroup("/auth").MapIdentityApi<IdentityUser>().WithTags("Identity");

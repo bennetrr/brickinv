@@ -2,12 +2,12 @@ using System.Net;
 using System.Net.Mime;
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
-using Bennetr.BrickInv.Api.Models;
 using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.RebrickableDotNet;
 using Bennetr.RebrickableDotNet.Models.Minifigs;
 using Bennetr.RebrickableDotNet.Models.Parts;
+using Bennetr.RebrickableDotNet.Models.Sets;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -30,7 +30,7 @@ public partial class SetController(
     private readonly AppOptions _options = options.Value;
 
     /// <summary>
-    /// Return all sets from groups that the current user is the owner of a member of.
+    ///     Return all sets from groups that the current user is the owner of a member of.
     /// </summary>
     /// <response code="200">Returns all sets</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -51,7 +51,7 @@ public partial class SetController(
     }
 
     /// <summary>
-    /// Return the set with the specified id.
+    ///     Return the set with the specified id.
     /// </summary>
     /// <response code="200">Returns the set with the specified id</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -75,23 +75,20 @@ public partial class SetController(
     }
 
     /// <summary>
-    /// Create a set by fetching the information from Rebrickable.
+    ///     Create a set by fetching the information from Rebrickable.
     /// </summary>
     /// <remarks>
-    /// The LEGO set IDs are simple numbers, but the Rebrickable set ID always has a suffix like `-1`.
-    /// Since the suffix is not printed on the LEGO instructions, most users will omit it when creating a new set.
-    ///
-    /// This POST endpoint checks if the submitted ID already has a suffix, and if not, append `-1` to it.
-    ///
-    /// The application wide API key for Rebrickable can be overridden by the group and by the user.
-    /// In case both group and user specified an API key, the key of the user is used.
+    ///     The LEGO set IDs are simple numbers, but the Rebrickable set ID always has a suffix like `-1`.
+    ///     Since the suffix is not printed on the LEGO instructions, most users will omit it when creating a new set.
+    ///     This POST endpoint checks if the submitted ID already has a suffix, and if not, append `-1` to it.
+    ///     The application wide API key for Rebrickable can be overridden by the group and by the user.
+    ///     In case both group and user specified an API key, the key of the user is used.
     /// </remarks>
     /// <response code="201">Returns the created set</response>
     /// <response code="400">With message `userProfileNotFound`: If the currently logged in user does not have a user profile</response>
     /// <response code="401">
-    /// With message `rebrickableApiKeyInvalid`: If the Rebrickable API key is not valid
-    ///
-    /// Without message: If the authentication token is not valid
+    ///     With message `rebrickableApiKeyInvalid`: If the Rebrickable API key is not valid
+    ///     Without message: If the authentication token is not valid
     /// </response>
     /// <response code="404">With message `rebrickableSetNotFound`: If the set was not found on Rebrickable</response>
     [Consumes(MediaTypeNames.Application.Json)]
@@ -124,7 +121,7 @@ public partial class SetController(
         setId = setId.Contains('-') ? setId : $"{setId}-1";
 
         // Get the set from Rebrickable
-        RebrickableDotNet.Models.Sets.Set rebrickableSet;
+        Set rebrickableSet;
         SetParts rebrickableParts;
         SetMinifigs rebrickableMinifigs;
 
@@ -147,7 +144,7 @@ public partial class SetController(
             }
         }
 
-        var set = new Set
+        var set = new Models.Set
         {
             Id = Guid.NewGuid().ToString(),
             Created = DateTime.Now,
@@ -204,7 +201,7 @@ public partial class SetController(
     }
 
     /// <summary>
-    /// Delete the set with the specified id and its parts.
+    ///     Delete the set with the specified id and its parts.
     /// </summary>
     /// <response code="204">If the set was deleted successfully</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -236,7 +233,7 @@ public partial class SetController(
     }
 
     /// <summary>
-    /// Update the set with the specified id.
+    ///     Update the set with the specified id.
     /// </summary>
     /// <response code="202">Returns the updated set</response>
     /// <response code="401">If the authentication token is not valid</response>

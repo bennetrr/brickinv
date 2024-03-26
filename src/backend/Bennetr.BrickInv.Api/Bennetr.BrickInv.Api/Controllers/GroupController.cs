@@ -17,7 +17,7 @@ namespace Bennetr.BrickInv.Api.Controllers;
 public class GroupController(BrickInvContext context, UserManager<IdentityUser> userManager) : ControllerBase
 {
     /// <summary>
-    /// Return all groups where the current user is the owner or a member.
+    ///     Return all groups where the current user is the owner or a member.
     /// </summary>
     /// <response code="200">Returns all groups where the current user is the owner or a member</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -40,7 +40,7 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     }
 
     /// <summary>
-    /// Return the group with the specified id.
+    ///     Return the group with the specified id.
     /// </summary>
     /// <response code="200">Returns the group with the specified id</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -66,11 +66,11 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     }
 
     /// <summary>
-    /// Create a group.
+    ///     Create a group.
     /// </summary>
     /// <response code="201">Returns the created group</response>
     /// <response code="400">
-    /// With message `userProfileNotFound`: If the current user does not have a user profile
+    ///     With message `userProfileNotFound`: If the current user does not have a user profile
     /// </response>
     /// <response code="401">If the authentication token is not valid</response>
     [Consumes(MediaTypeNames.Application.Json)]
@@ -109,13 +109,12 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     }
 
     /// <summary>
-    /// Delete the group with the specified id and all corresponding data.
+    ///     Delete the group with the specified id and all corresponding data.
     /// </summary>
     /// <remarks>
-    /// This deletes:
-    ///
-    /// - The group and
-    /// - all sets and parts corresponding it.
+    ///     This deletes:
+    ///     - The group and
+    ///     - all sets and parts corresponding it.
     /// </remarks>
     /// <response code="204">If the group was deleted successfully</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -156,7 +155,7 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     }
 
     /// <summary>
-    /// Update the group with the specified id.
+    ///     Update the group with the specified id.
     /// </summary>
     /// <response code="202">Returns the updated group</response>
     /// <response code="401">If the authentication token is not valid</response>
@@ -167,7 +166,8 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
     [HttpPatch("{groupId}")]
-    public async Task<ActionResult<GroupDto>> UpdateGroup([FromRoute] string groupId, [FromBody] UpdateGroupRequest request)
+    public async Task<ActionResult<GroupDto>> UpdateGroup([FromRoute] string groupId,
+        [FromBody] UpdateGroupRequest request)
     {
         var currentUser = await userManager.GetUserAsync(HttpContext.User);
         if (currentUser is null) return Unauthorized();
@@ -192,7 +192,7 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     }
 
     /// <summary>
-    /// Return all invites of the group with the specified id.
+    ///     Return all invites of the group with the specified id.
     /// </summary>
     /// <response code="200">Returns all invites of the group with the specified id</response>
     /// <response code="401">If the authentication token is not valid</response>

@@ -4,7 +4,10 @@ using Microsoft.Extensions.Options;
 
 namespace Bennetr.BrickInv.Api.Services.Email;
 
-public class ProfileEmailSender(IHtmlEmailGenerator emailGenerator, IGenericEmailSender emailSender, IOptions<AppOptions> options)
+public class ProfileEmailSender(
+    IHtmlEmailGenerator emailGenerator,
+    IGenericEmailSender emailSender,
+    IOptions<AppOptions> options)
     : IProfileEmailSender
 {
     private readonly AppOptions _options = options.Value;

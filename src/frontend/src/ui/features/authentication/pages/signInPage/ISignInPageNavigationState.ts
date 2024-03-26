@@ -3,5 +3,5 @@ export default interface ISignInPageNavigationState {
   message?: {
     type: 'success' | 'error' | 'info' | 'neutral';
     text: string;
-  }
+  };
 }
