@@ -16,7 +16,7 @@ const SetStore = types.model('SetStore', {
       applySnapshot(self.items, response.data);
     }),
     createSet: flow(function* createSet(setId: string, forSale: boolean): Flow<AxiosResponse<ISetSnapshotIn>, ISet> {
-      const request = new CreateSetRequest(setId, forSale);
+      const request = new CreateSetRequest(setId, "", forSale);
       const response = yield ApiServiceFactory.setApi.createSet(request);
 
       const newSet = Set.create(response.data);
@@ -43,7 +43,7 @@ const SetStore = types.model('SetStore', {
 
       const response = yield ApiServiceFactory.partApi.getParts(setId);
 
-      set.updateParts(() => response.data.map(x => Part.create(x)));
+      set.parts = response.data.map(x => Part.create(x));
     }),
     updatePart: flow(function* updatePart(set: ISet, part: IPart): Flow<AxiosResponse<UpdatePartResponse>, void> {
       const request = new UpdatePartRequest(part.presentCount);
