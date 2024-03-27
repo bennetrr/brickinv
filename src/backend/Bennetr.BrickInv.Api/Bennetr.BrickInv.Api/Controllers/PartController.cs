@@ -13,9 +13,9 @@ public partial class SetController
     /// <summary>
     ///     Return all parts of the specified set.
     /// </summary>
-    /// <response code="200">Returns all parts of the specified set</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the set was not found</response>
+    /// <response code="200">Returns all parts of the specified set.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the set was not found.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -41,9 +41,9 @@ public partial class SetController
     /// <summary>
     ///     Return the part with the specified id.
     /// </summary>
-    /// <response code="200">Returns the part with the specified id</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the set or part was not found</response>
+    /// <response code="200">Returns the part with the specified id.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the set or part was not found.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -66,10 +66,12 @@ public partial class SetController
     /// <summary>
     ///     Update the part with the specified id.
     /// </summary>
-    /// <response code="202">Returns the updated part and the corresponding set</response>
-    /// <response code="400">With message `presentCountOutOfRange`: If the present count is not between 0 and the total count</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the set was not found</response>
+    /// <response code="202">Returns the updated part and the corresponding set.</response>
+    /// <response code="400">
+    ///     With message `presentCountOutOfRange`: If the present count is not between 0 and the total count.
+    /// </response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the set was not found.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType<UpdatePartResponse>(StatusCodes.Status202Accepted)]

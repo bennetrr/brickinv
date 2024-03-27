@@ -28,8 +28,8 @@ public class GroupInviteController(
     /// <summary>
     ///     Return all group invites where the current user is the recipient.
     /// </summary>
-    /// <response code="200">Returns all group invites where the current user is the recipient</response>
-    /// <response code="401">If the authentication token is not valid</response>
+    /// <response code="200">Returns all group invites where the current user is the recipient.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -52,9 +52,9 @@ public class GroupInviteController(
     /// <summary>
     ///     Return the group invite with the specified id.
     /// </summary>
-    /// <response code="200">Returns the group invite with the specified id</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group invite was not found</response>
+    /// <response code="200">Returns the group invite with the specified id.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group invite was not found.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -79,14 +79,14 @@ public class GroupInviteController(
     /// <summary>
     ///     Create a group invite.
     /// </summary>
-    /// <response code="201">Returns the created group invite</response>
+    /// <response code="201">Returns the created group invite.</response>
     /// <response code="400">
-    ///     With message `invitingSelf`: If the recipient is the current user
-    ///     With message `invitingMember`: If the recipient is already a member of the group
-    ///     With message `userProfileNotFound`: If the issuer (the current user) does not have a user profile
+    ///     With message `invitingSelf`: If the recipient is the current user.<br /><br />
+    ///     With message `invitingMember`: If the recipient is already a member of the group.<br /><br />
+    ///     With message `userProfileNotFound`: If the issuer (the current user) does not have a user profile.<br /><br />
     /// </response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group or the recipient are not found</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group or the recipient are not found.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -107,7 +107,7 @@ public class GroupInviteController(
 
         if (request.RecipientUserId == currentUser.Id) return BadRequest("invitingSelf");
         // The owner doesn't have to be checked below because currently only the owner can invite users to a group.
-        // That means that the owner is already checked with the statement above
+        // That means that the owner is already checked with the statement above.
         if (group.Members.Any(x => x.Id == request.RecipientUserId)) return BadRequest("invitingMember");
 
         var issuerUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
@@ -148,9 +148,9 @@ public class GroupInviteController(
     /// <summary>
     ///     Accept the group invite with the specified id.
     /// </summary>
-    /// <response code="204">If the group invite was accepted successfully</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group or the recipient are not found</response>
+    /// <response code="204">If the group invite was accepted successfully.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group invite was not found.</response>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
@@ -177,9 +177,9 @@ public class GroupInviteController(
     /// <summary>
     ///     Delete / reject the group invite with the specified id.
     /// </summary>
-    /// <response code="204">If the group invite was accepted successfully</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group or the recipient are not found</response>
+    /// <response code="204">If the group invite was deleted successfully.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group invite was not found.</response>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]

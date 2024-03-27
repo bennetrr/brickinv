@@ -30,10 +30,10 @@ public partial class SetController(
     private readonly AppOptions _options = options.Value;
 
     /// <summary>
-    ///     Return all sets from groups that the current user is the owner of a member of.
+    ///     Return all sets from groups where the current user is the owner or a member.
     /// </summary>
-    /// <response code="200">Returns all sets</response>
-    /// <response code="401">If the authentication token is not valid</response>
+    /// <response code="200">Returns all sets.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -53,9 +53,9 @@ public partial class SetController(
     /// <summary>
     ///     Return the set with the specified id.
     /// </summary>
-    /// <response code="200">Returns the set with the specified id</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the set was not found</response>
+    /// <response code="200">Returns the set with the specified id.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the set was not found.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -84,13 +84,15 @@ public partial class SetController(
     ///     The application wide API key for Rebrickable can be overridden by the group and by the user.
     ///     In case both group and user specified an API key, the key of the user is used.
     /// </remarks>
-    /// <response code="201">Returns the created set</response>
-    /// <response code="400">With message `userProfileNotFound`: If the currently logged in user does not have a user profile</response>
-    /// <response code="401">
-    ///     With message `rebrickableApiKeyInvalid`: If the Rebrickable API key is not valid
-    ///     Without message: If the authentication token is not valid
+    /// <response code="201">Returns the created set.</response>
+    /// <response code="400">
+    ///     With message `userProfileNotFound`: If the currently logged in user does not have a user profile.
     /// </response>
-    /// <response code="404">With message `rebrickableSetNotFound`: If the set was not found on Rebrickable</response>
+    /// <response code="401">
+    ///     With message `rebrickableApiKeyInvalid`: If the Rebrickable API key is not valid.<br /><br />
+    ///     Without message: If the authentication token is not valid.
+    /// </response>
+    /// <response code="404">With message `rebrickableSetNotFound`: If the set was not found on Rebrickable.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -203,9 +205,9 @@ public partial class SetController(
     /// <summary>
     ///     Delete the set with the specified id and its parts.
     /// </summary>
-    /// <response code="204">If the set was deleted successfully</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the set was not found</response>
+    /// <response code="204">If the set was deleted successfully.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the set was not found.</response>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
@@ -235,9 +237,9 @@ public partial class SetController(
     /// <summary>
     ///     Update the set with the specified id.
     /// </summary>
-    /// <response code="202">Returns the updated set</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the set was not found</response>
+    /// <response code="202">Returns the updated set.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the set was not found.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType<SetDto>(StatusCodes.Status202Accepted)]

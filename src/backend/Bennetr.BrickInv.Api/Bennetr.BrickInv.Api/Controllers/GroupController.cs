@@ -19,8 +19,8 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     /// <summary>
     ///     Return all groups where the current user is the owner or a member.
     /// </summary>
-    /// <response code="200">Returns all groups where the current user is the owner or a member</response>
-    /// <response code="401">If the authentication token is not valid</response>
+    /// <response code="200">Returns all groups where the current user is the owner or a member.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -42,9 +42,9 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     /// <summary>
     ///     Return the group with the specified id.
     /// </summary>
-    /// <response code="200">Returns the group with the specified id</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group was not found</response>
+    /// <response code="200">Returns the group with the specified id.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group was not found.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -68,17 +68,16 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     /// <summary>
     ///     Create a group.
     /// </summary>
-    /// <response code="201">Returns the created group</response>
+    /// <response code="201">Returns the created group.</response>
     /// <response code="400">
-    ///     With message `userProfileNotFound`: If the current user does not have a user profile
+    ///     With message `userProfileNotFound`: If the current user does not have a user profile.
     /// </response>
-    /// <response code="401">If the authentication token is not valid</response>
+    /// <response code="401">If the authentication token is not valid.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
-    [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
     [HttpPost]
     public async Task<ActionResult<GroupDto>> CreateGroup([FromBody] CreateGroupRequest request)
     {
@@ -116,9 +115,9 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     ///     - The group and
     ///     - all sets and parts corresponding it.
     /// </remarks>
-    /// <response code="204">If the group was deleted successfully</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group was not found</response>
+    /// <response code="204">If the group was deleted successfully.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group was not found.</response>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
@@ -157,9 +156,9 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     /// <summary>
     ///     Update the group with the specified id.
     /// </summary>
-    /// <response code="202">Returns the updated group</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group was not found</response>
+    /// <response code="202">Returns the updated group.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group was not found.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType<GroupDto>(StatusCodes.Status202Accepted)]
@@ -194,9 +193,9 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     /// <summary>
     ///     Return all invites of the group with the specified id.
     /// </summary>
-    /// <response code="200">Returns all invites of the group with the specified id</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the group was not found</response>
+    /// <response code="200">Returns all invites of the group with the specified id.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the group was not found.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]

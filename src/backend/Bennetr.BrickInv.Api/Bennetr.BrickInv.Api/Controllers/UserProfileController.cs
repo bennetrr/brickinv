@@ -23,8 +23,8 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     ///     Users who have created an account but have not yet logged in and completed the profile will not be returned.
     ///     See the POST method for details.
     /// </remarks>
-    /// <response code="200">Returns all user profiles</response>
-    /// <response code="401">If the authentication token is not valid</response>
+    /// <response code="200">Returns all user profiles.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -40,9 +40,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     /// <summary>
     ///     Return the user profile with the specified id.
     /// </summary>
-    /// <response code="200">Returns the user profile with the specified id</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the user id is not associated with a user profile</response>
+    /// <response code="200">Returns the user profile with the specified id.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the user id is not associated with a user profile.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -63,9 +63,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     ///     A 404 error means (assuming a valid authentication token was sent) that the user did not sign in after
     ///     registering the account, meaning that the user profile is not yet created. See the POST method for details.
     /// </remarks>
-    /// <response code="200">Returns the user profile of the currently signed in user</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the user id is not associated with a user profile</response>
+    /// <response code="200">Returns the user profile of the currently signed in user.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the user id is not associated with a user profile.</response>
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
@@ -94,9 +94,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     ///     so the user profile cannot be created directly after registration.
     ///     Therefore, the application needs to check directly after login, if the user has a profile, and if not, create one.
     /// </remarks>
-    /// <response code="201">Returns the created user profile</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="409">If the current user already has an user profile</response>
+    /// <response code="201">Returns the created user profile.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="409">If the current user already has an user profile.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -141,9 +141,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     ///     - all groups where the current user is the owner and
     ///     - all sets and parts corresponding to these groups.
     /// </remarks>
-    /// <response code="204">If the profile was deleted successfully</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the user id is not associated with a user profile</response>
+    /// <response code="204">If the profile was deleted successfully.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the user id is not associated with a user profile.</response>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
@@ -195,9 +195,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     ///     A 404 error means (assuming a valid authentication token was sent) that the user did not sign in after
     ///     registering the account, meaning that the user profile is not yet created. See the POST method for details.
     /// </remarks>
-    /// <response code="202">Returns the updated profile</response>
-    /// <response code="401">If the authentication token is not valid</response>
-    /// <response code="404">If the user id is not associated with a user profile</response>
+    /// <response code="202">Returns the updated profile.</response>
+    /// <response code="401">If the authentication token is not valid.</response>
+    /// <response code="404">If the user id is not associated with a user profile.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType<UserProfileDto>(StatusCodes.Status202Accepted)]
