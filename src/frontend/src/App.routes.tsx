@@ -12,6 +12,7 @@ import {
   SetDetailPage,
   SetOverviewPage,
   SettingsPage,
+  SetupPage,
   SignInPage,
   SignUpPage
 } from './ui';
@@ -47,6 +48,7 @@ const appRoutes: RouteObject[] = [
             path: '/account',
             children: [
               { index: true, element: <SettingsPage/> },
+              { path: 'setup', element: <SetupPage/> },
               {
                 path: 'groups',
                 children: [

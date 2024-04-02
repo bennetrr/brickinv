@@ -8,12 +8,19 @@ interface IProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ element }) => {
-  const { authenticationStore } = useAppStore();
+  const { authenticationStore, userProfileStore } = useAppStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   if (!authenticationStore.isAuthenticated) {
     navigate('/sign-in', { state: { redirectPath: pathname } } satisfies { state: ISignInPageNavigationState });
+    return null;
+  }
+
+  void userProfileStore.queryCurrentUserProfile();
+
+  if (userProfileStore.currentUserProfile === undefined) {
+    navigate('/account/setup')
   }
 
   return element;
