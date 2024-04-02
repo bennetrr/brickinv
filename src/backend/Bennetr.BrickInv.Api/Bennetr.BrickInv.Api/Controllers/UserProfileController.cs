@@ -194,6 +194,8 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
     /// <remarks>
     ///     A 404 error means (assuming a valid authentication token was sent) that the user did not sign in after
     ///     registering the account, meaning that the user profile is not yet created. See the POST method for details.
+    ///     If `rebrickableApiKey` is undefined, the value will not be changed.
+    ///     To unset the key, use `UNSET` as value in the request.
     /// </remarks>
     /// <response code="202">Returns the updated profile.</response>
     /// <response code="401">If the authentication token is not valid.</response>
@@ -215,7 +217,9 @@ public class UserProfileController(BrickInvContext context, UserManager<Identity
 
         currentUserProfile.Username = request.Username;
         currentUserProfile.ProfileImageUri = request.ProfileImageUri;
-        currentUserProfile.RebrickableApiKey = request.RebrickableApiKey;
+        if (request.RebrickableApiKey is not null)
+            currentUserProfile.RebrickableApiKey =
+                request.RebrickableApiKey == "UNSET" ? null : request.RebrickableApiKey;
         currentUserProfile.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();

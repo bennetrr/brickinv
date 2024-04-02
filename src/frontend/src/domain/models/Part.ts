@@ -20,6 +20,7 @@ const Part = types.model('Part', {
   get isMinifig() {
     return self.partId.startsWith('fig');
   }
+
 })).actions(self => ({
   setPresentCount(count: number) {
     if (count > self.totalCount || count < 0) {

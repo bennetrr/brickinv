@@ -3,6 +3,10 @@ import { MSTDateTime } from '../../utils';
 import UserProfile from './UserProfile.ts';
 import { InsufficientPermissionsError } from '../exceptions';
 
+interface IGroupVolatile {
+  rebrickableApiKey?: string;
+}
+
 const Group = types.model('Group', {
   id: types.identifier,
   created: MSTDateTime,
@@ -11,7 +15,9 @@ const Group = types.model('Group', {
   imageUri: types.maybe(types.string),
   owner: UserProfile,
   members: types.array(UserProfile)
-}).views(self => ({
+}).volatile<IGroupVolatile>(() => ({
+  rebrickableApiKey: undefined
+})).views(self => ({
   get isOwner(): boolean {
     return self.owner.id == 'authStore.userId';  // TODO: Replace with real user id getter
   }
@@ -31,6 +37,22 @@ const Group = types.model('Group', {
     }
 
     self.imageUri = value;
+  },
+
+  setRebrickableApiKey(value?: string) {
+    if (!self.isOwner) {
+      throw new InsufficientPermissionsError('You cannot change the Rebrickable API key of other users!');
+    }
+
+    self.rebrickableApiKey = value;
+  },
+
+  unsetRebrickableApiKey() {
+    if (!self.isOwner) {
+      throw new InsufficientPermissionsError('You cannot change the Rebrickable API key of other users!');
+    }
+
+    self.rebrickableApiKey = 'UNSET';
   }
 }));
 

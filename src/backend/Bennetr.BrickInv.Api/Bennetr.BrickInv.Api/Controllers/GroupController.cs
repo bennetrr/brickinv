@@ -156,6 +156,10 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
     /// <summary>
     ///     Update the group with the specified id.
     /// </summary>
+    /// <remarks>
+    ///     If `rebrickableApiKey` is undefined, the value will not be changed.
+    ///     To unset the key, use `UNSET` as value in the request.
+    /// </remarks>
     /// <response code="202">Returns the updated group.</response>
     /// <response code="401">If the authentication token is not valid.</response>
     /// <response code="404">If the group was not found.</response>
@@ -178,7 +182,9 @@ public class GroupController(BrickInvContext context, UserManager<IdentityUser> 
 
         group.Name = request.Name;
         group.ImageUri = request.ImageUri;
-        group.RebrickableApiKey = request.RebrickableApiKey;
+        if (request.RebrickableApiKey is not null)
+            group.RebrickableApiKey =
+                request.RebrickableApiKey == "UNSET" ? null : request.RebrickableApiKey;
         group.Updated = DateTime.Now;
 
         await context.SaveChangesAsync();
