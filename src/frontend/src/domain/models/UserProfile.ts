@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { MSTDateTime } from '../../utils';
 import { InsufficientPermissionsError } from '../exceptions';
+import { AuthenticationService } from '../authentication';
 
 interface IUserProfileVolatile {
   rebrickableApiKey?: string;
@@ -16,7 +17,7 @@ const UserProfile = types.model('UserProfile', {
   rebrickableApiKey: undefined
 })).views(self => ({
   get isOwnProfile(): boolean {
-    return self.id == 'authStore.userId';  // TODO: Replace with real user id getter
+    return self.id == AuthenticationService.userId;
   }
 
 })).actions(self => ({

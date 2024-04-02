@@ -13,6 +13,7 @@ const appRouter = createBrowserRouter(appRoutes);
 const appStore = AppStore.create();
 
 AuthenticationService.registerTokenChangeHandler(token => appStore.authenticationStore.setIsAuthenticated(!!token));
+AuthenticationService.registerUserIdChangeHandler(userId => appStore.authenticationStore.setUserId(userId));
 appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenticated);
 
 const App: React.FC = () => {

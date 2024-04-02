@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { MSTDateTime } from '../../utils';
 import UserProfile from './UserProfile.ts';
 import { InsufficientPermissionsError } from '../exceptions';
+import { AuthenticationService } from '../authentication';
 
 interface IGroupVolatile {
   rebrickableApiKey?: string;
@@ -19,7 +20,7 @@ const Group = types.model('Group', {
   rebrickableApiKey: undefined
 })).views(self => ({
   get isOwner(): boolean {
-    return self.owner.id == 'authStore.userId';  // TODO: Replace with real user id getter
+    return self.owner.id == AuthenticationService.userId;
   }
 
 })).actions(self => ({
