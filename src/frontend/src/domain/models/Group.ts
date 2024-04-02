@@ -2,8 +2,8 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { MSTDateTime } from '../../utils';
 import UserProfile from './UserProfile.ts';
 import { InsufficientPermissionsError } from '../exceptions';
-import { AuthenticationService } from '../authentication';
 import { IGroupInvite } from './GroupInvite.ts';
+import { useAppStore } from '../hooks';
 
 interface IGroupVolatile {
   rebrickableApiKey?: string;
@@ -23,7 +23,7 @@ const Group = types.model('Group', {
   invites: []
 })).views(self => ({
   get isOwner(): boolean {
-    return self.owner.id == AuthenticationService.userId;
+    return self.owner.id == useAppStore().authenticationStore.userId;
   }
 
 })).actions(self => ({

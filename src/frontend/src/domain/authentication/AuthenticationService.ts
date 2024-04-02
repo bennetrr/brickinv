@@ -15,28 +15,11 @@ export type OnTokenChangeCallback = (token: string | undefined) => void;
 export type OnUserIdChangeCallback = (userId: string | undefined) => void;
 
 class AuthenticationService {
-  private _userId?: string;
   private _accessToken?: string;
   private _refreshToken?: string;
   private _expiresAt?: DateTime;
   private _refreshTimeoutId?: NodeJS.Timeout;
   private _onTokenChangeCallbacks: OnTokenChangeCallback[] = [];
-  private _onUserIdChangeCallbacks: OnUserIdChangeCallback[] = [];
-
-  /**
-   * Get the access token.
-   */
-  public get userId(): string | undefined {
-    return this._userId;
-  }
-
-  /**
-   * Set the access token.
-   */
-  public set userId(value: string | undefined) {
-    this._userId = value;
-    this._onUserIdChangeCallbacks.forEach(callback => callback(value));
-  }
 
   /**
    * Get the access token.
@@ -163,20 +146,6 @@ class AuthenticationService {
   }
 
   /**
-   * Register a callback function that is executed whenever the user id changes.
-   */
-  public registerUserIdChangeHandler(callback: OnTokenChangeCallback): void {
-    this._onTokenChangeCallbacks.push(callback);
-  }
-
-  /**
-   * Unregister a callback function that is registered.
-   */
-  public unregisterUserIdChangeHandler(callback: OnUserIdChangeCallback): void {
-    _.remove<OnUserIdChangeCallback>(this._onUserIdChangeCallbacks, callback);
-  }
-
-  /**
    * Confirm the user's email address by sending the code to the API.
    *
    * @param userId The user's ID.
@@ -283,7 +252,6 @@ class AuthenticationService {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('expiresAt');
-      this._userId = undefined;
 
       clearTimeout(this._refreshTimeoutId);
     } else {

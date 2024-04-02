@@ -3,6 +3,7 @@ import { Flow } from '@wemogy/reactbase';
 import { AxiosResponse } from 'axios';
 import { IUserProfile, IUserProfileSnapshotIn, UserProfile } from '../models';
 import { ApiServiceFactory, CreateUserProfileRequest, UpdateUserProfileRequest } from '../rest';
+import { useAppStore } from '../hooks';
 import { AuthenticationService } from '../authentication';
 
 const UserProfileStore = types.model('UserProfileStore', {
@@ -13,11 +14,12 @@ const UserProfileStore = types.model('UserProfileStore', {
   },
 
   get currentUserProfile(): IUserProfile | undefined {
-    if (!AuthenticationService.userId) {
+    const currentUserId = useAppStore().authenticationStore.userId;
+    if (!currentUserId) {
       return;
     }
 
-    return this.getUserProfile(AuthenticationService.userId);
+    return this.getUserProfile(currentUserId);
   }
 
 })).actions(self => ({
@@ -73,7 +75,7 @@ const UserProfileStore = types.model('UserProfileStore', {
       applySnapshot(oldUserProfile, response.data);
     }
 
-    AuthenticationService.userId = response.data.id;
+    useAppStore().authenticationStore.setUserId(response.data.id);
   }),
 
   /**
@@ -90,7 +92,7 @@ const UserProfileStore = types.model('UserProfileStore', {
 
     const newUserProfile = UserProfile.create(response.data);
     self.items.push(newUserProfile);
-    AuthenticationService.userId = newUserProfile.id;
+    useAppStore().authenticationStore.setUserId(newUserProfile.id);
 
     return newUserProfile;
   }),
@@ -106,6 +108,7 @@ const UserProfileStore = types.model('UserProfileStore', {
   deleteUserProfile: flow(function* deleteUserProfile(): Flow<AxiosResponse<void>, void> {
     yield ApiServiceFactory.userProfileApi.deleteUserProfile();
     AuthenticationService.signOut();
+    useAppStore().authenticationStore.setUserId(undefined);
   }),
 
   /**
@@ -122,7 +125,7 @@ const UserProfileStore = types.model('UserProfileStore', {
 
     applySnapshot(userProfile, response.data);
     userProfile.rebrickableApiKey = undefined;
-    AuthenticationService.userId = userProfile.id;
+    useAppStore().authenticationStore.setUserId(userProfile.id);
   })
 }));
 
