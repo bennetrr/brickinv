@@ -47,15 +47,20 @@ const Set = types.model('Set', {
   finished: types.boolean
 }).volatile<ISetVolatile>(() => ({
   parts: []
+})).views(self => ({
+  get partsSorted() {
+    return self.parts.slice().sort(compareParts);
+  },
+
+  getPart(id: string): IPart | undefined {
+    return self.parts.find(x => x.id === id);
+  }
+
 })).actions(self => ({
   setForSale(value: boolean) {
     self.forSale = value;
   }
 
-})).views(self => ({
-  get partsSorted() {
-    return self.parts.slice().sort(compareParts);
-  }
 }));
 
 export default Set;

@@ -3,9 +3,11 @@ import { MSTDateTime } from '../../utils';
 import UserProfile from './UserProfile.ts';
 import { InsufficientPermissionsError } from '../exceptions';
 import { AuthenticationService } from '../authentication';
+import { IGroupInvite } from './GroupInvite.ts';
 
 interface IGroupVolatile {
   rebrickableApiKey?: string;
+  invites: IGroupInvite[];
 }
 
 const Group = types.model('Group', {
@@ -17,7 +19,8 @@ const Group = types.model('Group', {
   owner: UserProfile,
   members: types.array(UserProfile)
 }).volatile<IGroupVolatile>(() => ({
-  rebrickableApiKey: undefined
+  rebrickableApiKey: undefined,
+  invites: []
 })).views(self => ({
   get isOwner(): boolean {
     return self.owner.id == AuthenticationService.userId;
