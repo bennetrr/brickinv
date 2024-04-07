@@ -27,6 +27,7 @@ const SetupPage: React.FC<ISetupPageProps> = ({}) => {
       await userProfileStore.createUserProfile(username, profileImage);
     } catch (e) {
       if (e instanceof UserProfileAlreadyExistsError) {
+        toast.information('Your user profile is already created.')
         navigate('/');
         return;
       }

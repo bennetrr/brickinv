@@ -23,7 +23,7 @@ const Group = types.model('Group', {
   invites: []
 })).views(self => ({
   get isOwner(): boolean {
-    return self.owner.id == useAppStore().authenticationStore.userId;
+    return self.owner.id == useAppStore().userProfileStore.currentUserId;
   }
 
 })).actions(self => ({

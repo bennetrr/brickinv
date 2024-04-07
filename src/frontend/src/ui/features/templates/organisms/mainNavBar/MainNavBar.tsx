@@ -2,8 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, StackLayout, Text } from '../../../../atoms';
 import IMainNavBarProps from './IMainNavBarProps';
+import { observer } from 'mobx-react';
+import { useAppStore } from '../../../../../domain';
+import { styled } from '@wemogy/reactbase';
+
+const Image = styled.img`
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+`;
 
 const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
+  const { userProfileStore } = useAppStore();
+  console.log(userProfileStore.currentUserProfile?.profileImageUri)
+
   return (
     <StackLayout
       height={6}
@@ -27,10 +40,13 @@ const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
       <StackLayout stretch/>
 
       <Link to="/settings">
-        <Icon icon="user" variation3GreyLight/>
+        { userProfileStore.currentUserProfile?.profileImageUri ?
+          <Image src={userProfileStore.currentUserProfile.profileImageUri} alt="Profile Image"/> :
+          <Icon icon="user" variation3GreyLight/>
+        }
       </Link>
     </StackLayout>
   );
 };
 
-export default MainNavBar;
+export default observer(MainNavBar);

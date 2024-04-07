@@ -17,7 +17,7 @@ const UserProfile = types.model('UserProfile', {
   rebrickableApiKey: undefined
 })).views(self => ({
   get isOwnProfile(): boolean {
-    return self.id == useAppStore().authenticationStore.userId;
+    return self.id == useAppStore().userProfileStore.currentUserId;
   }
 
 })).actions(self => ({

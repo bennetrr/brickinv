@@ -3,23 +3,22 @@ import { Flow } from '@wemogy/reactbase';
 import { AxiosResponse } from 'axios';
 import { IUserProfile, IUserProfileSnapshotIn, UserProfile } from '../models';
 import { ApiServiceFactory, CreateUserProfileRequest, UpdateUserProfileRequest } from '../rest';
-import { useAppStore } from '../hooks';
 import { AuthenticationService } from '../authentication';
 
 const UserProfileStore = types.model('UserProfileStore', {
-  items: types.array(UserProfile)
+  items: types.array(UserProfile),
+  currentUserId: types.maybe(types.string)
 }).views((self) => ({
   getUserProfile(id: string): IUserProfile | undefined {
     return self.items.find(x => x.id === id);
   },
 
   get currentUserProfile(): IUserProfile | undefined {
-    const currentUserId = useAppStore().authenticationStore.userId;
-    if (!currentUserId) {
+    if (!self.currentUserId) {
       return;
     }
 
-    return this.getUserProfile(currentUserId);
+    return this.getUserProfile(self.currentUserId);
   }
 
 })).actions(self => ({
@@ -75,7 +74,7 @@ const UserProfileStore = types.model('UserProfileStore', {
       applySnapshot(oldUserProfile, response.data);
     }
 
-    useAppStore().authenticationStore.setUserId(response.data.id);
+    self.currentUserId = response.data.id;
   }),
 
   /**
@@ -92,7 +91,7 @@ const UserProfileStore = types.model('UserProfileStore', {
 
     const newUserProfile = UserProfile.create(response.data);
     self.items.push(newUserProfile);
-    useAppStore().authenticationStore.setUserId(newUserProfile.id);
+    self.currentUserId = newUserProfile.id;
 
     return newUserProfile;
   }),
@@ -108,7 +107,7 @@ const UserProfileStore = types.model('UserProfileStore', {
   deleteUserProfile: flow(function* deleteUserProfile(): Flow<AxiosResponse<void>, void> {
     yield ApiServiceFactory.userProfileApi.deleteUserProfile();
     AuthenticationService.signOut();
-    useAppStore().authenticationStore.setUserId(undefined);
+    self.currentUserId = undefined;
   }),
 
   /**
@@ -125,7 +124,7 @@ const UserProfileStore = types.model('UserProfileStore', {
 
     applySnapshot(userProfile, response.data);
     userProfile.rebrickableApiKey = undefined;
-    useAppStore().authenticationStore.setUserId(userProfile.id);
+    self.currentUserId = userProfile.id;
   })
 }));
 
