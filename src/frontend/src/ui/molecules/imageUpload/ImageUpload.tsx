@@ -52,7 +52,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
 
   useEffect(() => {
     setImageDataUrl(imageList[0]?.dataURL || avatar.toDataUriSync())
-  }, [imageList, imageList.length]);
+  }, [imageList, imageList.length, avatar]);
 
   return (
     <ReactImageUploading

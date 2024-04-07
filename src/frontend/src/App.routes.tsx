@@ -28,6 +28,7 @@ const appRoutes: RouteObject[] = [
       { path: '/forgot-password', element: <ForgotPasswordPage/> },
       { path: '/reset-password', element: <PasswordResetPage/> },
       { path: '/invite/:inviteId/accept', element: protect(<AcceptGroupInvitePage/>) },
+      { path: '/account/setup', element: protect(<SetupPage/>) },
       {
         element: protect(<DefaultPageTemplate/>),
         children: [
@@ -48,7 +49,6 @@ const appRoutes: RouteObject[] = [
             path: '/account',
             children: [
               { index: true, element: <SettingsPage/> },
-              { path: 'setup', element: <SetupPage/> },
               {
                 path: 'groups',
                 children: [
