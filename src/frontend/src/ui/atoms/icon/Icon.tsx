@@ -17,6 +17,7 @@ export const iconMap: IconMap = {
   user: HeroIcons.UserIcon,
   users: HeroIcons.UsersIcon,
   arrowUp: HeroIcons.ArrowUpIcon,
+  arrowUpTray: HeroIcons.ArrowUpTrayIcon,
   shieldCheck: HeroIcons.ShieldCheckIcon,
   adjustmentsHorizontal: HeroIcons.AdjustmentsHorizontalIcon,
   codeBracket: HeroIcons.CodeBracketIcon,
@@ -124,6 +125,10 @@ const Icon = IconBase.extendVariations({
     size: 5,
     color: 'grey400'
   },
+  variation5White: {
+    size: 5,
+    color: 'white'
+  },
   variation3Grey500: {
     size: 3,
     color: 'grey500'
@@ -160,6 +165,7 @@ declare global {
 declare module '@wemogy/reactbase' {
   export interface IIcons {
     arrowUp?: boolean;
+    arrowUpTray?: boolean;
     shieldCheck?: boolean;
     adjustmentsHorizontal?: boolean;
     codeBracket?: boolean;
