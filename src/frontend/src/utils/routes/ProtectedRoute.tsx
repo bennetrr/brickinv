@@ -1,7 +1,9 @@
-import React, { ReactElement } from 'react';
-import { useAppStore } from '../../domain';
+import React, { ReactElement, useState } from 'react';
+import { NotFoundError, useAppStore } from '../../domain';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ISignInPageNavigationState } from '../../ui/';
+import { toast } from '../../ui';
+import { useAsyncEffect } from '@wemogy/reactbase';
 
 interface IProtectedRouteProps {
   element: ReactElement;
@@ -11,19 +13,33 @@ const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ element }) => {
   const { authenticationStore, userProfileStore } = useAppStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [showPage, setShowPage] = useState(false);
 
-  if (!authenticationStore.isAuthenticated) {
-    navigate('/sign-in', { state: { redirectPath: pathname } } satisfies { state: ISignInPageNavigationState });
-    return null;
-  }
+  useAsyncEffect(async () => {
+    if (!authenticationStore.isAuthenticated) {
+      navigate('/sign-in', { state: { redirectPath: pathname } } satisfies { state: ISignInPageNavigationState });
+      return;
+    }
 
-  void userProfileStore.queryCurrentUserProfile();
+    if (pathname !== '/account/setup') {
+      try {
+        await userProfileStore.queryCurrentUserProfile();
+      } catch (e) {
+        if (e instanceof NotFoundError) {
+          navigate('/account/setup');
+          console.log('A');
+          return;
+        }
 
-  if (userProfileStore.currentUserProfile === undefined) {
-    navigate('/account/setup')
-  }
+        toast.error('An unexpected server problem');
+        return;
+      }
+    }
 
-  return element;
+    setShowPage(true);
+  }, [pathname]);
+
+  return showPage ? element : null;
 };
 
 const protect = (element: ReactElement) => <ProtectedRoute element={element}/>;
