@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, StackLayout, Text } from '../../../../atoms';
 import IMainNavBarProps from './IMainNavBarProps';
 import { observer } from 'mobx-react';
 import { useAppStore } from '../../../../../domain';
 import { styled } from '@wemogy/reactbase';
+import { UserProfileOverlay } from '../userProfileOverlay';
 
 const Image = styled.img`
   width: 32px;
@@ -15,37 +16,46 @@ const Image = styled.img`
 
 const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
   const { userProfileStore } = useAppStore();
-  console.log(userProfileStore.currentUserProfile?.profileImageUri)
+  const [isUserProfileOverlayVisible, setIsUserProfileOverlayVisible] = useState(false);
 
   return (
-    <StackLayout
-      height={6}
-      orientation="horizontal"
-      vCenter
-      paddingRightLeft={2}
-      gap={2}
-      backgroundColor="greyDark"
-    >
-      <Link to="/sets" style={{ display: 'contents' }}>
-        <img
-          src="/brickinv.png"
-          alt="BrickInv Logo"
-          style={{ height: '32px', width: 'auto' }}
-        />
-        <Text variation20WhiteSemi>
-          BrickInv
-        </Text>
-      </Link>
+    <>
+      <StackLayout
+        height={6}
+        orientation="horizontal"
+        vCenter
+        paddingRightLeft={2}
+        gap={2}
+        backgroundColor="grey800"
+      >
+        <Link to="/sets" style={{ display: 'contents' }}>
+          <Image src="/brickinv.png" alt="BrickInv Logo"/>
 
-      <StackLayout stretch/>
+          <Text variation20WhiteSemi>
+            BrickInv
+          </Text>
+        </Link>
 
-      <Link to="/settings">
-        { userProfileStore.currentUserProfile?.profileImageUri ?
-          <Image src={userProfileStore.currentUserProfile.profileImageUri} alt="Profile Image"/> :
-          <Icon icon="user" variation3GreyLight/>
-        }
-      </Link>
-    </StackLayout>
+        <StackLayout stretch/>
+
+        <button
+          onClick={() => setIsUserProfileOverlayVisible(true)}
+          data-automation-id="main-navbar-button-user-profile-overlay"
+          style={{ display: 'contents', cursor: 'pointer' }}
+        >
+          { userProfileStore.currentUserProfile?.profileImageUri ?
+            <Image src={userProfileStore.currentUserProfile.profileImageUri} alt="Profile Image"/> :
+            <Icon icon="user" variation3GreyLight/>
+          }
+        </button>
+      </StackLayout>
+
+      <UserProfileOverlay
+        topDistance={6}
+        isVisible={isUserProfileOverlayVisible}
+        setIsVisible={setIsUserProfileOverlayVisible}
+      />
+    </>
   );
 };
 
