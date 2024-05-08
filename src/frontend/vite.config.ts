@@ -12,8 +12,6 @@ export default defineConfig({
     }
   },
   resolve: {
-    alias: {
-      'sonner/dist': 'sonner'
-    }
+    preserveSymlinks: true
   }
 });

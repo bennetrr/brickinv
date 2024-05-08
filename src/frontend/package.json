@@ -8,18 +8,19 @@
     "dev:prod": "cp public/env/env.prod.js public/env/env.js && vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "engines": {
     "node": ">=21.0.0"
   },
-  "packageManager": "pnpm@8.15.1",
   "dependencies": {
     "@dicebear/collection": "^8.0.0",
     "@dicebear/core": "^8.0.0",
     "@fontsource-variable/inter": "^5.0.16",
     "@heroicons/react": "^2.1.1",
-    "@wemogy/reactbase": "^0.9.3",
+    "@wemogy/reactbase": "^0.9.8",
     "axios": "^1.6.7",
     "debug": "^4.3.4",
     "eslint-plugin-mobx": "^0.0.9",
@@ -32,7 +33,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-images-uploading": "^3.1.7",
-    "react-native-screens": "1.0.0-alpha.21",
     "react-router-dom": "^6.21.3",
     "react-spinners": "^0.13.8",
     "react-use-clipboard": "^1.0.9",
@@ -40,6 +40,15 @@
     "the-new-css-reset": "^1.11.2"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^8.0.10",
+    "@storybook/addon-console": "^3.0.0",
+    "@storybook/addon-essentials": "^8.0.10",
+    "@storybook/addon-interactions": "^8.0.10",
+    "@storybook/addon-links": "^8.0.10",
+    "@storybook/blocks": "^8.0.10",
+    "@storybook/react": "^8.0.10",
+    "@storybook/react-vite": "^8.0.10",
+    "@storybook/test": "^8.0.10",
     "@types/debug": "^4.1.12",
     "@types/lodash": "^4.14.202",
     "@types/luxon": "^3.4.2",
@@ -52,6 +61,8 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-storybook": "^0.8.0",
+    "storybook": "^8.0.10",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
   }
