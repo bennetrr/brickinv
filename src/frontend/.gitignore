@@ -26,3 +26,5 @@ dist-ssr
 # env
 env*.js
 !env.template.js
+
+vite.dev-server.*js
