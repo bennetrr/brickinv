@@ -16,6 +16,6 @@ const OnlyUnauthenticatedRoute: React.FC<IOnlyUnauthenticatedRouteProps> = ({ el
   return element;
 };
 
-const onlyUnauthenticated = (element: ReactElement) => <OnlyUnauthenticatedRoute element={element}/>;
+const onlyUnauthenticated = (element: ReactElement) => React.createElement(OnlyUnauthenticatedRoute,  { element });
 
 export default onlyUnauthenticated;

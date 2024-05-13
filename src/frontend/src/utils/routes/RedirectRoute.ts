@@ -15,6 +15,6 @@ const RedirectRoute: React.FC<IRedirectRouteProps> = ({ destination }) => {
   return null;
 };
 
-const redirect = (destination: string) => <RedirectRoute destination={destination}/>;
+export const redirect = (destination: string) => React.createElement(RedirectRoute, { destination });
 
 export default redirect;

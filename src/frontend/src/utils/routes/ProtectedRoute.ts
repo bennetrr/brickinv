@@ -42,6 +42,6 @@ const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ element }) => {
   return showPage ? element : null;
 };
 
-const protect = (element: ReactElement) => <ProtectedRoute element={element}/>;
+const protect = (element: ReactElement) => React.createElement(ProtectedRoute, { element });
 
 export default protect;
