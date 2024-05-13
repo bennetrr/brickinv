@@ -1,5 +1,6 @@
 import * as path from 'node:path';
 import * as chokidar from 'chokidar';
+import yargs from 'yargs';
 import { createServer } from 'vite';
 // @ts-ignore
 import _ from 'lodash';
@@ -9,7 +10,11 @@ const modules = [
 ];
 
 async function main() {
-  const server = await createServer();
+  const args = await yargs(process.argv.slice(2)).parse();
+  const root = args.root as string | undefined;
+  console.log('VITE LINK: Starting server with root', process.cwd() + (root && ('/' + root)));
+
+  const server = await createServer({ root });
   await server.listen();
   server.printUrls();
   server.bindCLIShortcuts({ print: true });
