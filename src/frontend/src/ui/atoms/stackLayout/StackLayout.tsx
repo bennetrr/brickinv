@@ -8,6 +8,12 @@ const StackLayout = StackLayoutBase.extendVariations({
   divider1: {
     height: { custom: 1 },
     backgroundColor: 'grey200'
+  },
+  colorSquare: {
+    width: 20,
+    height: 20,
+    hCenter: true,
+    vCenter: true
   }
 });
 
