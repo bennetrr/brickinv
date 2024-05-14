@@ -27,5 +27,5 @@ dist-ssr
 env*.js
 !env.template.js
 
-cosmos.imports.js
+cosmos.imports.*
 vite.dev-server.*js
