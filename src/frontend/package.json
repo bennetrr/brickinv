@@ -58,6 +58,8 @@
     "eslint-plugin-storybook": "^0.8.0",
     "react-cosmos": "^6.1.1",
     "react-cosmos-dom": "^6.1.1",
+    "react-cosmos-plugin-boolean-input": "^6.1.1",
+    "react-cosmos-plugin-open-fixture": "^6.1.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "yargs": "^17.7.2"

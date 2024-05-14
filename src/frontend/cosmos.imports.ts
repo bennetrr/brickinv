@@ -3,14 +3,31 @@
 
 import { RendererConfig, UserModuleWrappers } from 'react-cosmos-core';
 
+import './src/main.css';
+import './node_modules/@fontsource-variable/inter/index.css';
+
+import * as fixture0 from './src/ui/themes/Colors.fixture';
+import * as fixture1 from './src/ui/atoms/iconButton/IconButton.fixture';
+import * as fixture2 from './src/ui/atoms/button/Button.fixture';
+
+import * as decorator0 from './src/cosmos.decorator';
+import * as decorator1 from './src/ui/atoms/cosmos.decorator';
+
 export const rendererConfig: RendererConfig = {
-  "playgroundUrl": "http://localhost:5001",
+  "playgroundUrl": "http://localhost:5000",
   "rendererUrl": "http://localhost:5050"
 };
 
-const fixtures = {};
+const fixtures = {
+  'src/ui/themes/Colors.fixture.tsx': { module: fixture0 },
+  'src/ui/atoms/iconButton/IconButton.fixture.tsx': { module: fixture1 },
+  'src/ui/atoms/button/Button.fixture.tsx': { module: fixture2 }
+};
 
-const decorators = {};
+const decorators = {
+  'src/cosmos.decorator.tsx': { module: decorator0 },
+  'src/ui/atoms/cosmos.decorator.tsx': { module: decorator1 }
+};
 
 export const moduleWrappers: UserModuleWrappers = {
   lazy: false,
