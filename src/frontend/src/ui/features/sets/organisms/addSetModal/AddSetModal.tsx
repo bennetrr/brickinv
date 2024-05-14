@@ -53,18 +53,18 @@ const AddSetModal: React.FC<IAddSetModalProps> = ({}) => {
               checked={forSale}
               onChange={setForSale}
             />
-            <Text variation14Gray900>
+            <Text>
               For sale
             </Text>
           </StackLayout>
         </StackLayout>
 
         <StackLayout orientation="horizontal" vCenter gap={1.5}>
-          <Button icon="xMark" secondary14 width100 onPress={handleCancelPress}>
+          <Button icon="xMark" secondary width100 onPress={handleCancelPress}>
             Cancel
           </Button>
 
-          <Button icon="plus" primary14 width100 onPress={handleAddPress} isLoading={isLoading}>
+          <Button icon="plus" primary width100 onPress={handleAddPress} isLoading={isLoading}>
             Add
           </Button>
         </StackLayout>

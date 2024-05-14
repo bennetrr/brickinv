@@ -76,7 +76,7 @@ const SignUpPage: React.FC<ISignUpPageProps> = ({}) => {
         </LabeledView>
 
         <Button
-          primary14
+          primary
           onPress={handleSignUpClick}
           automationId="sign-up-button-confirm"
           isLoading={isLoading}

@@ -49,7 +49,7 @@ const EmailConfirmationPage: React.FC<IEmailConfirmationPageProps> = ({}) => {
 
   return (
     <StackLayout height100 hCenter vCenter gap>
-      <Text variation16Gray900Medium>
+      <Text>
         Thanks for confirming your email
       </Text>
 

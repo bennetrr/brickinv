@@ -86,7 +86,7 @@ const SetupPage: React.FC<ISetupPageProps> = ({}) => {
           />
 
           <Button
-            primary14
+            primary
             onPress={handleCreateClick}
             automationId="profile-setup-input-button-confirm"
             isLoading={isLoading}

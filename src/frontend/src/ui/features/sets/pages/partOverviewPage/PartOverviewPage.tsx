@@ -112,7 +112,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
           />
 
           <Text variation12Grey500Medium>{part.partId}</Text>
-          <Text variation14Gray900>{part.partName}</Text>
+          <Text>{part.partName}</Text>
           <Text variation14Gray500>{part.partColor}</Text>
           <Text variation14Gray500>{`Total: ${part.totalCount}`}</Text>
 
@@ -140,7 +140,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
               borderTopBottom={{ custom: 1 }}
               borderColor="grey300"
             >
-              <Text variation14Gray900>{part.presentCount.toString()}</Text>
+              <Text>{part.presentCount.toString()}</Text>
             </StackLayout>
 
             <StackLayout

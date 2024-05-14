@@ -10,7 +10,7 @@ const NotFoundError: React.FC<INotFoundErrorProps> = () => {
         404
       </Text>
       <StackLayout width={{ custom: 1 }} height={{ custom: 60 }} backgroundColor="grey900"/>
-      <Text variation16Gray900Medium customStyle={{ lineHeight: 1 }}>
+      <Text customStyle={{ lineHeight: 1 }}>
         The page you are looking for does not exist.
       </Text>
     </StackLayout>

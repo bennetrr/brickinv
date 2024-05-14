@@ -86,8 +86,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
             >
               <Icon arrowUpTray variation5White customStyle={{ pointerEvents: 'none' }}/>
 
-              <Text
-                variation14WhiteMedium
+              <Text variation14WhiteMedium
                 textAlign="center"
                 customStyle={{ pointerEvents: 'none' }}
               >

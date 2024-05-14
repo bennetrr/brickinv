@@ -93,7 +93,7 @@ const PasswordResetPage: React.FC<IPasswordResetPageProps> = ({}) => {
         </LabeledView>
 
         <Button
-          primary14
+          primary
           onPress={handlePasswordResetClick}
           automationId="sign-up-button-confirm"
           isLoading={isLoading}

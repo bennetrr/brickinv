@@ -41,7 +41,7 @@ const ForgotPasswordPage: React.FC<IForgotPasswordPageProps> = ({}) => {
   if (isEmailSent) {
     return (
       <StackLayout height100 width100 hCenter vCenter>
-        <Text variation16Gray900Medium>
+        <Text>
           We've sent you an email. If you didn't get an email, also check your spam / junk folder.
         </Text>
       </StackLayout>
@@ -65,7 +65,7 @@ const ForgotPasswordPage: React.FC<IForgotPasswordPageProps> = ({}) => {
         </LabeledView>
 
         <Button
-          primary14
+          primary
           onPress={handleRequestPasswordResetClick}
           automationId="forgot-password-button-confirm"
           isLoading={isLoading}

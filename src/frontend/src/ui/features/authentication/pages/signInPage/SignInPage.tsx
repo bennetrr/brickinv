@@ -90,7 +90,7 @@ const SignInPage: React.FC<ISignInPageProps> = ({}) => {
         </LabeledView>
 
         <Button
-          primary14
+          primary
           onPress={handleSignInClick}
           automationId="sign-in-button-confirm"
           isLoading={isLoading}

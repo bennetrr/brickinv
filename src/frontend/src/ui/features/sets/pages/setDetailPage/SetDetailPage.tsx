@@ -33,7 +33,7 @@ const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
           checked={set.forSale}
           disabled
         />
-        <Text variation14Gray900>
+        <Text>
           For sale
         </Text>
       </StackLayout>
@@ -43,32 +43,32 @@ const SetDetailPage: React.FC<ISetDetailPageProps> = ({}) => {
           checked={set.finished}
           disabled
         />
-        <Text variation14Gray900>
+        <Text>
           Finished
         </Text>
       </StackLayout>
 
       <StackLayout orientation="horizontal" vCenter gap>
-        <Text variation14Gray900>
+        <Text>
           Parts:
         </Text>
 
         <ValueField label="" value={set.presentParts.toString()}/>
 
-        <Text variation14Gray900>
+        <Text>
           finished from
         </Text>
 
         <ValueField label="" value={set.totalParts.toString()}/>
 
-        <Text variation14Gray900>
+        <Text>
           total
         </Text>
       </StackLayout>
 
       <StackLayout>
         <Button
-          navButton
+          navigation
           icon="chevronRight"
           onPress={() => navigate('parts')}
         >
