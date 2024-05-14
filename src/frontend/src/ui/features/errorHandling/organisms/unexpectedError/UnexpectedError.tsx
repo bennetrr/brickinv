@@ -6,7 +6,7 @@ const UnexpectedError: React.FC<IUnexpectedErrorProps> = () => {
 
   return (
     <StackLayout orientation="horizontal" gap={2} vCenter>
-      <Text variation60Grey600Thin customStyle={{ lineHeight: 1 }}>
+      <Text variation60Gray600Thin customStyle={{ lineHeight: 1 }}>
         Error
       </Text>
       <StackLayout width={{ custom: 1 }} height={{ custom: 60 }} backgroundColor="grey900"/>

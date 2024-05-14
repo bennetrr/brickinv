@@ -29,7 +29,7 @@ const SetCard: React.FC<ISetCardProps> = ({ set }) => {
           borderRadiusBottomLeft={{ custom: 'inherit' }}
           borderRadiusBottomRight={{ custom: 'inherit' }}
         >
-          <Text variation12Grey500Medium>{set.setId}</Text>
+          <Text variation12Gray500Medium>{set.setId}</Text>
           <Text>{set.setName}</Text>
         </StackLayout>
       </StackLayout>

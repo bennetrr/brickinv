@@ -95,7 +95,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
             </StackLayout>
           </ImageContainer>
 
-          <Text variation14Grey700Medium>
+          <Text medium>
             Drag a file onto the image or click the image to upload a file.
           </Text>
 

@@ -56,11 +56,11 @@ const SetupPage: React.FC<ISetupPageProps> = ({}) => {
       <StackLayout height100 hCenter vCenter gap={6}>
         <StackLayout width={40} gap={4}>
           <StackLayout gap>
-            <Text variation30Grey900Bold lineHeight={40}>
+            <Text variation30Gray900Bold lineHeight={40}>
               Hi, welcome to BrickInv!
             </Text>
 
-            <Text variation16Gray600Medium>
+            <Text medium>
               Please complete your profile to get started.
             </Text>
           </StackLayout>

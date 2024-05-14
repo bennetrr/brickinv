@@ -111,7 +111,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
             alt="No image"
           />
 
-          <Text variation12Grey500Medium>{part.partId}</Text>
+          <Text variation12Gray500Medium>{part.partId}</Text>
           <Text>{part.partName}</Text>
           <Text variation14Gray500>{part.partColor}</Text>
           <Text variation14Gray500>{`Total: ${part.totalCount}`}</Text>

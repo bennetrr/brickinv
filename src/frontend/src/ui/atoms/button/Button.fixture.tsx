@@ -28,16 +28,18 @@ const Base: React.FC<IBaseProps> = ({ variationKey, _defaultIcon = 'undefined', 
   const [isLoading] = useFixtureInput('Loading', false);
   const [disabled] = useFixtureInput('Disabled', false);
 
-  return <Button
-    onPress={handlePress}
-    variationKey={variationKey + (disabled && 'Disabled' || '')}
-    icon={icon === 'undefined' ? undefined : icon}
-    iconPosition={iconPosition}
-    isLoading={isLoading}
-    disabled={disabled}
-  >
-    {children}
-  </Button>;
+  return (
+    <Button
+      onPress={handlePress}
+      variationKey={variationKey + (disabled && 'Disabled' || '')}
+      icon={icon === 'undefined' ? undefined : icon}
+      iconPosition={iconPosition}
+      isLoading={isLoading}
+      disabled={disabled}
+    >
+      {children}
+    </Button>
+  );
 };
 
 export default {
