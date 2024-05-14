@@ -2,8 +2,8 @@ import React, { PropsWithChildren, useCallback } from 'react';
 import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 import { IIcons } from '@wemogy/reactbase';
 import { iconMapKeys } from '../icon/Icon.tsx';
-import Button from './Button.tsx';
 import { toast } from '../toaster';
+import Button from './Button.tsx';
 
 interface IBaseProps extends PropsWithChildren {
   variationKey: string;
