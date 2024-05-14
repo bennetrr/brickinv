@@ -1,5 +1,5 @@
 import { ThemeBuilder } from '@wemogy/reactbase';
-import { green, primary, red } from './Colors';
+import { gray, green, primary, red } from './Colors';
 
 const DefaultTheme = ThemeBuilder.createTheme({
   referenceValueCollection: {
@@ -10,7 +10,8 @@ const DefaultTheme = ThemeBuilder.createTheme({
     },
     fontFamily: {
       default: 'Inter Variable',
-      title: 'Roboto, sans-serif'
+      title: 'Roboto, sans-serif',
+      code: 'JetBrains Mono'
     },
     fontSize: {
       variation12: 12,
@@ -36,7 +37,6 @@ const DefaultTheme = ThemeBuilder.createTheme({
     margin: {},
     padding: {},
     color: {
-      primary: primary[500],
       primary100: primary[100],
       primary200: primary[200],
       primary300: primary[300],
@@ -46,21 +46,17 @@ const DefaultTheme = ThemeBuilder.createTheme({
       primary700: primary[700],
       primary800: primary[800],
       primary900: primary[900],
-      primaryDark: '#419DA8',
-      primaryDisabled: '#96D8DC',
-      white: '#fff',
-      grey50: '#F9FAFB',
-      grey100: '#F3F4F6',
-      grey200: '#E5E7EB',
-      grey300: '#D1D5DB',
-      grey400: '#9CA3AF',
-      grey500: '#6B7280',
-      grey600: '#4B5563',
-      grey700: '#374151',
-      grey800: '#1F2937',
-      grey900: '#111827',
-      greyDark: '#1D2A3B',
-      greyLight: '#EEF2FF',
+      white: '#ffffff',
+      gray100: gray[100],
+      gray200: gray[200],
+      gray300: gray[300],
+      gray400: gray[400],
+      gray500: gray[500],
+      gray600: gray[600],
+      gray700: gray[700],
+      gray800: gray[800],
+      gray900: gray[900],
+      black: '#000000',
       green100: green[100],
       green200: green[200],
       green300: green[300],
@@ -70,7 +66,6 @@ const DefaultTheme = ThemeBuilder.createTheme({
       green700: green[700],
       green800: green[800],
       green900: green[900],
-      black: '#000',
       red100: red[100],
       red200: red[200],
       red300: red[300],
@@ -80,14 +75,10 @@ const DefaultTheme = ThemeBuilder.createTheme({
       red700: red[700],
       red800: red[800],
       red900: red[900],
-      indigo100: '#DFF0F3',
-      indigo900: '#312E81',
       transparent: 'transparent'
     },
     borderSize: {},
-    borderRadiusSize: {
-      medium: 8
-    }
+    borderRadiusSize: {}
   }
 });
 

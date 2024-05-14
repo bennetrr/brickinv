@@ -2,7 +2,8 @@ import { DefaultReferenceValueCollection, themeDeclarationTypes } from '@wemogy/
 
 const referenceValueCollectionDeclaration = DefaultReferenceValueCollection.extendVariations({
   fontFamily: {
-    title: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string)
+    title: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    code: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string)
   },
   fontSize: {
     variation12: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number),
@@ -25,20 +26,27 @@ const referenceValueCollectionDeclaration = DefaultReferenceValueCollection.exte
     black: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.number)
   },
   color: {
-    primary: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    primaryDark: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    primaryDisabled: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary100: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary200: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary300: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary400: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary500: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary600: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary700: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary800: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    primary900: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    transparent: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     white: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey50: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey100: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey200: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey300: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey400: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey500: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey600: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey700: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey800: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    grey900: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray100: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray200: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray300: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray400: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray500: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray600: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray700: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray800: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    gray900: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
+    black: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     green100: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     green200: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     green300: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
@@ -48,9 +56,6 @@ const referenceValueCollectionDeclaration = DefaultReferenceValueCollection.exte
     green700: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     green800: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     green900: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    greyDark: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    greyLight: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    black: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     red100: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     red200: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     red300: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
@@ -59,13 +64,7 @@ const referenceValueCollectionDeclaration = DefaultReferenceValueCollection.exte
     red600: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     red700: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
     red800: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    red900: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    indigo100: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    indigo900: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string),
-    transparent: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string)
-  },
-  borderRadiusSize: {
-    medium: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.factor)
+    red900: themeDeclarationTypes.themeModeBased(themeDeclarationTypes.string)
   }
 });
 
