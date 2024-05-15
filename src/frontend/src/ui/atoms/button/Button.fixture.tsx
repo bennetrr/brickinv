@@ -9,9 +9,10 @@ interface IBaseProps {
   variationKey: string;
   _defaultIcon?: keyof IIcons | 'undefined';
   _defaultIconPos?: 'left' | 'right';
+  _defaultIconSpacing?: number;
 }
 
-const Base: React.FC<IBaseProps> = ({ variationKey, _defaultIcon = 'undefined', _defaultIconPos = 'left' }) => {
+const Base: React.FC<IBaseProps> = ({ variationKey, _defaultIcon = 'undefined', _defaultIconPos = 'left', _defaultIconSpacing = 2 }) => {
   const handlePress = useCallback(() => {
     toast.information('Pressed button');
   }, []);
@@ -25,6 +26,7 @@ const Base: React.FC<IBaseProps> = ({ variationKey, _defaultIcon = 'undefined', 
     options: ['left', 'right'],
     defaultValue: _defaultIconPos
   });
+  const [iconSpacing] = useFixtureInput('Icon Spacing', _defaultIconSpacing);
   const [isLoading] = useFixtureInput('Loading', false);
   const [disabled] = useFixtureInput('Disabled', false);
 
@@ -34,6 +36,7 @@ const Base: React.FC<IBaseProps> = ({ variationKey, _defaultIcon = 'undefined', 
       variationKey={variationKey + (disabled && 'Disabled' || '')}
       icon={icon === 'undefined' ? undefined : icon}
       iconPosition={iconPosition}
+      iconSpacing={iconSpacing}
       isLoading={isLoading}
       disabled={disabled}
     >
@@ -47,5 +50,5 @@ export default {
   'Secondary': <Base variationKey="secondary"/>,
   'Borderless': <Base variationKey="borderless"/>,
   'Danger': <Base variationKey="danger"/>,
-  'Navigation': <Base variationKey="navigation" _defaultIcon="arrowSmallRight" _defaultIconPos="right"/>
+  'Navigation': <Base variationKey="navigation" _defaultIcon="chevronRight" _defaultIconPos="right" _defaultIconSpacing={27}/>
 };

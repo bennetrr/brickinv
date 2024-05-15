@@ -35,7 +35,7 @@ const AddSetModal: React.FC<IAddSetModalProps> = ({}) => {
     <Modal modalKey="addSet" withoutHeader withoutScrollView>
       <StackLayout>
         <StackLayout>
-          <Text title marginTop={2.5}>
+          <Text variation18Gray900 marginTop={2.5}>
             Add new set
           </Text>
         </StackLayout>

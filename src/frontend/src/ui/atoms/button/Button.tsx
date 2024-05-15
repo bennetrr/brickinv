@@ -27,15 +27,15 @@ const Button = ButtonBase.extendVariations({
     base: {
       backgroundColor: 'white',
       border: { custom: 1 },
-      borderColor: 'gray700',
-      fontColor: 'gray700',
-      iconVariation: 'variation2Gray700'
+      borderColor: 'gray900',
+      fontColor: 'gray900',
+      iconVariation: 'variation2Gray900'
     },
     disabled: {
       backgroundColor: 'gray100',
-      borderColor: 'gray400',
-      fontColor: 'gray400',
-      iconVariation: 'variation2Gray400'
+      borderColor: 'gray500',
+      fontColor: 'gray500',
+      iconVariation: 'variation2Gray500'
     }
   },
   borderless: {
@@ -44,11 +44,11 @@ const Button = ButtonBase.extendVariations({
       paddingRightLeft: 0,
       backgroundColor: 'transparent',
       fontColor: 'primary500',
-      iconVariation: 'variation2Primary'
+      iconVariation: 'variation2Primary500'
     },
     disabled: {
       fontColor: 'primary300',
-      iconVariation: 'variation2Gray400'
+      iconVariation: 'variation2Primary300'
     }
   },
   danger: {

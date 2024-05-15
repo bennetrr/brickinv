@@ -10,19 +10,19 @@ const Text = TextBase.extendVariations({
   medium: {
     fontWeight: 'medium'
   },
-  title: {
-    fontSize: 'variation18',
-    fontWeight: 'medium',
-    fontColor: 'gray900'
-  },
-  cta: {
-    fontSize: 'variation14',
-    fontColor: 'primary500'
-  },
   variation12Gray500Medium: {
     fontSize: 'variation12',
     fontWeight: 'medium',
     fontColor: 'gray500'
+  },
+  variation14Primary500: {
+    fontSize: 'variation14',
+    fontColor: 'primary500'
+  },
+  variation14WhiteMedium: {
+    fontSize: 'variation14',
+    fontWeight: 'medium',
+    fontColor: 'white'
   },
   variation14Gray500: {
     base: {
@@ -32,11 +32,6 @@ const Text = TextBase.extendVariations({
     medium: {
       fontWeight: 'medium'
     }
-  },
-  variation14WhiteMedium: {
-    fontSize: 'variation14',
-    fontWeight: 'medium',
-    fontColor: 'white'
   },
   variation14Red500Medium: {
     fontSize: 'variation14',
@@ -48,6 +43,11 @@ const Text = TextBase.extendVariations({
     fontWeight: 'medium',
     fontColor: 'green500'
   },
+  variation18Gray900: {
+    fontSize: 'variation18',
+    fontWeight: 'medium',
+    fontColor: 'gray900'
+  },
   variation20WhiteSemi: {
     fontSize: 'variation20',
     fontWeight: 'semiBold',
@@ -58,7 +58,7 @@ const Text = TextBase.extendVariations({
     fontWeight: 'bold',
     fontColor: 'gray900'
   },
-  variation60Grey600Thin: {
+  variation60Gray600Thin: {
     lineHeight: 50,
     fontSize: 'variation60',
     fontWeight: 'thin',

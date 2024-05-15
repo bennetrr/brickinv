@@ -38,17 +38,17 @@ const Base: React.FC<IBaseProps> = ({ variationKey, _darkBg }) => {
 };
 
 export default {
-  '14px Gray900 Regular (default)': <Base variationKey="base"/>,
-  '14px Gray900 Medium (default medium)': <Base variationKey="medium"/>,
-  '18px Gray900 Medium (title)': <Base variationKey="title"/>,
-  '14px Primary500 Regular (CTA)': <Base variationKey="cta"/>,
+  'Default (14px Gray900 Regular)': <Base variationKey="base"/>,
+  'Default Medium (14px Gray900 Medium)': <Base variationKey="medium"/>,
   '12px Gray500 Medium': <Base variationKey="variation12Gray500Medium"/>,
+  '14px Primary500 Regular': <Base variationKey="variation14Primary500"/>,
   '14px Gray500 Regular': <Base variationKey="variation14Gray500"/>,
   '14px Gray500 Medium': <Base variationKey="variation14Gray500Medium"/>,
   '14px Red500 Medium': <Base variationKey="variation14Red500Medium"/>,
   '14px Green500 Medium': <Base variationKey="variation14Green500Medium"/>,
   '14px White Medium': <Base variationKey="variation14WhiteMedium" _darkBg/>,
+  '18px Gray900 Medium': <Base variationKey="variation18Gray900"/>,
   '20px White Semibold': <Base variationKey="variation20WhiteSemi" _darkBg/>,
   '30px Gray900 Bold': <Base variationKey="variation30Gray900Bold"/>,
-  '60px Gray600 Thin': <Base variationKey="variation60Grey600Thin"/>,
+  '60px Gray600 Thin': <Base variationKey="variation60Gray600Thin"/>,
 };
