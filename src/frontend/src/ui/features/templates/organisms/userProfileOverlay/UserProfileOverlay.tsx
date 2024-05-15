@@ -64,7 +64,7 @@ const UserProfileOverlay: React.FC<IUserProfileOverlayProps> = ({ topDistance, s
 
           { userProfileStore.currentUserProfile?.profileImageUri ?
             <Image src={userProfileStore.currentUserProfile.profileImageUri} alt="Profile Image"/> :
-            <Icon icon="user" variation3GreyLight/>
+            <Icon icon="user" variation3Gray300/>
           }
         </StackLayout>
 

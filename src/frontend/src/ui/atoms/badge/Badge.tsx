@@ -16,7 +16,7 @@ const Badge: React.FC<IBadgeProps> = ({ text, icon, secondary }) => {
       paddingTopBottom={0.5}
     >
       {icon ? <Icon icon={icon} size={2} marginRight={0.5}/> : null}
-      <Text cta={!secondary} variation14PrimaryDarkMedium fontWeight={secondary ? undefined : 'bold'}>
+      <Text variation14Primary500={!secondary} variation14PrimaryDarkMedium fontWeight={secondary ? undefined : 'bold'}>
         {text}
       </Text>
     </StackLayout>

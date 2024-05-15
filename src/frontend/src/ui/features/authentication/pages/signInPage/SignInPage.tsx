@@ -100,15 +100,15 @@ const SignInPage: React.FC<ISignInPageProps> = ({}) => {
 
         <Link to="/sign-up">
           <StackLayout vCenter orientation="horizontal" automationId="sign-in-link-sign-up">
-            <Text cta>No account yet? Sign up now</Text>
-            <Icon chevronRight variation2PrimaryDark/>
+            <Text variation14Primary500>No account yet? Sign up now</Text>
+            <Icon chevronRight variation2Primary500/>
           </StackLayout>
         </Link>
 
         <Link to="/forgot-password">
           <StackLayout vCenter orientation="horizontal" automationId="sign-in-link-forgot-password">
-            <Text cta>Forgot your password?</Text>
-            <Icon chevronRight variation2PrimaryDark/>
+            <Text variation14Primary500>Forgot your password?</Text>
+            <Icon chevronRight variation2Primary500/>
           </StackLayout>
         </Link>
       </StackLayout>

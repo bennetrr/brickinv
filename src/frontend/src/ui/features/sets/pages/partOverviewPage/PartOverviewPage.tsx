@@ -101,7 +101,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
           onPress={handlePreviousPress}
         >
           <RenderIf condition={currentIndex > 0}>
-            <Icon chevronLeft variation3Grey500/>
+            <Icon chevronLeft variation3Gray500/>
           </RenderIf>
         </StackLayout>
 
@@ -129,7 +129,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
               borderRadiusLeft={0.75}
               onPress={part.presentCount > 0 ? handleDecrementPress : undefined}
             >
-              <Icon minus variationKey={part.presentCount > 0 ? 'variation3Grey500' : 'variation3GreyLight'}/>
+              <Icon minus variationKey={part.presentCount > 0 ? 'variation3Gray500' : 'variation3Gray300'}/>
             </StackLayout>
 
             <StackLayout
@@ -154,7 +154,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
               borderRadiusRight={0.75}
             >
               <Icon plus
-                    variationKey={part.presentCount < part.totalCount ? 'variation3Grey500' : 'variation3GreyLight'}/>
+                    variationKey={part.presentCount < part.totalCount ? 'variation3Gray500' : 'variation3Gray300'}/>
             </StackLayout>
 
             <StackLayout
@@ -169,7 +169,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
               onPress={part.presentCount < part.totalCount ? handleCompletePress : undefined}
             >
               <Icon check
-                    variationKey={part.presentCount < part.totalCount ? 'variation3Grey500' : 'variation3GreyLight'}/>
+                    variationKey={part.presentCount < part.totalCount ? 'variation3Gray500' : 'variation3Gray300'}/>
             </StackLayout>
           </StackLayout>
         </StackLayout>
@@ -181,7 +181,7 @@ const PartOverviewPage: React.FC<IPartOverviewPageProps> = () => {
           onPress={handleNextPress}
         >
           <RenderIf condition={currentIndex < set.parts.length}>
-            <Icon chevronRight variation3Grey500/>
+            <Icon chevronRight variation3Gray500/>
           </RenderIf>
         </StackLayout>
       </StackLayout>

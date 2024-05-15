@@ -4,8 +4,8 @@ const Checkbox = CheckboxBase.extendVariations({
   base: {
     checkedIcon: 'stopSolid',
     uncheckedIcon: 'stop',
-    checkedIconVariation: 'variation3Primary',
-    uncheckedIconVariation: 'variation3Grey300'
+    checkedIconVariation: 'variation3Primary500',
+    uncheckedIconVariation: 'variation3Gray300'
   }
 });
 

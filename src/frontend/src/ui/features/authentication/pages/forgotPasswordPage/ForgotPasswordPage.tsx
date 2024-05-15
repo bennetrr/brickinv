@@ -75,15 +75,15 @@ const ForgotPasswordPage: React.FC<IForgotPasswordPageProps> = ({}) => {
 
         <Link to="/sign-in">
           <StackLayout vCenter orientation="horizontal" automationId="forgot-password-link-sign-in">
-            <Text cta>Already have an account? Sign in</Text>
-            <Icon chevronRight variation2PrimaryDark/>
+            <Text variation14Primary500>Already have an account? Sign in</Text>
+            <Icon chevronRight variation2Primary500/>
           </StackLayout>
         </Link>
 
         <Link to="/sign-up">
           <StackLayout vCenter orientation="horizontal" automationId="forgot-password-link-sign-up">
-            <Text cta>No account yet? Sign up now</Text>
-            <Icon chevronRight variation2PrimaryDark/>
+            <Text variation14Primary500>No account yet? Sign up now</Text>
+            <Icon chevronRight variation2Primary500/>
           </StackLayout>
         </Link>
       </StackLayout>

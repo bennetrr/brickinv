@@ -47,7 +47,7 @@ class Toaster extends ToasterBase {
         type: undefined,
         icon: {
           icon: 'informationCircle',
-          iconVariation: 'variation3Grey500'
+          iconVariation: 'variation3Gray500'
         }
       }
     );

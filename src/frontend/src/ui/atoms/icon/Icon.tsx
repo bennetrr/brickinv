@@ -1,7 +1,7 @@
 import _ from 'lodash';
+import { Icon as IconBase, IconKey, IIcons, styled } from '@wemogy/reactbase';
 import * as HeroIcons from '@heroicons/react/24/outline';
 import * as HeroIconsSolid from '@heroicons/react/20/solid';
-import { Icon as IconBase, IconKey, IIcons, styled } from '@wemogy/reactbase';
 import DuplicateIcon from './custom/DuplicateIcon';
 import SupportPhoneWorkerIcon from './custom/SupportPhoneWorkerIcon';
 import SettingsGearIcon from './custom/SettingsGearIcon';
@@ -14,44 +14,44 @@ function useFillInsteadOfColor<T>(component: T): T {
 type IconMap = { [key in keyof IIcons as string]: any };
 
 export const iconMap: IconMap = {
-  user: HeroIcons.UserIcon,
-  users: HeroIcons.UsersIcon,
+  adjustmentsHorizontal: HeroIcons.AdjustmentsHorizontalIcon,
+  arrowSmallRight: HeroIcons.ArrowRightIcon,
+  arrowTopRightOnSquare: HeroIcons.ArrowTopRightOnSquareIcon,
   arrowUp: HeroIcons.ArrowUpIcon,
   arrowUpTray: HeroIcons.ArrowUpTrayIcon,
-  shieldCheck: HeroIcons.ShieldCheckIcon,
-  adjustmentsHorizontal: HeroIcons.AdjustmentsHorizontalIcon,
-  codeBracket: HeroIcons.CodeBracketIcon,
-  arrowTopRightOnSquare: HeroIcons.ArrowTopRightOnSquareIcon,
   bookOpen: HeroIcons.BookOpenIcon,
+  check: HeroIcons.CheckIcon,
   checkCircle: HeroIconsSolid.CheckCircleIcon,
-  exclamationCircle: HeroIconsSolid.ExclamationCircleIcon,
-  plus: HeroIcons.PlusIcon,
-  folderPlus: HeroIcons.FolderPlusIcon,
+  chevronLeft: HeroIcons.ChevronLeftIcon,
+  chevronRight: HeroIcons.ChevronRightIcon,
   chevronUpDown: HeroIconsSolid.ChevronUpDownIcon,
-  home: HeroIcons.HomeIcon,
-  lifebuoy: HeroIcons.LifebuoyIcon,
-  questionMarkCircle: HeroIcons.QuestionMarkCircleIcon,
-  questionMarkCircleFilled: HeroIconsSolid.QuestionMarkCircleIcon,
+  codeBracket: HeroIcons.CodeBracketIcon,
   duplicate: DuplicateIcon,
+  ellipsisVertical: HeroIcons.EllipsisVerticalIcon,
+  envelopeOpen: HeroIcons.EnvelopeOpenIcon,
+  exclamationCircle: HeroIconsSolid.ExclamationCircleIcon,
   eye: HeroIcons.EyeIcon,
   eyeSlash: HeroIcons.EyeSlashIcon,
+  folderPlus: HeroIcons.FolderPlusIcon,
+  home: HeroIcons.HomeIcon,
+  informationCircle: HeroIconsSolid.InformationCircleIcon,
+  key: HeroIcons.KeyIcon,
+  lifebuoy: HeroIcons.LifebuoyIcon,
+  minus: HeroIcons.MinusIcon,
+  plus: HeroIcons.PlusIcon,
+  questionMarkCircle: HeroIcons.QuestionMarkCircleIcon,
+  questionMarkCircleFilled: HeroIconsSolid.QuestionMarkCircleIcon,
+  rocketLaunch: HeroIcons.RocketLaunchIcon,
+  server: HeroIcons.ServerIcon,
+  settingsGear: useFillInsteadOfColor(SettingsGearIcon),
+  shieldCheck: HeroIcons.ShieldCheckIcon,
   stop: HeroIcons.StopIcon,
   stopSolid: HeroIconsSolid.StopIcon,
-  rocketLaunch: HeroIcons.RocketLaunchIcon,
-  ellipsisVertical: HeroIcons.EllipsisVerticalIcon,
-  server: HeroIcons.ServerIcon,
-  trash: HeroIcons.TrashIcon,
-  informationCircle: HeroIconsSolid.InformationCircleIcon,
-  arrowSmallRight: HeroIcons.ArrowSmallRightIcon,
-  chevronRight: HeroIcons.ChevronRightIcon,
   supportPhoneWorker: useFillInsteadOfColor(SupportPhoneWorkerIcon),
-  settingsGear: useFillInsteadOfColor(SettingsGearIcon),
-  xMark: HeroIconsSolid.XMarkIcon,
-  check: HeroIcons.CheckIcon,
-  key: HeroIcons.KeyIcon,
-  envelopeOpen: HeroIcons.EnvelopeOpenIcon,
-  chevronLeft: HeroIcons.ChevronLeftIcon,
-  minus: HeroIcons.MinusIcon
+  trash: HeroIcons.TrashIcon,
+  user: HeroIcons.UserIcon,
+  users: HeroIcons.UsersIcon,
+  xMark: HeroIconsSolid.XMarkIcon
 };
 
 for (let key in iconMap) {
@@ -66,48 +66,40 @@ export const iconMapKeys = _.keys(iconMap) as IconKey[];
 
 const Icon = IconBase.extendVariations({
   base: {
-    size: 3,
-    color: 'grey900'
-  },
-  variation1Grey400: {
-    size: 1,
-    color: 'grey400'
-  },
-  variation2Grey300: {
     size: 2,
-    color: 'grey300'
+    color: 'gray900'
   },
-  variation2Grey400: {
+  variation2Primary300: {
     size: 2,
-    color: 'grey400'
+    color: 'primary300'
   },
-  variation2Grey600: {
+  variation2Primary500: {
     size: 2,
-    color: 'grey600'
-  },
-  variation2Grey700: {
-    size: 2,
-    color: 'grey700'
+    color: 'primary500'
   },
   variation2White: {
     size: 2,
     color: 'white'
   },
-  variation2PrimaryDark: {
+  variation2Gray500: {
     size: 2,
-    color: 'primaryDark'
+    color: 'gray500'
   },
-  variation2Dot5Grey400: {
-    size: 2.5,
-    color: 'grey400'
+  variation2Gray900: {
+    size: 2,
+    color: 'gray900'
   },
-  variation3Primary: {
+  variation3Primary500: {
     size: 3,
-    color: 'primary'
+    color: 'primary500'
   },
-  variation3White: {
+  variation3Gray300: {
     size: 3,
-    color: 'white'
+    color: 'gray300'
+  },
+  variation3Gray500: {
+    size: 3,
+    color: 'gray500'
   },
   variation3Red500: {
     size: 3,
@@ -117,34 +109,19 @@ const Icon = IconBase.extendVariations({
     size: 3,
     color: 'green500'
   },
-  variation3Grey300: {
-    size: 3,
-    color: 'grey300'
-  },
-  variation5Grey400: {
-    size: 5,
-    color: 'grey400'
-  },
   variation5White: {
     size: 5,
     color: 'white'
   },
-  variation3Grey500: {
-    size: 3,
-    color: 'grey500'
-  },
-  variation3Grey400: {
-    size: 3,
-    color: 'grey400'
-  },
-  variation3GreyLight: {
-    size: 3,
-    color: 'greyLight'
-  },
-  navButton: {
-    size: 5,
-    color: 'grey700',
-    marginLeft: { custom: 'auto' }
+  navigationButton: {
+    base: {
+      size: 5,
+      color: 'gray700',
+      marginLeft: { custom: 'auto' },
+    },
+    disabled: {
+      color: 'gray400',
+    }
   }
 }).registerDependencies({
   iconResolver: props => {

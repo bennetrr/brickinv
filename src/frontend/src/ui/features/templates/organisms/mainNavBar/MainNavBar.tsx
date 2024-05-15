@@ -45,7 +45,7 @@ const MainNavBar: React.FC<IMainNavBarProps> = ({}) => {
         >
           { userProfileStore.currentUserProfile?.profileImageUri ?
             <Image src={userProfileStore.currentUserProfile.profileImageUri} alt="Profile Image"/> :
-            <Icon icon="user" variation3GreyLight/>
+            <Icon icon="user" variation3Gray300/>
           }
         </button>
       </StackLayout>
