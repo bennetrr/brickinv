@@ -19,6 +19,6 @@ export default TextInput;
 
 declare global {
   interface TextInputVariations {
-    spaceBlocksCore: typeof TextInput['variationKey'];
+    brickInv: typeof TextInput['variationKey'];
   }
 }

@@ -135,7 +135,7 @@ export default Icon;
 
 declare global {
   interface IconVariations {
-    spaceBlocksCore: typeof Icon['variationKey'];
+    brickInv: typeof Icon['variationKey'];
   }
 }
 

@@ -32,6 +32,6 @@ export default Dropdown;
 
 declare global {
   interface DropdownVariations {
-    spaceBlocksCore: typeof Dropdown['variationKey'];
+    brickInv: typeof Dropdown['variationKey'];
   }
 }

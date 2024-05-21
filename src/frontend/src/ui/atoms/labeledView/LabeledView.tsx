@@ -11,6 +11,6 @@ export default LabeledView;
 
 declare global {
   interface LabeledViewVariations {
-    spaceBlocksCore: typeof LabeledView['variationKey'];
+    brickInv: typeof LabeledView['variationKey'];
   }
 }

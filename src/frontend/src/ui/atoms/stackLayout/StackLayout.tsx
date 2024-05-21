@@ -21,6 +21,6 @@ export default StackLayout;
 
 declare global {
   interface StackLayoutVariations {
-    spaceBlocksCore: typeof StackLayout['variationKey'];
+    brickInv: typeof StackLayout['variationKey'];
   }
 }
