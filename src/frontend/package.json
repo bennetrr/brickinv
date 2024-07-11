@@ -21,7 +21,7 @@
     "@dicebear/core": "^8.0.0",
     "@fontsource-variable/inter": "^5.0.16",
     "@heroicons/react": "^2.1.1",
-    "@wemogy/reactbase": "^0.9.8",
+    "@wemogy/reactbase": "^0.10.7",
     "axios": "^1.6.7",
     "debug": "^4.3.4",
     "eslint-plugin-mobx": "^0.0.9",
