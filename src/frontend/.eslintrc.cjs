@@ -11,4 +11,12 @@ module.exports = {
       {allowConstantExport: true},
     ],
   },
+  overrides: [
+    {
+      files: ['**/*.fixture.tsx'],
+      rules: {
+        'react-refresh/only-export-components': 'off'
+      }
+    }
+  ]
 }
