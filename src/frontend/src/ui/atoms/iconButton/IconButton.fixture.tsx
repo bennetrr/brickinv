@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 import { IIcons } from '@wemogy/reactbase';
 import { iconMapKeys } from '../icon/Icon.tsx';
 import IconButton from './IconButtonComponent.tsx';
 import { toast } from '../toaster';
 
-interface IBaseProps extends PropsWithChildren {
+interface IBaseProps {
   variationKey: string;
 }
 
