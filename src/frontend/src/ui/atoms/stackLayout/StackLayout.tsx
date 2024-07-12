@@ -5,10 +5,6 @@ const StackLayout = StackLayoutBase.extendVariations({
     position: 'relative',
     border: 0
   },
-  divider1: {
-    height: { custom: 1 },
-    backgroundColor: 'grey200'
-  },
   colorSquare: {
     width: 20,
     height: 20,
