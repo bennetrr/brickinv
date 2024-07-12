@@ -4,14 +4,23 @@ const Modal = ModalBase.extendVariations({
   base: {
     container: {
       backgroundColor: 'white',
-      padding: 3,
-      width100: true,
-      maxWidth: 64
+      padding: 1,
+      widthFitContent: true
     },
     content: {
-      width100: true,
-      maxWidth: 64
-    }
+      padding: 1,
+      paddingRightLeft: 5
+    },
+    header: {
+      paddingTopBottom: 4,
+      paddingLeft: 5,
+      paddingRight: 8,
+      iconVariation: 'base',
+      titleVariation: 'variation18Gray900',
+      closeIcon: 'xMark',
+      closeIconVariation: 'base'
+    },
+    backdrop: 'blur'
   }
 });
 
@@ -19,12 +28,13 @@ export default Modal;
 
 declare global {
   interface ModalVariations {
-    spaceBlocksPortal: typeof Modal['variationKey'];
+    brickInv: typeof Modal['variationKey'];
   }
 }
 
 declare module '@wemogy/reactbase' {
   export interface IModalKeys {
     addSet: boolean;
+    exampleModal: boolean;
   }
 }
