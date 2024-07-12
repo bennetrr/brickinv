@@ -1,21 +1,42 @@
-import { TextInput as TextInputBase } from '@wemogy/reactbase';
+import {styled, TextInput as TextInputBase} from '@wemogy/reactbase';
+import {primary} from '../../themes/Colors.ts';
 
 const TextInput = TextInputBase.extendVariations({
   base: {
-    width100: true,
-    border: { custom: 1 },
-    borderColor: 'grey300',
-    borderRadius: 0.5,
-    height: 5,
-    padding: 1,
-    iconPosition: 'right',
-    iconVariation: 'variation2Grey300',
-    placeholderTextColor: 'grey300',
-    backgroundColor: 'white'
+    base: {
+      width100: true,
+      border: { custom: 1 },
+      borderColor: 'gray900',
+      borderRadius: 0.75,
+      height: 5,
+      padding: 1,
+      iconPosition: 'right',
+      iconVariation: 'variation2Gray900',
+      placeholderTextColor: 'gray500',
+      backgroundColor: 'white',
+      autocompleteResultsBackgroundColor: 'gray100',
+      autocompleteResultTextVariation: 'base',
+      autocompleteResultHoverFontColor: 'primary500'
+    },
+    disabled: {
+      backgroundColor: 'gray100',
+      borderColor: 'gray500',
+      fontColor: 'gray500',
+      iconVariation: 'variation2Gray500',
+      placeholderTextColor: 'gray300'
+    }
   }
 });
 
-export default TextInput;
+export default styled(TextInput)`
+  &, & input {
+    outline: none !important;
+  }
+
+  &:focus, &:has(input:focus) {
+    border-color: ${primary[500]};
+  }
+` as typeof TextInput;
 
 declare global {
   interface TextInputVariations {
