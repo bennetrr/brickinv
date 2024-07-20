@@ -9,8 +9,9 @@ jobs:
   setup:
     name: Setup
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
-      # Override version with the manually provided version if available
       next-version: ${{ steps.get-release-version.outputs.version }}
       next-version-name: ${{ steps.get-release-version.outputs.version-name }}
     steps:
