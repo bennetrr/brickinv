@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { observer, Provider as MobxProvider } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AppStore, AuthenticationService, setupAxiosInstance } from './domain';
 import appRoutes from './App.routes.tsx';
@@ -22,15 +22,7 @@ const App: React.FC = () => {
     void appStore.setStore.querySets();
   }, [appStore.authenticationStore.isAuthenticated]);
 
-  return (
-    <MobxProvider
-      appStore={appStore}
-    >
-      <RouterProvider
-        router={appRouter}
-      />
-    </MobxProvider>
-  );
+  return <RouterProvider router={appRouter} />;
 };
 
 export default observer(App);
