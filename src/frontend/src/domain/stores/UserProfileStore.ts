@@ -1,5 +1,5 @@
 import { applySnapshot, flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { Flow } from '@wemogy/reactbase';
+import { Flow } from '../../utils';
 import { AxiosResponse } from 'axios';
 import { IUserProfile, IUserProfileSnapshotIn, UserProfile } from '../models';
 import { ApiServiceFactory, CreateUserProfileRequest, UpdateUserProfileRequest } from '../rest';

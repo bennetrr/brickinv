@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
 import _ from 'lodash';
-import debug from 'debug';
 import { axiosInstance } from '../axiosInstance';
 import {
   IInvalidCredentialsErrorMessage,
@@ -9,7 +8,7 @@ import {
   UnexpectedHttpError
 } from '../exceptions';
 
-const log = debug('App.AuthenticationService');
+const log = (...msg: any[]) => console.log('AuthenticationService:', ...msg);
 
 export type OnTokenChangeCallback = (token: string | undefined) => void;
 export type OnUserIdChangeCallback = (userId: string | undefined) => void;

@@ -1,61 +1,64 @@
 import React from 'react';
 import IEmailConfirmationPageProps from './IEmailConfirmationPageProps';
 import { observer } from 'mobx-react';
-import { LoadingIndicator, StackLayout, Text } from '../../../../atoms';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { AuthenticationService } from '../../../../../domain/';
-import ISignInPageNavigationState from '../signInPage/ISignInPageNavigationState.ts';
-import { useAsyncEffect } from '@wemogy/reactbase';
+// import { LoadingIndicator, StackLayout, Text } from '../../../../atoms';
+// import { useNavigate, useSearchParams } from 'react-router-dom';
+// import { AuthenticationService } from '../../../../../domain/';
+// import ISignInPageNavigationState from '../signInPage/ISignInPageNavigationState.ts';
+// import { useAsyncEffect } from '@wemogy/reactbase';
 
 const EmailConfirmationPage: React.FC<IEmailConfirmationPageProps> = ({}) => {
-  const navigate = useNavigate();
-  const [searchParams, _] = useSearchParams();
-
-  const userId = searchParams.get('userId');
-  const code = searchParams.get('code');
-
-  useAsyncEffect(async () => {
-    const state = await (async (): Promise<ISignInPageNavigationState> => {
-      if (!userId || !code) {
-        return {
-          message: {
-            type: 'error',
-            text: 'Invalid confirmation link. Please use the link from the email.'
-          }
-        };
-      }
-
-      try {
-        await AuthenticationService.confirmEmail(userId, code);
-      } catch (exc) {
-        return {
-          message: {
-            type: 'error',
-            text: 'Email confirmation failed: Unexpected error. Please try again later.'
-          }
-        };
-      }
-
-      return {
-        message: {
-          type: 'success',
-          text: 'Email confirmation successful. You can now sign in.'
-        }
-      };
-    })();
-
-    navigate('/sign-in', { state } satisfies { state: ISignInPageNavigationState });
-  }, []);
-
+  // const navigate = useNavigate();
+  // const [searchParams, _] = useSearchParams();
+  //
+  // const userId = searchParams.get('userId');
+  // const code = searchParams.get('code');
+  //
+  // useAsyncEffect(async () => {
+  //   const state = await (async (): Promise<ISignInPageNavigationState> => {
+  //     if (!userId || !code) {
+  //       return {
+  //         message: {
+  //           type: 'error',
+  //           text: 'Invalid confirmation link. Please use the link from the email.'
+  //         }
+  //       };
+  //     }
+  //
+  //     try {
+  //       await AuthenticationService.confirmEmail(userId, code);
+  //     } catch (exc) {
+  //       return {
+  //         message: {
+  //           type: 'error',
+  //           text: 'Email confirmation failed: Unexpected error. Please try again later.'
+  //         }
+  //       };
+  //     }
+  //
+  //     return {
+  //       message: {
+  //         type: 'success',
+  //         text: 'Email confirmation successful. You can now sign in.'
+  //       }
+  //     };
+  //   })();
+  //
+  //   navigate('/sign-in', { state } satisfies { state: ISignInPageNavigationState });
+  // }, []);
+  //
+  // return (
+  //   <StackLayout height100 hCenter vCenter gap>
+  //     <Text>
+  //       Thanks for confirming your email
+  //     </Text>
+  //
+  //     <LoadingIndicator primary/>
+  //   </StackLayout>
+  // );
   return (
-    <StackLayout height100 hCenter vCenter gap>
-      <Text>
-        Thanks for confirming your email
-      </Text>
-
-      <LoadingIndicator primary/>
-    </StackLayout>
-  );
+    <span>Not available</span>
+  )
 };
 
 export default observer(EmailConfirmationPage);
