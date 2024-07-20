@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { NotFoundError, useAppStore } from '../../domain';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ISignInPageNavigationState } from '../../ui/';
-import { toast } from '../../ui';
+// import { ISignInPageNavigationState } from '../../ui/';
+// import { toast } from '../../ui';
 import useAsyncEffect from '../UseAsyncEffect';
 
 interface IProtectedRouteProps {
@@ -17,7 +17,7 @@ const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ element }) => {
 
   useAsyncEffect(async () => {
     if (!authenticationStore.isAuthenticated) {
-      navigate('/sign-in', { state: { redirectPath: pathname } } satisfies { state: ISignInPageNavigationState });
+      // navigate('/sign-in', { state: { redirectPath: pathname } } satisfies { state: ISignInPageNavigationState });
       return;
     }
 
@@ -30,8 +30,8 @@ const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ element }) => {
           console.log('A');
           return;
         }
-
-        toast.error('An unexpected server problem');
+        //
+        // toast.error('An unexpected server problem');
         return;
       }
     }

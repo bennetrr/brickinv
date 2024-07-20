@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 // import { StackLayout, Text } from '../../../../atoms';
 import ISetCardProps from './ISetCardProps';
 
-const SetCard: React.FC<ISetCardProps> = ({ set }) => {
+const SetCard: React.FC<ISetCardProps> = ({ /*set*/ }) => {
   // return (
   //   <Link to={`/sets/${set.id}`}>
   //     <StackLayout

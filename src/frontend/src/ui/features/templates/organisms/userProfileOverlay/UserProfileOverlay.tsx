@@ -1,5 +1,5 @@
 import IUserProfileOverlayProps from './IUserProfileOverlayProps.ts';
-import React, { useCallback } from 'react';
+import React, { /*useCallback*/ } from 'react';
 import { observer } from 'mobx-react';
 // import { Text, Button, StackLayout, Icon } from '../../../../atoms';
 // import authenticationService from '../../../../../domain/authentication/AuthenticationService.ts';
@@ -14,7 +14,7 @@ import { observer } from 'mobx-react';
 //   border-radius: 50%;
 // `;
 
-const UserProfileOverlay: React.FC<IUserProfileOverlayProps> = ({ topDistance, setIsVisible, isVisible }) => {
+const UserProfileOverlay: React.FC<IUserProfileOverlayProps> = ({ /*topDistance, setIsVisible, isVisible*/ }) => {
   // const navigate = useNavigate();
   // const { userProfileStore } = useAppStore();
   //
