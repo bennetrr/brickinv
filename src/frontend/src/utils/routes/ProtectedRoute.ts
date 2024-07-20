@@ -3,7 +3,7 @@ import { NotFoundError, useAppStore } from '../../domain';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ISignInPageNavigationState } from '../../ui/';
 import { toast } from '../../ui';
-import { useAsyncEffect } from '@wemogy/reactbase';
+import useAsyncEffect from '../UseAsyncEffect';
 
 interface IProtectedRouteProps {
   element: ReactElement;

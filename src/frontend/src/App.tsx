@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer, Provider as MobxProvider } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ReactBaseProvider, Toaster } from '@wemogy/reactbase';
-import { DefaultTheme, themeDeclaration } from './ui';
 import { AppStore, AuthenticationService, setupAxiosInstance } from './domain';
 import appRoutes from './App.routes.tsx';
 
@@ -28,24 +26,9 @@ const App: React.FC = () => {
     <MobxProvider
       appStore={appStore}
     >
-      <ReactBaseProvider
-        theme={DefaultTheme}
-        themeDependencies={{
-          useThemeModeHook: () => 'default',
-          themeDeclaration
-        }}
-      >
-        <RouterProvider
-          router={appRouter}
-        />
-
-        <Toaster
-          closeButton
-          richColors
-          position="top-right"
-          style={{ top: 16, right: 16 }}
-        />
-      </ReactBaseProvider>
+      <RouterProvider
+        router={appRouter}
+      />
     </MobxProvider>
   );
 };

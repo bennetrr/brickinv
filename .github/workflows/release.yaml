@@ -59,9 +59,6 @@ jobs:
           version: ${{ needs.setup.outputs.next-version-name }}
           context: src/frontend
           push: 'true'
-          wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
-          wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
-          wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
           docker-platform: ${{ matrix.platform.docker }}
 
   build-backend:
