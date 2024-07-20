@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AuthenticationService } from '$/domain/authentication';
+import { AuthenticationService } from '../authentication';
 
 export const axiosInstance = axios.create({
   validateStatus: () => true,
@@ -10,7 +10,7 @@ export const axiosInstance = axios.create({
   }
 });
 
-AuthenticationService.addTokenChangeHandler(token => {
+AuthenticationService.registerTokenChangeHandler(token => {
   axiosInstance.defaults.headers.common.Authorization = token ? `Bearer ${token}` : undefined;
 });
 

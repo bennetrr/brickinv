@@ -8,8 +8,6 @@ public class UserProfileDto
 
     public DateTime Updated { get; set; }
 
-    public bool Finalized { get; set; }
-
     public string Username { get; set; } = string.Empty;
 
     public Uri ProfileImageUri { get; set; } = null!;

@@ -1,60 +1,76 @@
 import { RouteObject } from 'react-router-dom';
-import {
-  DefaultPageTemplate,
-  ErrorPage,
-  LoginPage,
-  PartOverviewPage,
-  RegisterPage,
-  SetDetailPage,
-  SetOverviewPage
-} from '$/ui';
-import { onlyUnauthenticated, protect, redirect } from '$/utils';
+// import {
+//   AcceptGroupInvitePage,
+//   DefaultPageTemplate,
+//   EmailConfirmationPage,
+//   ErrorPage,
+//   ForgotPasswordPage,
+//   GroupDetailPage,
+//   GroupOverviewPage,
+//   PartOverviewPage,
+//   PasswordResetPage,
+//   SetDetailPage,
+//   SetOverviewPage,
+//   SettingsPage,
+//   SetupPage,
+//   SignInPage,
+//   SignUpPage
+// } from './ui';
+// import { onlyUnauthenticated, protect, redirect } from './utils';
+
+// const appRoutes: RouteObject[] = [
+//   {
+//     errorElement: <ErrorPage/>,
+//     children: [
+//       { path: '/sign-in', element: onlyUnauthenticated(<SignInPage/>) },
+//       { path: '/sign-up', element: onlyUnauthenticated(<SignUpPage/>) },
+//       { path: '/confirm-email', element: <EmailConfirmationPage/> },
+//       { path: '/forgot-password', element: <ForgotPasswordPage/> },
+//       { path: '/reset-password', element: <PasswordResetPage/> },
+//       { path: '/invite/:inviteId/accept', element: protect(<AcceptGroupInvitePage/>) },
+//       { path: '/account/setup', element: protect(<SetupPage/>) },
+//       {
+//         element: protect(<DefaultPageTemplate/>),
+//         children: [
+//           { index: true, element: redirect('/sets') },
+//           {
+//             path: '/sets',
+//             children: [
+//               { index: true, element: <SetOverviewPage/> },
+//               {
+//                 path: ':setId', children: [
+//                   { index: true, element: <SetDetailPage/> },
+//                   { path: 'parts', element: <PartOverviewPage/> }
+//                 ]
+//               }
+//             ]
+//           },
+//           {
+//             path: '/account',
+//             children: [
+//               { index: true, element: <SettingsPage/> },
+//               {
+//                 path: 'groups',
+//                 children: [
+//                   { index: true, element: <GroupOverviewPage/> },
+//                   { path: ':groupId', element: <GroupDetailPage/> }
+//                 ]
+//               }
+//             ]
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// ];
 
 const appRoutes: RouteObject[] = [
   {
-    errorElement: <ErrorPage/>,
-    children: [
-      {
-        path: '/login',
-        element: onlyUnauthenticated(<LoginPage/>)
-      },
-      {
-        path: '/register',
-        element: onlyUnauthenticated(<RegisterPage/>)
-      },
-      {
-        element: protect(<DefaultPageTemplate/>),
-        children: [
-          {
-            index: true,
-            element: redirect('/sets')
-          },
-          {
-            path: '/sets',
-            children: [
-              {
-                index: true,
-                element: <SetOverviewPage/>
-              },
-              {
-                path: ':setId',
-                children: [
-                  {
-                    index: true,
-                    element: <SetDetailPage/>
-                  },
-                  {
-                    path: 'parts',
-                    element: <PartOverviewPage/>
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    path: '/',
+    element: (
+      <h1>Currently unavailable</h1>
+    )
   }
-];
+]
 
 export default appRoutes;

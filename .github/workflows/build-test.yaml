@@ -25,9 +25,6 @@ jobs:
         with:
           push: 'false'
           context: src/frontend
-          wemogy-npm-server: ${{ secrets.WEMOGY_NPM_SERVER }}
-          wemogy-npm-user: ${{ secrets.WEMOGY_NPM_USER }}
-          wemogy-npm-password: ${{ secrets.WEMOGY_NPM_PASSWORD }}
           docker-platform: ${{ matrix.platform.docker }}
 
   container-backend:

@@ -10,8 +10,6 @@ public class UserProfile
 
     public DateTime Updated { get; set; }
 
-    public bool Finalized { get; set; }
-
     // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
     public string? Username { get; set; }
 

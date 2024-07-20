@@ -1,21 +1,12 @@
-import { debug } from 'debug';
 import React from 'react';
 import { ErrorResponse, isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { RenderIf } from '@wemogy/reactbase';
-import { useAppStore } from '$/domain';
-import { StackLayout } from '$/ui/atoms';
-import { MainNavBar } from '$/ui/features/templates';
-import { NotFoundError, UnexpectedError } from '$/ui/features/errorHandling/organisms';
 import IErrorPageProps from './IErrorPageProps';
-
-const log = debug('App.Ui.ErrorPage');
+import NotFoundError from '../../organisms/notFoundError/NotFoundError';
+import UnexpectedError from '../../organisms/unexpectedError/UnexpectedError';
 
 const ErrorPage: React.FC<IErrorPageProps> = () => {
   const error = useRouteError();
-  const { authenticationStore } = useAppStore();
-
-  log('Route Error: %O', error);
 
   let ErrorNode: React.FC;
 
@@ -35,15 +26,7 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
   }
 
   return (
-    <StackLayout height100>
-      <RenderIf condition={authenticationStore.isAuthenticated}>
-        <MainNavBar/>
-      </RenderIf>
-
-      <StackLayout width100 height100 vCenter hCenter>
-        <ErrorNode/>
-      </StackLayout>
-    </StackLayout>
+    <ErrorNode/>
   );
 };
 

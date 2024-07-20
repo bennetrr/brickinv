@@ -98,8 +98,7 @@ namespace Bennetr.BrickInv.Api.Migrations.BrickInv
 
                     b.Property<string>("PartId")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PartName")
                         .IsRequired()
@@ -182,9 +181,6 @@ namespace Bennetr.BrickInv.Api.Migrations.BrickInv
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Finalized")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("GroupId")
                         .HasColumnType("varchar(36)");

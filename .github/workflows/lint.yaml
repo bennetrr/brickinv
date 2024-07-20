@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v2.4.0
+        uses: pnpm/action-setup@v2.4.1
         with:
           package_json_file: src/frontend/package.json
 
@@ -38,27 +38,16 @@ jobs:
           cache-dependency-path: src/frontend/pnpm-lock.yaml
           cache: 'pnpm'
 
-      - name: Authenticate to wemogy npm proxy
-        run: pnpx npm-cli-login
-        env:
-          NPM_REGISTRY: ${{ secrets.WEMOGY_NPM_SERVER }}
-          NPM_USER: ${{ secrets.WEMOGY_NPM_USER }}
-          NPM_PASS: ${{ secrets.WEMOGY_NPM_PASSWORD }}
-          NPM_EMAIL: it@wemogy.com
-          NPM_SCOPE: "@wemogy"
-
       - name: Install dependencies
         working-directory: src/frontend
         run: |
           pnpm install
 
       - name: Run eslint
-        uses: sibiraj-s/action-eslint@2e3213f837c945a07368d53e42f4c16453c02087
+        uses: sibiraj-s/action-eslint@v3.0.1
         with:
           working-directory: src/frontend
           token: ${{ secrets.GITHUB_TOKEN }}
           all-files: true
-          eslint-args: '--ignore-path=src/frontend/.gitignore --report-unused-disable-directives --max-warnings 0'
-          extensions: 'js,jsx,ts,tsx'
+          eslint-args: '--report-unused-disable-directives --max-warnings 0'
           annotations: true
-          use-npx: true

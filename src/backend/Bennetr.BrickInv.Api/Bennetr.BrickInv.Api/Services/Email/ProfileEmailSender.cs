@@ -1,12 +1,21 @@
 using Bennetr.BrickInv.Api.Models;
+using Bennetr.BrickInv.Api.Options;
+using Microsoft.Extensions.Options;
 
 namespace Bennetr.BrickInv.Api.Services.Email;
 
-public class ProfileEmailSender(IHtmlEmailGenerator emailGenerator, IGenericEmailSender emailSender)
+public class ProfileEmailSender(
+    IHtmlEmailGenerator emailGenerator,
+    IGenericEmailSender emailSender,
+    IOptions<AppOptions> options)
     : IProfileEmailSender
 {
-    public async Task SendGroupInviteEmailAsync(string email, GroupInvite invite, string acceptLink)
+    private readonly AppOptions _options = options.Value;
+
+    public async Task SendGroupInviteEmailAsync(string email, GroupInvite invite)
     {
+        var acceptLink = $"{_options.AppBaseUrl}/invite/{invite.Id}/accept";
+
         await emailSender.SendEmailAsync(email, $"{invite.Issuer.Username} invited you to a BrickInv group",
             emailGenerator.Generate(
                 $"""

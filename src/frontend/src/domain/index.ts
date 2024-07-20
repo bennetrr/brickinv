@@ -4,3 +4,4 @@ export * from './hooks';
 export * from './axiosInstance';
 export * from './authentication';
 export * from './rest';
+export * from './exceptions';

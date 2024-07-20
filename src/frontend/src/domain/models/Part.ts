@@ -1,5 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { MSTDateTime } from '$/utils';
+import { MSTDateTime } from '../../utils';
 import { DateTime } from 'luxon';
 
 const Part = types.model('Part', {
@@ -12,7 +12,16 @@ const Part = types.model('Part', {
   imageUri: types.maybe(types.string),
   totalCount: types.integer,
   presentCount: types.integer
-}).actions(self => ({
+}).views(self => ({
+  get isComplete() {
+    return self.presentCount === self.totalCount;
+  },
+
+  get isMinifig() {
+    return self.partId.startsWith('fig');
+  }
+
+})).actions(self => ({
   setPresentCount(count: number) {
     if (count > self.totalCount || count < 0) {
       return;
