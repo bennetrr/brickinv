@@ -6,8 +6,7 @@ import {
   RebrickableApiKeyInvalidError,
   RebrickableSetNotFoundError,
   UnauthorizedError,
-  UnexpectedHttpError,
-  UserProfileNotFoundError
+  UnexpectedHttpError
 } from '../../exceptions';
 
 export default class SetService {
@@ -74,13 +73,6 @@ export default class SetService {
     switch (response.status) {
       case 201:
         return response;
-      case 400:
-        switch (response.data) {
-          case 'userProfileNotFound':
-            throw new UserProfileNotFoundError();
-          default:
-            throw new UnexpectedHttpError();
-        }
       case 401:
         switch (response.data) {
           case 'rebrickableApiKeyInvalid':

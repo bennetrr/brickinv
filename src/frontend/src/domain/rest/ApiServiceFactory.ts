@@ -2,17 +2,12 @@ import axios, { AxiosInstance } from 'axios';
 import { PartService, SetService } from './services';
 
 class ApiServiceFactory {
-  private readonly axiosInstance: AxiosInstance;
+  public readonly axiosInstance: AxiosInstance;
 
   public constructor() {
     this.axiosInstance = axios.create({
       validateStatus: () => true,
-      baseURL: window.env.apiBaseUrl,
-      headers: {
-        common: {
-          Authorization: undefined // TODO: Change header when token changes
-        }
-      }
+      baseURL: window.env.apiBaseUrl
     });
   }
 

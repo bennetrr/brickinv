@@ -1,22 +1,9 @@
-import { RouteObject } from 'react-router-dom';
-// import {
-//   AcceptGroupInvitePage,
-//   DefaultPageTemplate,
-//   EmailConfirmationPage,
-//   ErrorPage,
-//   ForgotPasswordPage,
-//   GroupDetailPage,
-//   GroupOverviewPage,
-//   PartOverviewPage,
-//   PasswordResetPage,
-//   SetDetailPage,
-//   SetOverviewPage,
-//   SettingsPage,
-//   SetupPage,
-//   SignInPage,
-//   SignUpPage
-// } from './ui';
-// import { onlyUnauthenticated, protect, redirect } from './utils';
+import React from 'react';
+import { Outlet, RouteObject } from 'react-router-dom';
+import { SignIn, SignUp } from '@clerk/clerk-react';
+import ErrorPage from './ui/features/errorHandling/pages/errorPage/ErrorPage';
+import DefaultPageTemplate from './ui/features/templates/pages/defaultPageTemplate/DefaultPageTemplate';
+import { redirect } from './utils';
 
 // const appRoutes: RouteObject[] = [
 //   {
@@ -66,10 +53,27 @@ import { RouteObject } from 'react-router-dom';
 
 const appRoutes: RouteObject[] = [
   {
-    path: '/',
-    element: (
-      <h1>Currently unavailable</h1>
-    )
+    errorElement: <ErrorPage/>,
+    children: [
+      {
+        element: <div style={{ height: '100dvh', width: '100dvw', display: 'grid', placeItems: 'center' }}><Outlet/></div>,
+        children: [
+          { path: '/sign-in/*', element: <SignIn path="/sign-in" signUpUrl="/sign-up"/> },
+          { path: '/sign-up/*', element: <SignUp path="/sign-up" signInUrl="/sign-in"/> },
+        ]
+      },
+      {
+        path: '/',
+        element: <DefaultPageTemplate/>,
+        children: [
+          { index: true, element: redirect('/sets') },
+          {
+            path: 'sets',
+            element: <span>Sets</span>
+          }
+        ]
+      }
+    ]
   }
 ]
 
