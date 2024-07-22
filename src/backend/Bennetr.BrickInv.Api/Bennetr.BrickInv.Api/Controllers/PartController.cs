@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.BrickInv.Api.Responses;
+using Clerk.Net.Client;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,12 +24,9 @@ public partial class SetController
     [HttpGet("{setId}/parts")]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts([FromRoute] string setId)
     {
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
-
         await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => x.Group.Owner.Id == currentUser.Id || x.Group.Members.Any(y => y.Id == currentUser.Id))
+            .Where(x => false)
             .FirstAsync();
 
         var parts = await context.Parts
@@ -51,13 +49,10 @@ public partial class SetController
     [HttpGet("{setId}/parts/{partId}")]
     public async Task<ActionResult<PartDto>> GetPart([FromRoute] string setId, [FromRoute] string partId)
     {
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
-
         var part = await context.Parts
             .Where(x => x.Id == partId)
             .Where(x => x.Set.Id == setId)
-            .Where(x => x.Set.Group.Owner.Id == currentUser.Id || x.Set.Group.Members.Any(y => y.Id == currentUser.Id))
+            .Where(x => false)
             .FirstAsync();
 
         return part.Adapt<PartDto>();
@@ -82,14 +77,11 @@ public partial class SetController
     public async Task<ActionResult<UpdatePartResponse>> UpdatePart([FromRoute] string setId, [FromRoute] string partId,
         [FromBody] UpdatePartRequest request)
     {
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
-
         var part = await context.Parts
             .Include(x => x.Set)
             .Where(x => x.Id == partId)
             .Where(x => x.Set.Id == setId)
-            .Where(x => x.Set.Group.Owner.Id == currentUser.Id || x.Set.Group.Members.Any(y => y.Id == currentUser.Id))
+            .Where(x => false)
             .FirstAsync();
 
         if (request.PresentCount < 0 || request.PresentCount > part.TotalCount)

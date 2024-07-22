@@ -1,10 +1,12 @@
 using System.Reflection;
+using System.Security.Claims;
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Options;
-using Bennetr.BrickInv.Api.Services.Email;
 using Bennetr.RebrickableDotNet;
-using Microsoft.AspNetCore.Identity;
+using Clerk.Net.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Wemogy.AspNet.Startup;
 
@@ -22,32 +24,36 @@ builder.Services
         .LogTo(Console.WriteLine, builder.Environment.IsDevelopment() ? LogLevel.Debug : LogLevel.Warning)
         .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
         .EnableDetailedErrors(builder.Environment.IsDevelopment())
-    )
-    .AddDbContext<IdentityContext>(opt => opt
-        .UseMySql(builder.Configuration.GetConnectionString("IdentityDb"),
-            new MariaDbServerVersion(new Version(11, 3, 2)))
-        .LogTo(Console.WriteLine, builder.Environment.IsDevelopment() ? LogLevel.Debug : LogLevel.Warning)
-        .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
-        .EnableDetailedErrors(builder.Environment.IsDevelopment())
     );
 
-// Authentication
-builder.Services
-    .AddAuthorization()
-    .AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<IdentityContext>()
-    .AddDefaultTokenProviders();
+// Authorization
+builder.Services.AddClerkApiClient(opt => { opt.SecretKey = builder.Configuration["Clerk:SecretKey"]!; });
 
-builder.Services.Configure<IdentityOptions>(opt =>
-{
-    opt.Password.RequireDigit = false;
-    opt.Password.RequireLowercase = false;
-    opt.Password.RequireUppercase = false;
-    opt.Password.RequireNonAlphanumeric = false;
-    opt.Password.RequiredLength = 10;
-    opt.Password.RequiredUniqueChars = 0;
-    opt.SignIn.RequireConfirmedEmail = true;
-});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(x =>
+    {
+        // Authority is the URL of your clerk instance
+        x.Authority = builder.Configuration["Clerk:Authority"];
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            // Disable audience validation as we are not using it
+            ValidateAudience = false,
+            NameClaimType = ClaimTypes.NameIdentifier
+        };
+        x.Events = new JwtBearerEvents
+        {
+            // Additional validation for AZP claim
+            OnTokenValidated = context =>
+            {
+                var azp = context.Principal?.FindFirstValue("azp");
+                // AuthorizedParty is the base URL of your frontend.
+                if (string.IsNullOrEmpty(azp) || !azp.Equals(builder.Configuration["AppConfig:AppBaseUrl"]))
+                    context.Fail("AZP Claim is invalid or missing");
+
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 // Swagger
 if (builder.Environment.IsDevelopment())
@@ -67,15 +73,7 @@ if (builder.Environment.IsDevelopment())
 
 // Config
 builder.Services
-    .Configure<EmailOptions>(builder.Configuration.GetSection("Email"))
     .Configure<AppOptions>(builder.Configuration.GetSection("AppConfig"));
-
-// Mail
-builder.Services
-    .AddTransient<IHtmlEmailGenerator, HtmlEmailGenerator>()
-    .AddTransient<IGenericEmailSender, GenericEmailSender>()
-    .AddTransient<IProfileEmailSender, ProfileEmailSender>()
-    .AddTransient<IEmailSender<IdentityUser>, IdentityEmailSender>();
 
 // Rebrickable
 builder.Services.AddTransient<IRebrickableClient, RebrickableClient>();
@@ -89,7 +87,5 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(opt => { opt.SwaggerEndpoint("/swagger/v2/swagger.json", "v2"); });
 }
-
-app.MapGroup("/auth").MapIdentityApi<IdentityUser>().WithTags("Identity");
 
 app.Run();

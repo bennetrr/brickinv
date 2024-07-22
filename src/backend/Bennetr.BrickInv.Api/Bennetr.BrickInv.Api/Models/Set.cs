@@ -28,5 +28,6 @@ public class Set
 
     public bool Finished { get; set; }
 
-    public Group Group { get; set; } = null!;
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public string OrganizationOrUserId { get; set; } = string.Empty;
 }

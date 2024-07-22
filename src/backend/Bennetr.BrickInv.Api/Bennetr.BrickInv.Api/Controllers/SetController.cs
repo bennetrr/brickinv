@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mime;
 using Bennetr.BrickInv.Api.Contexts;
@@ -8,9 +9,10 @@ using Bennetr.RebrickableDotNet;
 using Bennetr.RebrickableDotNet.Models.Minifigs;
 using Bennetr.RebrickableDotNet.Models.Parts;
 using Bennetr.RebrickableDotNet.Models.Sets;
+using Clerk.Net.Client;
 using Mapster;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -23,7 +25,7 @@ namespace Bennetr.BrickInv.Api.Controllers;
 [Authorize]
 public partial class SetController(
     BrickInvContext context,
-    UserManager<IdentityUser> userManager,
+    ClerkApiClient clerk,
     IRebrickableClient rebrickable,
     IOptions<AppOptions> options) : ControllerBase
 {
@@ -40,11 +42,15 @@ public partial class SetController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
+        var jwt = new JwtSecurityTokenHandler()
+            .ReadJwtToken(await HttpContext.GetTokenAsync("Bearer", "access_token"));
+
+        var orgOrUserId = jwt.Claims.Any(claim => claim.Type == "org_id")
+            ? jwt.Claims.First(claim => claim.Type == "org_id").Value
+            : jwt.Subject;
 
         var sets = await context.Sets
-            .Where(x => x.Group.Owner.Id == currentUser.Id || x.Group.Members.Any(y => y.Id == currentUser.Id))
+            .Where(x => x.OrganizationOrUserId == orgOrUserId)
             .ToListAsync();
 
         return sets.Adapt<List<SetDto>>();
@@ -63,12 +69,9 @@ public partial class SetController(
     [HttpGet("{setId}")]
     public async Task<ActionResult<SetDto>> GetSet([FromRoute] string setId)
     {
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
-
         var set = await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => x.Group.Owner.Id == currentUser.Id || x.Group.Members.Any(y => y.Id == currentUser.Id))
+            .Where(x => false)
             .FirstAsync();
 
         return set.Adapt<SetDto>();
@@ -102,22 +105,6 @@ public partial class SetController(
     [HttpPost]
     public async Task<ActionResult<SetDto>> CreateSet([FromBody] CreateSetRequest request)
     {
-        // Get the group and the user profile
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
-
-        var group = await context.Groups
-            .Where(x => x.Id == request.GroupId)
-            .Where(x => x.Owner.Id == currentUser.Id || x.Members.Any(y => y.Id == currentUser.Id))
-            .FirstAsync();
-
-        var currentUserProfile = await context.UserProfiles.FindAsync(currentUser.Id);
-        if (currentUserProfile is null) return BadRequest("userProfileNotFound");
-
-        // Get the API key:
-        // Both the user and the group can override the default API key, the user's is more important
-        var apiKey = currentUserProfile.RebrickableApiKey ?? group.RebrickableApiKey ?? _options.RebrickableApiKey;
-
         // Prepare the set id
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
@@ -129,9 +116,9 @@ public partial class SetController(
 
         try
         {
-            rebrickableSet = await rebrickable.GetSetAsync(apiKey, setId);
-            rebrickableParts = await rebrickable.GetSetPartsAsync(apiKey, setId);
-            rebrickableMinifigs = await rebrickable.GetSetMinifigsAsync(apiKey, setId);
+            rebrickableSet = await rebrickable.GetSetAsync(_options.RebrickableApiKey, setId);
+            rebrickableParts = await rebrickable.GetSetPartsAsync(_options.RebrickableApiKey, setId);
+            rebrickableMinifigs = await rebrickable.GetSetMinifigsAsync(_options.RebrickableApiKey, setId);
         }
         catch (HttpRequestException exc)
         {
@@ -151,7 +138,6 @@ public partial class SetController(
             Id = Guid.NewGuid().ToString(),
             Created = DateTime.Now,
             Updated = DateTime.Now,
-            Group = group,
             SetId = rebrickableSet.SetNum,
             SetName = rebrickableSet.Name,
             ReleaseYear = rebrickableSet.Year,
@@ -214,12 +200,10 @@ public partial class SetController(
     [HttpDelete("{setId}")]
     public async Task<IActionResult> DeleteSet([FromRoute] string setId)
     {
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
 
         var set = await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => x.Group.Owner.Id == currentUser.Id || x.Group.Members.Any(y => y.Id == currentUser.Id))
+            .Where(x => false)
             .FirstAsync();
 
         context.Sets.Remove(set);
@@ -248,12 +232,9 @@ public partial class SetController(
     [HttpPatch("{setId}")]
     public async Task<ActionResult<SetDto>> UpdateSet([FromRoute] string setId, [FromBody] UpdateSetRequest request)
     {
-        var currentUser = await userManager.GetUserAsync(HttpContext.User);
-        if (currentUser is null) return Unauthorized();
-
         var set = await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => x.Group.Owner.Id == currentUser.Id || x.Group.Members.Any(y => y.Id == currentUser.Id))
+            .Where(x => false)
             .FirstAsync();
 
         set.Updated = DateTime.Now;
