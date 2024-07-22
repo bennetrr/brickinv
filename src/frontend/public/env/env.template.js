@@ -4,3 +4,4 @@
 window.env = window.env || {};
 
 window.env.apiBaseUrl = '';
+window.env.clerkPublishableKey = '';

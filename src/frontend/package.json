@@ -16,6 +16,7 @@
   },
   "packageManager": "pnpm@9.5.0",
   "dependencies": {
+    "@clerk/clerk-react": "^5.2.8",
     "axios": "^1.7.2",
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",

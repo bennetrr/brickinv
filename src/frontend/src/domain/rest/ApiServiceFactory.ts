@@ -1,20 +1,14 @@
-import { AxiosInstance } from 'axios';
-import { axiosInstance } from '../axiosInstance';
-import { GroupInviteService, GroupService, PartService, SetService, UserProfileService } from './services';
+import axios, { AxiosInstance } from 'axios';
+import { PartService, SetService } from './services';
 
 class ApiServiceFactory {
-  private readonly axiosInstance: AxiosInstance;
+  public readonly axiosInstance: AxiosInstance;
 
   public constructor() {
-    this.axiosInstance = axiosInstance;
-  }
-
-  public get groupInviteApi(): GroupInviteService {
-    return new GroupInviteService(this.axiosInstance);
-  }
-
-  public get groupApi(): GroupService {
-    return new GroupService(this.axiosInstance);
+    this.axiosInstance = axios.create({
+      validateStatus: () => true,
+      baseURL: window.env.apiBaseUrl
+    });
   }
 
   public get setApi(): SetService {
@@ -23,10 +17,6 @@ class ApiServiceFactory {
 
   public get partApi(): PartService {
     return new PartService(this.axiosInstance);
-  }
-
-  public get userProfileApi(): UserProfileService {
-    return new UserProfileService(this.axiosInstance);
   }
 }
 
