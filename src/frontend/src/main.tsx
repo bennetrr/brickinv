@@ -23,9 +23,9 @@ createRoot(document.getElementById('root')!).render(
     <PrimeReactProvider>
       <ClerkProvider publishableKey={window.env.clerkPublishableKey}>
         <MobxProvider appStore={AppStore.create()}>
-          <App/>
+          <App />
         </MobxProvider>
-    </ClerkProvider>
+      </ClerkProvider>
     </PrimeReactProvider>
   </StrictMode>
 );

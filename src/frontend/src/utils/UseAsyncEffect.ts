@@ -1,4 +1,4 @@
-import { DependencyList, useEffect } from "react";
+import { DependencyList, useEffect } from 'react';
 
 export type AsyncEffectCallback = () => Promise<void | (() => void)>;
 
@@ -8,7 +8,7 @@ export default function useAsyncEffect(effect: AsyncEffectCallback, deps: Depend
 
     return () => {
       promise.then((cleanup) => {
-        if (typeof cleanup === "function") {
+        if (typeof cleanup === 'function') {
           cleanup();
         }
       });
