@@ -17,7 +17,7 @@ if (!window.env.apiBaseUrl) {
 if (!window.env.clerkPublishableKey) {
   throw new Error('Missing Clerk Publishable Key!');
 }
-        
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <PrimeReactProvider>
@@ -28,3 +28,4 @@ createRoot(document.getElementById('root')!).render(
     </ClerkProvider>
     </PrimeReactProvider>
   </StrictMode>
+);
