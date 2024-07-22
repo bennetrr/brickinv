@@ -12,3 +12,18 @@ export class UnexpectedHttpError extends Error {
 export class NotFoundError extends Error {
 
 }
+
+/**
+ * Raised when the user is not authorized and tries to access a resource.
+ * Equivalent to HTTP 401.
+ */
+export class UnauthorizedError extends Error {
+
+}
+
+/**
+ * Raised when the user tries to access or modify a resource without permission.
+ */
+export class InsufficientPermissionsError extends Error {
+
+}
