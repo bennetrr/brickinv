@@ -1,17 +1,16 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mime;
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.Api.Requests;
+using Bennetr.BrickInv.Api.Utilities;
 using Bennetr.RebrickableDotNet;
 using Bennetr.RebrickableDotNet.Models.Minifigs;
 using Bennetr.RebrickableDotNet.Models.Parts;
 using Bennetr.RebrickableDotNet.Models.Sets;
 using Clerk.Net.Client;
 using Mapster;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,15 +41,10 @@ public partial class SetController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
-        var jwt = new JwtSecurityTokenHandler()
-            .ReadJwtToken(await HttpContext.GetTokenAsync("Bearer", "access_token"));
-
-        var orgOrUserId = jwt.Claims.Any(claim => claim.Type == "org_id")
-            ? jwt.Claims.First(claim => claim.Type == "org_id").Value
-            : jwt.Subject;
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
 
         var sets = await context.Sets
-            .Where(x => x.OrganizationOrUserId == orgOrUserId)
+            .Where(x => x.OrganizationOrUserId == organizationOrUserId)
             .ToListAsync();
 
         return sets.Adapt<List<SetDto>>();
@@ -69,9 +63,11 @@ public partial class SetController(
     [HttpGet("{setId}")]
     public async Task<ActionResult<SetDto>> GetSet([FromRoute] string setId)
     {
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+
         var set = await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => false)
+            .Where(x => x.OrganizationOrUserId == organizationOrUserId)
             .FirstAsync();
 
         return set.Adapt<SetDto>();
@@ -88,18 +84,13 @@ public partial class SetController(
     ///     In case both group and user specified an API key, the key of the user is used.
     /// </remarks>
     /// <response code="201">Returns the created set.</response>
-    /// <response code="400">
-    ///     With message `userProfileNotFound`: If the currently logged in user does not have a user profile.
-    /// </response>
     /// <response code="401">
-    ///     With message `rebrickableApiKeyInvalid`: If the Rebrickable API key is not valid.<br /><br />
-    ///     Without message: If the authentication token is not valid.
+    ///     If the authentication token is not valid.
     /// </response>
     /// <response code="404">With message `rebrickableSetNotFound`: If the set was not found on Rebrickable.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType<string>(StatusCodes.Status400BadRequest, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
     [HttpPost]
@@ -122,16 +113,12 @@ public partial class SetController(
         }
         catch (HttpRequestException exc)
         {
-            switch (exc.StatusCode)
-            {
-                case HttpStatusCode.NotFound:
-                    return NotFound("rebrickableSetNotFound");
-                case HttpStatusCode.Unauthorized:
-                    return Unauthorized("rebrickableApiKeyInvalid");
-                default:
-                    throw;
-            }
+            if (exc.StatusCode == HttpStatusCode.NotFound) return NotFound("rebrickableSetNotFound");
+
+            throw;
         }
+
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
 
         var set = new Models.Set
         {
@@ -145,7 +132,8 @@ public partial class SetController(
             TotalParts = rebrickableSet.NumParts,
             PresentParts = 0,
             Finished = false,
-            ForSale = request.ForSale
+            ForSale = request.ForSale,
+            OrganizationOrUserId = organizationOrUserId
         };
 
         var parts = rebrickableParts.Results
@@ -200,10 +188,11 @@ public partial class SetController(
     [HttpDelete("{setId}")]
     public async Task<IActionResult> DeleteSet([FromRoute] string setId)
     {
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
 
         var set = await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => false)
+            .Where(x => x.OrganizationOrUserId == organizationOrUserId)
             .FirstAsync();
 
         context.Sets.Remove(set);
@@ -232,9 +221,11 @@ public partial class SetController(
     [HttpPatch("{setId}")]
     public async Task<ActionResult<SetDto>> UpdateSet([FromRoute] string setId, [FromBody] UpdateSetRequest request)
     {
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+
         var set = await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => false)
+            .Where(x => x.OrganizationOrUserId == organizationOrUserId)
             .FirstAsync();
 
         set.Updated = DateTime.Now;

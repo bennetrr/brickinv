@@ -2,7 +2,7 @@ using System.Net.Mime;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.BrickInv.Api.Responses;
-using Clerk.Net.Client;
+using Bennetr.BrickInv.Api.Utilities;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +24,11 @@ public partial class SetController
     [HttpGet("{setId}/parts")]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts([FromRoute] string setId)
     {
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+
         await context.Sets
             .Where(x => x.Id == setId)
-            .Where(x => false)
+            .Where(x => x.OrganizationOrUserId == organizationOrUserId)
             .FirstAsync();
 
         var parts = await context.Parts
@@ -49,10 +51,12 @@ public partial class SetController
     [HttpGet("{setId}/parts/{partId}")]
     public async Task<ActionResult<PartDto>> GetPart([FromRoute] string setId, [FromRoute] string partId)
     {
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+
         var part = await context.Parts
             .Where(x => x.Id == partId)
             .Where(x => x.Set.Id == setId)
-            .Where(x => false)
+            .Where(x => x.Set.OrganizationOrUserId == organizationOrUserId)
             .FirstAsync();
 
         return part.Adapt<PartDto>();
@@ -66,7 +70,7 @@ public partial class SetController
     ///     With message `presentCountOutOfRange`: If the present count is not between 0 and the total count.
     /// </response>
     /// <response code="401">If the authentication token is not valid.</response>
-    /// <response code="404">If the set was not found.</response>
+    /// <response code="404">If the set or part was not found.</response>
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType<UpdatePartResponse>(StatusCodes.Status202Accepted)]
@@ -77,11 +81,13 @@ public partial class SetController
     public async Task<ActionResult<UpdatePartResponse>> UpdatePart([FromRoute] string setId, [FromRoute] string partId,
         [FromBody] UpdatePartRequest request)
     {
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+
         var part = await context.Parts
             .Include(x => x.Set)
             .Where(x => x.Id == partId)
             .Where(x => x.Set.Id == setId)
-            .Where(x => false)
+            .Where(x => x.Set.OrganizationOrUserId == organizationOrUserId)
             .FirstAsync();
 
         if (request.PresentCount < 0 || request.PresentCount > part.TotalCount)
