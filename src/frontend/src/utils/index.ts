@@ -1,9 +1,10 @@
 import MSTDateTime from './MSTDateTime';
+import redirect from './RedirectRoute';
 import useAsyncEffect from './UseAsyncEffect';
 
-export { MSTDateTime, useAsyncEffect };
+export { MSTDateTime, redirect, useAsyncEffect };
 
-export * from './routes';
 export * from './MSTDateTime';
 export * from './MstFlow';
-export * from './UseAsyncEffect'
+export * from './RedirectRoute';
+export * from './UseAsyncEffect';
