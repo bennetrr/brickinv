@@ -2,6 +2,7 @@
 
 export interface Environment {
   apiBaseUrl: string;
+  clerkPublishableKey: string;
 }
 
 declare global {

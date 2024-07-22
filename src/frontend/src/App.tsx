@@ -1,26 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer, Provider as MobxProvider } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AppStore, AuthenticationService, setupAxiosInstance } from './domain';
+import { ApiServiceFactory, AppStore } from './domain';
 import appRoutes from './App.routes.tsx';
-
-setupAxiosInstance(window.env.apiBaseUrl);
-void AuthenticationService.initialize();
+import { useClerk } from '@clerk/clerk-react';
+import { useAsyncEffect } from './utils';
 
 const appRouter = createBrowserRouter(appRoutes);
 const appStore = AppStore.create();
 
-AuthenticationService.registerTokenChangeHandler(token => appStore.authenticationStore.setIsAuthenticated(!!token));
-appStore.authenticationStore.setIsAuthenticated(AuthenticationService.isAuthenticated);
-
 const App: React.FC = () => {
-  useEffect(() => {
-    if (!AuthenticationService.isAuthenticated) {
-      return;
-    }
+  const clerk = useClerk();
 
-    void appStore.setStore.querySets();
-  }, [appStore.authenticationStore.isAuthenticated]);
+  useAsyncEffect(async () => {
+    const token = await clerk.session?.getToken()
+    console.log('Setting token to', token);
+
+    ApiServiceFactory.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+    if (token) {
+      await appStore.setStore.querySets();
+    }
+  }, [clerk.session]);
 
   return (
     <MobxProvider

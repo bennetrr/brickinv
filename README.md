@@ -12,9 +12,10 @@ The frontend is configurable with the `env.js` file.
 > The contents of this file are available in `window.env` in the browser,
 > so don't store any confidential information in there.
 
-| Name         | Type     | Description                                                                              |
-|--------------|----------|------------------------------------------------------------------------------------------|
-| `apiBaseUrl` | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:5105` |
+| Name                  | Type     | Description                                                                              |
+|-----------------------|----------|------------------------------------------------------------------------------------------|
+| `apiBaseUrl`          | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:5105` |
+| `clerkPublishableKey` | `string` | Publishable Key of the Clerk application                                                 |
 
 ### Backend
 
@@ -23,22 +24,15 @@ For development, the .NET user secret manager is recommended, for production a `
 
 | `.env`-Name                    | `.json`-Name                  | Type     | Description                                                                          |
 |--------------------------------|-------------------------------|----------|--------------------------------------------------------------------------------------|
-| `Email__SenderAddress`         | `Email.SenderAddress`         | `string` | Email address that the emails are sent from                                          |
-| `Email__SenderName`            | `Email.SenderName`            | `string` | Name that is displayed as email sender                                               |
-| `Email__Server`                | `Email.Server`                | `string` | SMTP Server address                                                                  |
-| `Email__Port`                  | `Email.Port`                  | `string` | SMTP Server port                                                                     |
-| `Email__Username`              | `Email.Username`              | `string` | Username to log in at the SMTP Server                                                |
-| `Email__Password`              | `Email.Password`              | `string` | Password to log in at the SMTP Server                                                |
 | `AppConfig__RebrickableApiKey` | `AppConfig.RebrickableApiKey` | `string` | API key for Rebrickable, used for retrieving information about Lego sets             |
 | `AppConfig__AppBaseUrl`        | `AppConfig.AppBaseUrl`        | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:5137` |
-| `AppConfig__ImprintUrl`        | `AppConfig.ImprintUrl`        | `string` | URL to an imprint, used in emails                                                    |
 
 ## Development
 
 ### Dependencies
 
 - `dotnet-sdk@8`
-- `node@21`
+- `node@22`
 - `pnpm`
 - `docker`
 
@@ -62,15 +56,10 @@ dotnet restore
 
 If any changes where made to the database models, a migration script needs to be created.
 The migration only needs to be created for the context that holds the changed models.
-The `{{ NAME }}` placeholder needs to be replaces before running the commands.
 
 ```bash
 # working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
-# Create migration for BrickInvContext
-dotnet ef migrations add {{ NAME }} -c BrickInvContext -o ./Migrations/BrickInv
-
-# Create migration for IdentityContext
-dotnet ef migrations add {{ NAME }} -c IdentityContext -o ./Migrations/Identity
+dotnet ef migrations add ${NAME} -c BrickInvContext -o ./Migrations/BrickInv
 ```
 
 ### Run development server against local API
@@ -101,7 +90,6 @@ Before starting the backend, you need to run the database migration scripts:
 ```bash
 # working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
 dotnet ef database update --context BrickInvContext
-dotnet ef database update --context IdentityContext
 ```
 
 Then, start the backend:
@@ -179,5 +167,5 @@ the database migration scripts need to be executed to apply the changes to your 
 These scripts are shipped with the container. You can execute them with the following command:
 
 ```bash
-docker compose exec backend sh -c './identity-db-migration && ./brickinv-db-migration'
+docker compose exec backend sh -c './brickinv-db-migration'
 ```
