@@ -33,5 +33,10 @@ export default [
   },
   ...fixupConfigRules(
     compat.extends('plugin:react-hooks/recommended', 'plugin:mobx/recommended')
-  )
+  ),
+  {
+    rules: {
+      'react/react-in-jsx-scope': 'off'
+    }
+  }
 ];

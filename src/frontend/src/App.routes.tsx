@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 import { SignIn, SignUp } from '@clerk/clerk-react';
 import ErrorPage from './ui/features/errorHandling/pages/errorPage/ErrorPage';

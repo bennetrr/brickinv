@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer, Provider as MobxProvider } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ApiServiceFactory, AppStore } from './domain';
