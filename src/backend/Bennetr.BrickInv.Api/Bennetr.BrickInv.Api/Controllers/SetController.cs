@@ -24,7 +24,6 @@ namespace Bennetr.BrickInv.Api.Controllers;
 [Authorize]
 public partial class SetController(
     BrickInvContext context,
-    ClerkApiClient clerk,
     IRebrickableClient rebrickable,
     IOptions<AppOptions> options) : ControllerBase
 {
@@ -41,7 +40,7 @@ public partial class SetController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         var sets = await context.Sets
             .Where(x => x.OrganizationOrUserId == organizationOrUserId)
@@ -63,7 +62,7 @@ public partial class SetController(
     [HttpGet("{setId}")]
     public async Task<ActionResult<SetDto>> GetSet([FromRoute] string setId)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         var set = await context.Sets
             .Where(x => x.Id == setId)
@@ -118,7 +117,7 @@ public partial class SetController(
             throw;
         }
 
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         var set = new Models.Set
         {
@@ -188,7 +187,7 @@ public partial class SetController(
     [HttpDelete("{setId}")]
     public async Task<IActionResult> DeleteSet([FromRoute] string setId)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         var set = await context.Sets
             .Where(x => x.Id == setId)
@@ -221,7 +220,7 @@ public partial class SetController(
     [HttpPatch("{setId}")]
     public async Task<ActionResult<SetDto>> UpdateSet([FromRoute] string setId, [FromBody] UpdateSetRequest request)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         var set = await context.Sets
             .Where(x => x.Id == setId)

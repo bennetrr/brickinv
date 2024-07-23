@@ -24,7 +24,7 @@ public partial class SetController
     [HttpGet("{setId}/parts")]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts([FromRoute] string setId)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         await context.Sets
             .Where(x => x.Id == setId)
@@ -51,7 +51,7 @@ public partial class SetController
     [HttpGet("{setId}/parts/{partId}")]
     public async Task<ActionResult<PartDto>> GetPart([FromRoute] string setId, [FromRoute] string partId)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         var part = await context.Parts
             .Where(x => x.Id == partId)
@@ -81,7 +81,7 @@ public partial class SetController
     public async Task<ActionResult<UpdatePartResponse>> UpdatePart([FromRoute] string setId, [FromRoute] string partId,
         [FromBody] UpdatePartRequest request)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId();
+        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
         var part = await context.Parts
             .Include(x => x.Set)
