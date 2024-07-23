@@ -10,6 +10,17 @@ const SetStore = types.model('SetStore', {
 }).views((self) => ({
   getSet(id: string): ISet | undefined {
     return self.items.find(x => x.id === id);
+  },
+
+  filtered(term: string): ISet[] {
+    if (term === '') {
+      return self.items;
+    }
+
+    return self.items.filter(
+      x => x.setName.toLowerCase().includes(term.toLowerCase())
+        || x.setId.toLowerCase().includes(term.toLowerCase())
+    );
   }
 
 })).actions(self => ({
@@ -50,13 +61,12 @@ const SetStore = types.model('SetStore', {
    * Create a set.
    *
    * @returns The created set.
-   * @throws UserProfileNotFoundError If the current user does not have a user profile.
-   * @throws RebrickableApiKeyInvalidError If the Rebrickable API key is invalid.
+   * @throws RebrickableSetNotFoundError If the set was not found by Rebrickable.
    * @throws UnauthorizedError If the authentication token is not valid.
    * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
    */
-  createSet: flow(function* createSet(setId: string, groupId: string, forSale: boolean): Flow<AxiosResponse<ISetSnapshotIn>, ISet> {
-    const request = new CreateSetRequest(setId, groupId, forSale);
+  createSet: flow(function* createSet(setId: string, forSale: boolean): Flow<AxiosResponse<ISetSnapshotIn>, ISet> {
+    const request = new CreateSetRequest(setId, forSale);
     const response = yield ApiServiceFactory.setApi.createSet(request);
 
     const newSet = Set.create(response.data);
