@@ -14,10 +14,10 @@ const ErrorText: React.FC<IErrorTextProps> = observer(({ code, message }) => {
       gap: 16
     }}>
       <span style={{ fontSize: 'max(10vh, 60px)', fontWeight: 100 }}>{code}</span>
-      <div style={{ width: 2, height: 'max(11vh, 66px)', background: 'black' }}/>
+      <div style={{ width: 2, height: 'max(11vh, 66px)', background: 'black' }} />
       <span>{message}</span>
     </div>
-  )
+  );
 });
 
 export default ErrorText;

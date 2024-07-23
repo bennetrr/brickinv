@@ -30,7 +30,7 @@ const MenuStartContent: React.FC = () => {
         color: 'inherit',
         textDecoration: 'none'
       }}>
-        <Image src="/brickinv.png" alt="" height="35px"/>
+        <Image src="/brickinv.png" alt="" height="35px" />
         <h1 style={{ fontSize: 16 }}>BrickInv</h1>
       </Link>
     </div>

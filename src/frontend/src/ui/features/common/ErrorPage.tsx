@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { isRouteErrorResponse, useRouteError, useNavigate } from 'react-router-dom';
+import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
 import MainNavigation from './organisms/MainNavigation';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { Button } from 'primereact/button';
@@ -25,10 +25,10 @@ const ErrorPage: React.FC = observer(() => {
 
   switch (errorCode) {
     case 404:
-      errorElement = <ErrorText code="404" message="The page you are looking for does not exist."/>;
+      errorElement = <ErrorText code="404" message="The page you are looking for does not exist." />;
       break;
     default:
-      errorElement = <ErrorText code="Unexpected Error" message="Try reloading the page or wait a few minutes."/>;
+      errorElement = <ErrorText code="Unexpected Error" message="Try reloading the page or wait a few minutes." />;
   }
 
   return (
@@ -54,12 +54,12 @@ const ErrorPage: React.FC = observer(() => {
           {errorElement}
 
           <SignedOut>
-            <Button label="Sign In" link icon="pi pi-lock-open" onClick={() => navigate('/sign-in')}/>
+            <Button label="Sign In" link icon="pi pi-lock-open" onClick={() => navigate('/sign-in')} />
           </SignedOut>
         </div>
       </div>
     </div>
-  )
+  );
 });
 
 export default ErrorPage;
