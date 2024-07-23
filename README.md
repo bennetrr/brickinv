@@ -15,7 +15,7 @@ The frontend is configurable with the `env.js` file.
 | Name                  | Type     | Description                                                                              |
 |-----------------------|----------|------------------------------------------------------------------------------------------|
 | `apiBaseUrl`          | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:5105` |
-| `clerkPublishableKey` | `string` | Publishable Key of the Clerk application                                                 |
+| `clerkPublishableKey` | `string` | Publishable key of the Clerk application                                                 |
 
 ### Backend
 
@@ -26,6 +26,8 @@ For development, the .NET user secret manager is recommended, for production a `
 |--------------------------------|-------------------------------|----------|--------------------------------------------------------------------------------------|
 | `AppConfig__RebrickableApiKey` | `AppConfig.RebrickableApiKey` | `string` | API key for Rebrickable, used for retrieving information about Lego sets             |
 | `AppConfig__AppBaseUrl`        | `AppConfig.AppBaseUrl`        | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:5137` |
+| `Clerk__SecretKey`             | `Clerk.SecretKey`             | `string` | Secret key of the Clerk application                                                  |
+| `Clerk__Authority`             | `Clerk.Authority`             | `string` | Instance URL of the Clerk application                                                |
 
 ## Development
 
