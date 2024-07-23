@@ -28,7 +28,7 @@ const appRoutes: RouteObject[] = [
               {
                 path: ':setId',
                 children: [
-                  { index: true, element: redirect('overview') },  // TODO: Is called twice in dev mode
+                  { index: true, element: redirect(params => `/sets/${params.setId}/overview`) },
                   { path: 'overview', element: <span>Set overview</span> },
                   { path: 'parts', element: <span>Parts</span> }
                 ]
