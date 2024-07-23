@@ -31,7 +31,7 @@ const MenuStartContent: React.FC = () => {
         textDecoration: 'none'
       }}>
         <Image src="/brickinv.png" alt="" height="35px" />
-        <h1 style={{ fontSize: 16 }}>BrickInv</h1>
+        <h1 style={{ fontSize: 16, color: 'var(--primary-color)' }}>BrickInv</h1>
       </Link>
     </div>
   );
