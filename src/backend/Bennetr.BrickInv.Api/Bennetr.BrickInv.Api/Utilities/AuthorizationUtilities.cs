@@ -3,16 +3,13 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace Bennetr.BrickInv.Api.Utilities;
 
-public class AuthorizationUtilities
+public static class AuthorizationUtilities
 {
-    private static readonly HttpContext? HttpContext = new HttpContextAccessor().HttpContext;
     private static readonly JwtSecurityTokenHandler JwtHandler = new();
 
-    public static async Task<string> GetOrganizationOrUserId()
+    public static async Task<string> GetOrganizationOrUserId(HttpContext httpContext)
     {
-        if (HttpContext == null) throw new Exception("GetOrganizationOrUserId called outside of a HTTP context");
-
-        var token = await HttpContext.GetTokenAsync("Bearer", "access_token");
+        var token = await httpContext.GetTokenAsync("Bearer", "access_token");
         var jwt = JwtHandler.ReadJwtToken(token);
 
         try
