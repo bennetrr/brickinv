@@ -7,10 +7,7 @@ import MainNavigation from './organisms/MainNavigation';
 const MainPageTemplate: React.FC = observer(() => {
   return (
     <Protect fallback={<RedirectToSignIn />}>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
+      <div className="flex flex-col">
         <MainNavigation />
         <div>
           <Outlet />

@@ -1,13 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
+import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom';
 import MainNavigation from './organisms/MainNavigation';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { Button } from 'primereact/button';
 import ErrorText from './organisms/ErrorText';
 
 const ErrorPage: React.FC = observer(() => {
-  const navigate = useNavigate();
   const error = useRouteError();
   let errorCode: unknown;
 
@@ -32,29 +31,19 @@ const ErrorPage: React.FC = observer(() => {
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%'
-    }}>
+    <div className="h-full flex flex-col">
       <SignedIn>
         <MainNavigation />
       </SignedIn>
 
-      <div style={{
-        flex: '1 1 auto',
-        display: 'grid',
-        placeItems: 'center'
-      }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}>
+      <div className="flex-auto grid place-items-center">
+        <div className="flex flex-col items-center">
           {errorElement}
 
           <SignedOut>
-            <Button label="Sign In" link icon="pi pi-lock-open" onClick={() => navigate('/sign-in')} />
+            <Link to={"/sign-in"}>
+              <Button label="Sign In" link icon="pi pi-lock-open" />
+            </Link>
           </SignedOut>
         </div>
       </div>

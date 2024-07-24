@@ -4,12 +4,7 @@ import { observer } from 'mobx-react';
 
 const ClerkPageTemplate: React.FC = observer(() => {
   return (
-    <div style={{
-      width: '100%',
-      height: '100%',
-      display: 'grid',
-      placeItems: 'center'
-    }}>
+    <div className="w-full h-full grid place-items-center">
       <Outlet />
     </div>
   );

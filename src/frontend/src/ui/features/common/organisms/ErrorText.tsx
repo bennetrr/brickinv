@@ -8,13 +8,9 @@ interface IErrorTextProps {
 
 const ErrorText: React.FC<IErrorTextProps> = observer(({ code, message }) => {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 16
-    }}>
-      <span style={{ fontSize: 'max(10vh, 60px)', fontWeight: 100 }}>{code}</span>
-      <div style={{ width: 2, height: 'max(11vh, 66px)', background: 'black' }} />
+    <div className="flex items-center gap-4">
+      <span className="font-thin text-[max(10vh,60px)]">{code}</span>
+      <div className="w-[2px] h-[max(11vh,66px)] bg-black" />
       <span>{message}</span>
     </div>
   );

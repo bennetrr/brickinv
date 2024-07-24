@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
-import { Image } from 'primereact/image';
 import { OrganizationSwitcher, UserButton } from '@clerk/clerk-react';
 
 const menuItems: MenuItem[] = [
@@ -18,20 +17,12 @@ const menuItems: MenuItem[] = [
 // eslint-disable-next-line mobx/missing-observer
 const MenuStartContent: React.FC = () => {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center'
-    }}>
-      <Link to="/" style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 4,
-        marginRight: 4,
-        color: 'inherit',
-        textDecoration: 'none'
-      }}>
-        <Image src="/brickinv.png" alt="" height="35px" />
-        <h1 style={{ fontSize: 16, color: 'var(--primary-color)' }}>BrickInv</h1>
+    <div className="flex items-center">
+      <Link to="/" className="contents no-underline">
+        <div className="h-full flex items-center gap-1 mr-1">
+          <img src="/brickinv.png" alt="" height="1024" width="1024" className="h-[40px] w-auto" />
+          <h1 className="text-lg text-[var(--primary-color)]">BrickInv</h1>
+        </div>
       </Link>
     </div>
   );
@@ -40,11 +31,7 @@ const MenuStartContent: React.FC = () => {
 // eslint-disable-next-line mobx/missing-observer
 const MenuEndContent: React.FC = () => {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 4
-    }}>
+    <div className="flex items-center gap-1">
       <OrganizationSwitcher organizationProfileMode="modal" />
       <UserButton userProfileMode="modal" />
     </div>
