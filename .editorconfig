@@ -33,7 +33,3 @@ indent_size = 4
 charset = unset
 indent_size = unset
 indent_style = unset
-
-[src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api/Services/Email/*.cs]
-indent_size = unset
-trim_trailing_whitespace = false
