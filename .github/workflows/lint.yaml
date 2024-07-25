@@ -36,7 +36,7 @@ jobs:
         with:
           node-version-file: src/frontend/package.json
           cache-dependency-path: src/frontend/pnpm-lock.yaml
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
         working-directory: src/frontend
@@ -49,5 +49,6 @@ jobs:
           working-directory: src/frontend
           token: ${{ secrets.GITHUB_TOKEN }}
           all-files: true
-          eslint-args: '--report-unused-disable-directives --max-warnings 0'
+          extensions: js,mjs,cjs,ts,jsx,tsx
+          eslint-args: --report-unused-disable-directives --max-warnings 0
           annotations: true
