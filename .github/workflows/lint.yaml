@@ -44,11 +44,11 @@ jobs:
           pnpm install
 
       - name: Run eslint
-        uses: sibiraj-s/action-eslint@v3.0.1
+        working-directory: src/frontend
+        run: eslint --report-unused-disable-directives --max-warnings 0 --format json --output-file result.json .
+
+      - name: Upload eslint results
+        if: always()
+        uses: ldiego73/eslint-report-action@v1.1
         with:
-          working-directory: src/frontend
-          token: ${{ secrets.GITHUB_TOKEN }}
-          all-files: true
-          extensions: js,mjs,cjs,ts,jsx,tsx
-          eslint-args: --report-unused-disable-directives --max-warnings 0
-          annotations: true
+         report: result.json
