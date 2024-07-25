@@ -4,6 +4,7 @@ import { redirect } from './utils';
 import MainPageTemplate from './ui/features/common/MainPageTemplate';
 import ClerkPageTemplate from './ui/features/common/ClerkPageTemplate';
 import ErrorPage from './ui/features/common/ErrorPage';
+import SetListPage from './ui/features/sets/setListPage';
 
 const appRoutes: RouteObject[] = [
   {
@@ -24,7 +25,7 @@ const appRoutes: RouteObject[] = [
           {
             path: 'sets',
             children: [
-              { index: true, element: <span>Sets</span> },
+              { index: true, element: <SetListPage /> },
               {
                 path: ':setId',
                 children: [
