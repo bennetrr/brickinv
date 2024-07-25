@@ -53,4 +53,4 @@ jobs:
         if: always()
         uses: ldiego73/eslint-report-action@v1.1
         with:
-          report: result.json
+          report: src/frontend/result.json
