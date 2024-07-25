@@ -41,11 +41,12 @@ jobs:
       - name: Install dependencies
         working-directory: src/frontend
         run: |
-          pnpm install
+          pnpm install --frozen-lockfile
 
       - name: Run eslint
         working-directory: src/frontend
-        run: eslint --report-unused-disable-directives --max-warnings 0 --format json --output-file result.json .
+        run: |
+          pnpm lint --format json --output-file result.json
 
       - name: Upload eslint results
         if: always()
