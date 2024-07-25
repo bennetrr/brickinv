@@ -1,10 +1,10 @@
 import { RouteObject } from 'react-router-dom';
 import { SignIn, SignUp } from '@clerk/clerk-react';
 import { redirect } from './utils';
-import MainPageTemplate from './ui/features/common/MainPageTemplate';
-import ClerkPageTemplate from './ui/features/common/ClerkPageTemplate';
-import ErrorPage from './ui/features/common/ErrorPage';
-import SetListPage from './ui/features/sets/setListPage';
+import MainPageTemplate from './ui/pages/common/MainPageTemplate';
+import ClerkPageTemplate from './ui/pages/common/ClerkPageTemplate';
+import ErrorPage from './ui/pages/common/ErrorPage';
+import SetListPage from './ui/pages/setList/setListPage';
 
 const appRoutes: RouteObject[] = [
   {
