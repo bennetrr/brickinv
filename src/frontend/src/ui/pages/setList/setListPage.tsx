@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
 import { useClerk } from '@clerk/clerk-react';
 import { InputText } from 'primereact/inputtext';
@@ -44,9 +44,11 @@ const SetListPage: React.FC = observer(() => {
     }
   }, [clerk.session?.id]);
 
-  const listTemplate: DataViewProps['listTemplate'] = (items) => {
-    return items.map((item, index) => <SetListItem set={item} index={index} key={item.id} />);
-  }
+  const listTemplate = useCallback<Exclude<DataViewProps['listTemplate'], undefined>>(
+    items => items.map((item, index) => <SetListItem set={item} index={index} key={item.id} />),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setStore.items, setStore.items.length] // Otherwise the DataView does not rerender
+  );
 
   return (
     <div className="p-2">
