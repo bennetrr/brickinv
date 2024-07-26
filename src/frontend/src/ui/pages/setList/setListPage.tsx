@@ -1,48 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
-import { useClerk } from '@clerk/clerk-react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { DataView, DataViewProps } from 'primereact/dataview';
-import { useAsyncEffect, useToast } from '../../../utils';
-import { UnauthorizedError, useAppStore } from '../../../domain';
+import { useAppStore } from '../../../domain';
 import AddSetModal from './organisms/AddSetModal';
 import SetListItem from './organisms/SetListItem';
+import useSetLoadingEffect from '../../../utils/UseSetLoadingEffect';
 
 const SetListPage: React.FC = observer(() => {
-  const clerk = useClerk();
   const { setStore } = useAppStore();
-  const toast = useToast();
 
-  const [loading, setLoading] = useState(false);
   const [filterText, setFilterText] = useState('');
   const [addSetModalVisible, setAddSetModalVisible] = useState(false);
 
-  useAsyncEffect(async () => {
-    setLoading(true);
-
-    try {
-      await setStore.querySets();
-    } catch (exc) {
-      if (exc instanceof UnauthorizedError) {
-        toast.show({
-          severity: 'error',
-          summary: 'Failed to load sets',
-          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
-        });
-      } else {
-        toast.show({
-          severity: 'error',
-          summary: 'Failed to load sets',
-          detail: 'There was an unexpected error. Try reloading the page or wait a few minutes.'
-        });
-      }
-
-      return;
-    } finally {
-      setLoading(false);
-    }
-  }, [clerk.session?.id]);
+  const setsLoading = useSetLoadingEffect();
 
   const listTemplate = useCallback<Exclude<DataViewProps['listTemplate'], undefined>>(
     items => items.map((item, index) => <SetListItem set={item} index={index} key={item.id} />),
@@ -76,10 +48,15 @@ const SetListPage: React.FC = observer(() => {
           icon="pi pi-plus"
           onClick={() => setAddSetModalVisible(true)}
         />
-        <AddSetModal visible={addSetModalVisible} setVisible={setAddSetModalVisible}/>
+        <AddSetModal visible={addSetModalVisible} setVisible={setAddSetModalVisible} />
       </div>
 
-      <DataView loading={loading} value={setStore.filtered(filterText)} listTemplate={listTemplate}/>
+      <DataView
+        emptyMessage="No sets found"
+        value={setStore.filtered(filterText)}
+        listTemplate={listTemplate}
+        loading={setsLoading}
+      />
     </div>
   );
 });
