@@ -1,4 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import { DateTimeFormatOptions } from 'luxon';
 import { MSTDateTime } from '../../utils';
 import { IPart } from './Part';
 
@@ -29,7 +30,10 @@ function compareParts(a: IPart, b: IPart): 1 | 0 | -1 {
   return 0;
 }
 
+const localeDateOptions: DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+
 interface ISetVolatile {
+  hasChanges: boolean;
   parts: IPart[];
 }
 
@@ -46,6 +50,7 @@ const Set = types.model('Set', {
   forSale: types.boolean,
   finished: types.boolean
 }).volatile<ISetVolatile>(() => ({
+  hasChanges: false,
   parts: []
 })).views(self => ({
   get partsSorted() {
@@ -54,11 +59,20 @@ const Set = types.model('Set', {
 
   getPart(id: string): IPart | undefined {
     return self.parts.find(x => x.id === id);
+  },
+
+  get createdLocaleString() {
+    return self.created.toLocaleString(localeDateOptions);
+  },
+
+  get updatedLocaleString() {
+    return self.updated.toLocaleString(localeDateOptions);
   }
 
 })).actions(self => ({
   setForSale(value: boolean) {
     self.forSale = value;
+    self.hasChanges = true;
   }
 
 }));

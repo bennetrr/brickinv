@@ -5,6 +5,8 @@ import MainPageTemplate from './ui/pages/common/MainPageTemplate';
 import ClerkPageTemplate from './ui/pages/common/ClerkPageTemplate';
 import ErrorPage from './ui/pages/common/ErrorPage';
 import SetListPage from './ui/pages/setList/setListPage';
+import SetPageTemplate from './ui/pages/common/SetPageTemplate';
+import SetOverviewPage from './ui/pages/setOverview/SetOverviewPage';
 
 const appRoutes: RouteObject[] = [
   {
@@ -28,9 +30,10 @@ const appRoutes: RouteObject[] = [
               { index: true, element: <SetListPage /> },
               {
                 path: ':setId',
+                element: <SetPageTemplate />,
                 children: [
                   { index: true, element: redirect(params => `/sets/${params.setId}/overview`) },
-                  { path: 'overview', element: <span>Set overview</span> },
+                  { path: 'overview', element: <SetOverviewPage /> },
                   { path: 'parts', element: <span>Parts</span> }
                 ]
               }

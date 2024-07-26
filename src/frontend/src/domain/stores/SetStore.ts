@@ -8,7 +8,7 @@ import { UpdatePartResponse } from '../rest/responses';
 const SetStore = types.model('SetStore', {
   items: types.array(Set)
 }).views((self) => ({
-  getSet(id: string): ISet | undefined {
+  getSet(id?: string): ISet | undefined {
     return self.items.find(x => x.id === id);
   },
 
@@ -100,6 +100,7 @@ const SetStore = types.model('SetStore', {
     const response = yield ApiServiceFactory.setApi.updateSet(set.id, request);
 
     applySnapshot(set, response.data);
+    set.hasChanges = false;
   }),
 
   //region Parts

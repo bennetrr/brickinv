@@ -25,7 +25,7 @@ const SetListItem: React.FC<ISetListItemProps> = observer(({ set, index }) => {
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <div>
             <Tag
-              value={`${set.presentParts} of ${set.totalParts} parts finished`}
+              value={`${set.presentParts} of ${set.totalParts} parts present`}
               severity={set.finished ? 'success' : set.presentParts ? 'info' : 'warning'}
             />
           </div>

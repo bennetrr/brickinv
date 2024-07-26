@@ -37,7 +37,7 @@ const SetPageTemplate: React.FC = observer(() => {
   return (
     <div className="h-full flex flex-col">
       <TabMenu model={menuItems} activeIndex={activeMenuIndex} onTabChange={e => setActiveMenuIndex(e.index)} />
-      <div className="h-full">
+      <div className="flex-auto">
         <Outlet />
       </div>
     </div>

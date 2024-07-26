@@ -9,7 +9,7 @@ const MainPageTemplate: React.FC = observer(() => {
     <Protect fallback={<RedirectToSignIn />}>
       <div className="h-full flex flex-col">
         <MainNavigation />
-        <div className="h-full">
+        <div className="flex-auto">
           <Outlet />
         </div>
       </div>
