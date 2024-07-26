@@ -1,17 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Menubar } from 'primereact/menubar';
-import { MenuItem } from 'primereact/menuitem';
+import { MenuItem, MenuItemCommandEvent } from 'primereact/menuitem';
 import { OrganizationSwitcher, UserButton } from '@clerk/clerk-react';
-
-const menuItems: MenuItem[] = [
-  {
-    label: 'Sets',
-    icon: 'pi pi-box',
-    url: '/sets'
-  }
-];
 
 // The observer function will break the Menubar component
 // eslint-disable-next-line mobx/missing-observer
@@ -39,6 +31,25 @@ const MenuEndContent: React.FC = () => {
 };
 
 const MainNavigation: React.FC = observer(() => {
+  const navigate = useNavigate();
+
+  const handleMenuItemClick = useCallback((event: MenuItemCommandEvent) => {
+    navigate(event.item.data.url);
+  }, [navigate]);
+
+  const menuItems: MenuItem[] = useMemo(() => {
+    return [
+      {
+        label: 'Sets',
+        icon: 'pi pi-box',
+        command: handleMenuItemClick,
+        data: {
+          url: '/sets'
+        }
+      }
+    ];
+  }, [handleMenuItemClick]);
+
   return (
     <Menubar model={menuItems} start={MenuStartContent} end={MenuEndContent} />
   );

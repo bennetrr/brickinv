@@ -1,30 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { TabMenu } from 'primereact/tabmenu';
-import { MenuItem } from 'primereact/menuitem';
-
-const menuItems: MenuItem[] = [
-  {
-    label: 'Set Overview',
-    icon: 'pi pi-sliders-h',
-    url: 'overview'
-  },
-  {
-    label: 'Part Lists',
-    icon: 'pi pi-list-check',
-    url: 'parts'
-  }
-]
+import { MenuItem, MenuItemCommandEvent } from 'primereact/menuitem';
 
 const SetPageTemplate: React.FC = observer(() => {
   const { pathname } = useLocation();
   const [activeMenuIndex, setActiveMenuIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleMenuItemClick = useCallback((event: MenuItemCommandEvent) => {
+    navigate(event.item.data.url);
+  }, [navigate]);
+
+  const menuItems: MenuItem[] = useMemo(() => {
+    return [
+      {
+        label: 'Set Overview',
+        icon: 'pi pi-sliders-h',
+        command: handleMenuItemClick,
+        data: {
+          url: 'overview'
+        }
+      },
+      {
+        label: 'Part Lists',
+        icon: 'pi pi-list-check',
+        command: handleMenuItemClick,
+        data: {
+          url: 'parts'
+        }
+      }
+    ];
+  }, [handleMenuItemClick]);
 
   useEffect(() => {
     const lastPathSegment = pathname.split('/').pop();
 
-    const currentMenuItem = menuItems.find(x => x.url === lastPathSegment);
+    const currentMenuItem = menuItems.find(x => x.data.url === lastPathSegment);
 
     if (!currentMenuItem) {
       return;
@@ -32,7 +45,7 @@ const SetPageTemplate: React.FC = observer(() => {
 
     const currentIndex = menuItems.indexOf(currentMenuItem);
     setActiveMenuIndex(currentIndex);
-  }, [pathname]);
+  }, [menuItems, pathname]);
 
   return (
     <div className="h-full flex flex-col">
