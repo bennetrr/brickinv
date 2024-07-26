@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UnauthorizedError, useAppStore } from '../../../domain';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import useSetLoadingEffect from '../../../utils/UseSetLoadingEffect';
@@ -8,11 +8,15 @@ import { InputText } from 'primereact/inputtext';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { useToast } from '../../../utils';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { ToastMessage } from 'primereact/toast';
+import { ProgressBar } from 'primereact/progressbar';
 
 const SetOverviewPage: React.FC = observer(() => {
   const { setId } = useParams();
   const { setStore } = useAppStore();
   const toast = useToast();
+  const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
 
   const set = setStore.getSet(setId);
@@ -46,6 +50,66 @@ const SetOverviewPage: React.FC = observer(() => {
       setSaving(false);
     }
   }, [set, setStore, toast]);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!set) {
+      return;
+    }
+
+    const toastMessage: ToastMessage = {
+      sticky: true,
+      closable: false,
+      // @ts-expect-error contrast is not included in the type
+      severity: 'contrast',
+      summary: 'Deleting set...',
+      detail: <ProgressBar mode="indeterminate" style={{ height: '6px' }} />
+    }
+
+    toast.show(toastMessage);
+
+    try {
+      await setStore.deleteSet(set);
+    } catch (exc) {
+      if (exc instanceof UnauthorizedError) {
+        toast.show({
+          severity: 'error',
+          summary: 'Failed to delete set',
+          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
+        });
+      } else {
+        toast.show({
+          severity: 'error',
+          summary: 'Failed to delete set',
+          detail: 'There was an unexpected error. Try reloading the page or wait a few minutes.'
+        });
+      }
+
+      return;
+    } finally {
+      toast.remove(toastMessage);
+    }
+
+    navigate('/sets');
+    toast.show({
+      severity: 'success',
+      summary: 'Successfully deleted the set'
+    });
+  }, [navigate, set, setStore, toast]);
+
+  const handleDeleteClick = useCallback(() => {
+    confirmDialog({
+      header: 'Confirm Deletion',
+      message: 'Do you really want to delete this set?',
+      icon: 'pi pi-exclamation-triangle',
+      draggable: false,
+      resizable: false,
+      accept: handleDeleteConfirm,
+      acceptIcon: 'pi pi-trash',
+      acceptClassName: 'p-button-danger',
+      rejectIcon: 'pi pi-times',
+      rejectClassName: 'p-button-link p-button-secondary'
+    });
+  }, [handleDeleteConfirm]);
 
   const setsLoading = useSetLoadingEffect();
 
@@ -105,6 +169,15 @@ const SetOverviewPage: React.FC = observer(() => {
         <div className="flex flex-col">
           <label htmlFor="updated">Updated last on</label>
           <InputText id="updated" disabled value={set.updatedLocaleString} />
+        </div>
+
+        <div className="self-end">
+          <Button
+            label="Delete this set"
+            icon="pi pi-trash"
+            severity="danger"
+            onClick={handleDeleteClick}
+          />
         </div>
       </div>
 
