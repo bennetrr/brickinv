@@ -4,7 +4,7 @@ import { redirect } from './utils';
 import MainPageTemplate from './ui/pages/common/MainPageTemplate';
 import ClerkPageTemplate from './ui/pages/common/ClerkPageTemplate';
 import ErrorPage from './ui/pages/common/ErrorPage';
-import SetListPage from './ui/pages/setList/setListPage';
+import SetListPage from './ui/pages/setList/SetListPage.tsx';
 import SetPageTemplate from './ui/pages/common/SetPageTemplate';
 import SetOverviewPage from './ui/pages/setOverview/SetOverviewPage';
 
