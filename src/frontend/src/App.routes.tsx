@@ -7,6 +7,7 @@ import ErrorPage from './ui/pages/common/ErrorPage';
 import SetListPage from './ui/pages/setList/SetListPage.tsx';
 import SetPageTemplate from './ui/pages/common/SetPageTemplate';
 import SetOverviewPage from './ui/pages/setOverview/SetOverviewPage';
+import PartListPage from "./ui/pages/partList/PartListPage.tsx";
 
 const appRoutes: RouteObject[] = [
   {
@@ -34,7 +35,7 @@ const appRoutes: RouteObject[] = [
                 children: [
                   { index: true, element: redirect(params => `/sets/${params.setId}/overview`) },
                   { path: 'overview', element: <SetOverviewPage /> },
-                  { path: 'parts', element: <span>Parts</span> }
+                  { path: 'parts', element: <PartListPage /> }
                 ]
               }
             ]
