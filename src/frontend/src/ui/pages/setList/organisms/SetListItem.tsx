@@ -54,11 +54,11 @@ const SetListItem: React.FC<ISetListItemProps> = observer(({ set, index }) => {
 
         <div className="flex gap-4 mt-auto">
           <Link to={`/sets/${set.id}/overview`}>
-            <Button icon="pi pi-sliders-h" label="Set Overview" />
+            <Button icon="pi pi-sliders-h" label="Set Overview" size="small"/>
           </Link>
 
           <Link to={`/sets/${set.id}/parts`}>
-            <Button severity="secondary" icon="pi pi-list-check" label="Part List" />
+            <Button severity="secondary" icon="pi pi-list-check" label="Part List" size="small" />
           </Link>
         </div>
       </div>

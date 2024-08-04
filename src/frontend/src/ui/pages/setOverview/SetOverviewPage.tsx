@@ -171,7 +171,17 @@ const SetOverviewPage: React.FC = observer(() => {
           <InputText id="updated" disabled value={set.updatedLocaleString} />
         </div>
 
-        <div className="self-end">
+        <div className="flex justify-end">
+          <Button
+            label="Save"
+            icon="pi pi-save"
+            visible={set.hasChanges}
+            onClick={handleSaveClick}
+            loading={saving}
+          />
+
+          <div className="flex-auto"/>
+
           <Button
             label="Delete this set"
             icon="pi pi-trash"
@@ -180,16 +190,6 @@ const SetOverviewPage: React.FC = observer(() => {
           />
         </div>
       </div>
-
-      <Button
-        icon="pi pi-save"
-        aria-label="Save changes"
-        rounded
-        visible={set.hasChanges}
-        className="fixed right-2 bottom-2"
-        onClick={handleSaveClick}
-        loading={saving}
-      />
     </div>
   );
 });
