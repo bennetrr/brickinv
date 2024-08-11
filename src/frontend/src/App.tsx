@@ -14,12 +14,11 @@ const App: React.FC = observer(() => {
 
   return (
     <>
-      <Toast ref={toast} />
-
       <ToastProvider value={toast.current}>
         <RouterProvider router={appRouter} />
       </ToastProvider>
 
+      <Toast ref={toast} />
       <ConfirmDialog />
       <ConfirmPopup />
     </>
