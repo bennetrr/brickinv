@@ -1,19 +1,10 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { ISetSnapshotIn } from '../../models';
 import { CreateSetRequest, UpdateSetRequest } from '../requests';
-import {
-  NotFoundError,
-  RebrickableApiKeyInvalidError,
-  RebrickableSetNotFoundError,
-  UnauthorizedError,
-  UnexpectedHttpError
-} from '../../exceptions';
+import { NotFoundError, RebrickableSetNotFoundError, UnauthorizedError, UnexpectedHttpError } from '../../exceptions';
 
 export default class SetService {
-  public constructor(
-    private readonly axiosInstance: AxiosInstance
-  ) {
-  }
+  public constructor(private readonly axiosInstance: AxiosInstance) {}
 
   /**
    * Get all sets from groups where the current user is the owner or a member.
@@ -62,8 +53,7 @@ export default class SetService {
    * Create a set.
    *
    * @returns The created set.
-   * @throws UserProfileNotFoundError If the current user does not have a user profile.
-   * @throws RebrickableApiKeyInvalidError If the Rebrickable API key is invalid.
+   * @throws RebrickableSetNotFoundError If the set was not found by Rebrickable.
    * @throws UnauthorizedError If the authentication token is not valid.
    * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
    */
@@ -74,12 +64,7 @@ export default class SetService {
       case 201:
         return response;
       case 401:
-        switch (response.data) {
-          case 'rebrickableApiKeyInvalid':
-            throw new RebrickableApiKeyInvalidError();
-          default:
-            throw new UnauthorizedError();
-        }
+        throw new UnauthorizedError();
       case 404:
         switch (response.data) {
           case 'rebrickableSetNotFound':

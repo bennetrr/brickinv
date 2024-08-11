@@ -9,7 +9,6 @@ using Bennetr.RebrickableDotNet;
 using Bennetr.RebrickableDotNet.Models.Minifigs;
 using Bennetr.RebrickableDotNet.Models.Parts;
 using Bennetr.RebrickableDotNet.Models.Sets;
-using Clerk.Net.Client;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -128,7 +127,6 @@ public partial class SetController(
             SetName = rebrickableSet.Name,
             ReleaseYear = rebrickableSet.Year,
             ImageUri = new Uri(rebrickableSet.SetImgUrl),
-            TotalParts = rebrickableSet.NumParts,
             PresentParts = 0,
             Finished = false,
             ForSale = request.ForSale,
@@ -149,20 +147,22 @@ public partial class SetController(
                 ImageUri = x.Part.PartImgUrl is null ? null : new Uri(x.Part.PartImgUrl),
                 TotalCount = x.Quantity,
                 PresentCount = 0
-            }).Concat(
-                rebrickableMinifigs.Results
-                    .Select(x => new Part
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Set = set,
-                        Created = DateTime.Now,
-                        Updated = DateTime.Now,
-                        PartId = x.SetNum,
-                        PartName = x.SetName,
-                        ImageUri = new Uri(x.SetImgUrl),
-                        TotalCount = x.Quantity,
-                        PresentCount = 0
-                    }));
+            })
+            .Concat(rebrickableMinifigs.Results.Select(x => new Part
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Set = set,
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now,
+                    PartId = x.SetNum,
+                    PartName = x.SetName,
+                    ImageUri = new Uri(x.SetImgUrl),
+                    TotalCount = x.Quantity,
+                    PresentCount = 0
+                }))
+            .ToList();
+
+        set.TotalParts = parts.Select(x => x.TotalCount).Sum();
 
         context.Sets.Add(set);
         context.Parts.AddRange(parts);
