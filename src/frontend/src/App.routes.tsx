@@ -7,7 +7,7 @@ import ErrorPage from './ui/pages/common/ErrorPage';
 import SetListPage from './ui/pages/setList/SetListPage.tsx';
 import SetPageTemplate from './ui/pages/common/SetPageTemplate';
 import SetOverviewPage from './ui/pages/setOverview/SetOverviewPage';
-import PartListPage from "./ui/pages/partList/PartListPage.tsx";
+import PartListPage from './ui/pages/partList/PartListPage.tsx';
 
 const appRoutes: RouteObject[] = [
   {

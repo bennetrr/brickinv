@@ -9,9 +9,12 @@ const SetPageTemplate: React.FC = observer(() => {
   const [activeMenuIndex, setActiveMenuIndex] = useState(0);
   const navigate = useNavigate();
 
-  const handleMenuItemClick = useCallback((event: MenuItemCommandEvent) => {
-    navigate(event.item.data.url);
-  }, [navigate]);
+  const handleMenuItemClick = useCallback(
+    (event: MenuItemCommandEvent) => {
+      navigate(event.item.data.url);
+    },
+    [navigate]
+  );
 
   const menuItems: MenuItem[] = useMemo(() => {
     return [

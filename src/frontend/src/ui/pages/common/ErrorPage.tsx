@@ -36,12 +36,12 @@ const ErrorPage: React.FC = observer(() => {
         <MainNavigation />
       </SignedIn>
 
-      <div className="flex-auto grid place-items-center">
+      <div className="flex-auto grid place-items-center p-2">
         <div className="flex flex-col items-center">
           {errorElement}
 
           <SignedOut>
-            <Link to={"/sign-in"}>
+            <Link to="/sign-in">
               <Button label="Sign In" link icon="pi pi-lock-open" />
             </Link>
           </SignedOut>

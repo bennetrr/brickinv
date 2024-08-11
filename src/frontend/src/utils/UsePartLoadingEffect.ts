@@ -1,5 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
-import {ISet, UnauthorizedError, useAppStore} from '../domain';
+import { ISet, UnauthorizedError, useAppStore } from '../domain';
 import { useToast } from './ToastContext';
 import { useState } from 'react';
 import { useAsyncEffect } from './index';
@@ -28,7 +28,8 @@ export default function usePartLoadingEffect(set: ISet | undefined, force: boole
         toast.show({
           severity: 'error',
           summary: 'Failed to load parts',
-          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
+          detail:
+            'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
         });
       } else {
         toast.show({

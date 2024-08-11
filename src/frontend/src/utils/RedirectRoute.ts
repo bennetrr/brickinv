@@ -11,14 +11,13 @@ const RedirectRoute: React.FC<IRedirectRouteProps> = ({ destination }) => {
   const params = useParams();
 
   useEffect((): void => {
-    navigate(
-      destination instanceof Function ? destination(params) : destination
-    );
+    navigate(destination instanceof Function ? destination(params) : destination);
   }, [navigate, destination, params]);
 
   return null;
 };
 
-export const redirect = (destination: IRedirectRouteProps['destination']) => React.createElement(RedirectRoute, { destination });
+export const redirect = (destination: IRedirectRouteProps['destination']) =>
+  React.createElement(RedirectRoute, { destination });
 
 export default redirect;

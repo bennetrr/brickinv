@@ -33,7 +33,7 @@ const SetListPage: React.FC = observer(() => {
           placeholder="Filter sets by name or number"
           aria-label="Filter sets by name or number"
           value={filterText}
-          onChange={(e) => setFilterText(e.target.value)}
+          onChange={e => setFilterText(e.target.value)}
         />
 
         <Button
@@ -43,11 +43,7 @@ const SetListPage: React.FC = observer(() => {
           onClick={() => setFilterText('')}
         />
 
-        <Button
-          aria-label="Add new set"
-          icon="pi pi-plus"
-          onClick={() => setAddSetModalVisible(true)}
-        />
+        <Button aria-label="Add new set" icon="pi pi-plus" onClick={() => setAddSetModalVisible(true)} />
         <AddSetModal visible={addSetModalVisible} setVisible={setAddSetModalVisible} />
       </div>
 

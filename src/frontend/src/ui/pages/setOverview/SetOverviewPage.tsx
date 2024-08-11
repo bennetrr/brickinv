@@ -35,7 +35,8 @@ const SetOverviewPage: React.FC = observer(() => {
         toast.show({
           severity: 'error',
           summary: 'Failed to save set',
-          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
+          detail:
+            'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
         });
       } else {
         toast.show({
@@ -63,7 +64,7 @@ const SetOverviewPage: React.FC = observer(() => {
       severity: 'contrast',
       summary: 'Deleting set...',
       detail: <ProgressBar mode="indeterminate" style={{ height: '6px' }} />
-    }
+    };
 
     toast.show(toastMessage);
 
@@ -74,7 +75,8 @@ const SetOverviewPage: React.FC = observer(() => {
         toast.show({
           severity: 'error',
           summary: 'Failed to delete set',
-          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
+          detail:
+            'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
         });
       } else {
         toast.show({
@@ -146,11 +148,7 @@ const SetOverviewPage: React.FC = observer(() => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Checkbox
-            id="forSale"
-            checked={set.forSale}
-            onChange={e => set?.setForSale(e.checked || false)}
-          />
+          <Checkbox id="forSale" checked={set.forSale} onChange={e => set?.setForSale(e.checked || false)} />
           <label htmlFor="forSale">For Sale</label>
         </div>
 
@@ -172,22 +170,11 @@ const SetOverviewPage: React.FC = observer(() => {
         </div>
 
         <div className="flex justify-end">
-          <Button
-            label="Save"
-            icon="pi pi-save"
-            visible={set.hasChanges}
-            onClick={handleSaveClick}
-            loading={saving}
-          />
+          <Button label="Save" icon="pi pi-save" visible={set.hasChanges} onClick={handleSaveClick} loading={saving} />
 
-          <div className="flex-auto"/>
+          <div className="flex-auto" />
 
-          <Button
-            label="Delete this set"
-            icon="pi pi-trash"
-            severity="danger"
-            onClick={handleDeleteClick}
-          />
+          <Button label="Delete this set" icon="pi pi-trash" severity="danger" onClick={handleDeleteClick} />
         </div>
       </div>
     </div>

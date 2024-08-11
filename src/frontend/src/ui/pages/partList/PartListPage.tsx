@@ -4,9 +4,9 @@ import { DataView, DataViewProps } from 'primereact/dataview';
 import { useAppStore } from '../../../domain';
 import PartListItem from './organisms/PartListItem.tsx';
 import useSetLoadingEffect from '../../../utils/UseSetLoadingEffect';
-import {ProgressSpinner} from "primereact/progressspinner";
-import {useParams} from "react-router-dom";
-import usePartLoadingEffect from "../../../utils/UsePartLoadingEffect.ts";
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { useParams } from 'react-router-dom';
+import usePartLoadingEffect from '../../../utils/UsePartLoadingEffect.ts';
 
 const PartListPage: React.FC = observer(() => {
   const { setId } = useParams();

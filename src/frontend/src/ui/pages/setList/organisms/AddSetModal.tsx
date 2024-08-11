@@ -18,11 +18,11 @@ interface IFooterContentProps {
 const FooterContent: React.FC<IFooterContentProps> = ({ onSubmit, onAbort }) => {
   return (
     <>
-      <Button label="Cancel" icon="pi pi-times" severity="secondary" onClick={onAbort}/>
-      <Button label="Add Set" icon="pi pi-check" onClick={onSubmit}/>
+      <Button label="Cancel" icon="pi pi-times" severity="secondary" onClick={onAbort} />
+      <Button label="Add Set" icon="pi pi-check" onClick={onSubmit} />
     </>
-  )
-}
+  );
+};
 
 interface IAddSetModalProps {
   visible: boolean;
@@ -45,7 +45,7 @@ const AddSetModal: React.FC<IAddSetModalProps> = observer(({ visible, setVisible
       severity: 'contrast',
       summary: 'Creating set...',
       detail: <ProgressBar mode="indeterminate" style={{ height: '6px' }} />
-    }
+    };
 
     toast.show(toastMessage);
 
@@ -56,7 +56,8 @@ const AddSetModal: React.FC<IAddSetModalProps> = observer(({ visible, setVisible
         toast.show({
           severity: 'error',
           summary: 'Failed to create set',
-          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
+          detail:
+            'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
         });
       } else if (exc instanceof RebrickableSetNotFoundError) {
         toast.show({
@@ -105,15 +106,11 @@ const AddSetModal: React.FC<IAddSetModalProps> = observer(({ visible, setVisible
           placeholder="Set number"
           aria-label="Set number"
           value={setId}
-          onChange={(e) => setSetId(e.target.value)}
+          onChange={e => setSetId(e.target.value)}
         />
 
         <div className="flex items-center gap-2">
-          <InputSwitch
-            checked={forSale}
-            onChange={(e) => setForSale(e.value)}
-            inputId="forSaleInput"
-          />
+          <InputSwitch checked={forSale} onChange={e => setForSale(e.value)} inputId="forSaleInput" />
           <label htmlFor="forSaleInput">For sale</label>
         </div>
       </div>

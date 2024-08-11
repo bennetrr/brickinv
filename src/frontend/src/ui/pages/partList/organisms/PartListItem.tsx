@@ -12,42 +12,57 @@ interface ISetListItemProps {
 }
 
 const PartListItem: React.FC<ISetListItemProps> = observer(({ set, part, index }) => {
-  const {setStore} = useAppStore();
+  const { setStore } = useAppStore();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
-  const updatePartCount = useCallback(async (newPartCount: number) => {
-    const oldPartCount = part.presentCount;
-    part.setPresentCount(newPartCount);
-    setLoading(true);
+  const updatePartCount = useCallback(
+    async (newPartCount: number) => {
+      const oldPartCount = part.presentCount;
+      part.setPresentCount(newPartCount);
+      setLoading(true);
 
-    try {
-      await setStore.updatePart(set, part);
-    } catch (exc) {
-      if (exc instanceof UnauthorizedError) {
-        toast.show({
-          severity: 'error',
-          summary: 'Failed to update part',
-          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
-        });
-      } else {
-        toast.show({
-          severity: 'error',
-          summary: 'Failed to load parts',
-          detail: 'There was an unexpected error. Try reloading the page or wait a few minutes.'
-        });
+      try {
+        await setStore.updatePart(set, part);
+      } catch (exc) {
+        if (exc instanceof UnauthorizedError) {
+          toast.show({
+            severity: 'error',
+            summary: 'Failed to update part',
+            detail:
+              'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
+          });
+        } else {
+          toast.show({
+            severity: 'error',
+            summary: 'Failed to load parts',
+            detail: 'There was an unexpected error. Try reloading the page or wait a few minutes.'
+          });
+        }
+
+        part.setPresentCount(oldPartCount);
+        return;
+      } finally {
+        setLoading(false);
       }
-
-      part.setPresentCount(oldPartCount);
-      return;
-    } finally {
-      setLoading(false);
-    }
-  }, [part, set, setStore, toast]);
+    },
+    [part, set, setStore, toast]
+  );
 
   return (
-    <div key={part.id} className={classNames('flex flex-col md:grid md:grid-cols-[max-content_1fr] p-4 gap-4', { 'border-t-2 border-[var(--surface-border)]': index !== 0 })}>
-      <img src={part.imageUri} alt="" className={classNames('self-center w-[16rem] h-auto rounded-2xl shadow-lg', {'border-4 border-[#16a34a]': part.isComplete})} />
+    <div
+      key={part.id}
+      className={classNames('flex flex-col md:grid md:grid-cols-[max-content_1fr] p-4 gap-4', {
+        'border-t-2 border-[var(--surface-border)]': index !== 0
+      })}
+    >
+      <img
+        src={part.imageUri}
+        alt=""
+        className={classNames('self-center w-[16rem] h-auto rounded-2xl shadow-lg', {
+          'border-4 border-[#16a34a]': part.isComplete
+        })}
+      />
 
       <div className="flex flex-col gap-2 items-start">
         <div className="flex flex-col">

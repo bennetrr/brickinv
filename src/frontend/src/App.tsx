@@ -18,7 +18,7 @@ const App: React.FC = observer(() => {
         <RouterProvider router={appRouter} />
       </ToastProvider>
 
-      <Toast ref={toast}/>
+      <Toast ref={toast} />
       <ConfirmDialog />
       <ConfirmPopup />
     </>

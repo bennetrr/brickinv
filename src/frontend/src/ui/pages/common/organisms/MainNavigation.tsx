@@ -33,9 +33,12 @@ const MenuEndContent: React.FC = () => {
 const MainNavigation: React.FC = observer(() => {
   const navigate = useNavigate();
 
-  const handleMenuItemClick = useCallback((event: MenuItemCommandEvent) => {
-    navigate(event.item.data.url);
-  }, [navigate]);
+  const handleMenuItemClick = useCallback(
+    (event: MenuItemCommandEvent) => {
+      navigate(event.item.data.url);
+    },
+    [navigate]
+  );
 
   const menuItems: MenuItem[] = useMemo(() => {
     return [
@@ -50,9 +53,7 @@ const MainNavigation: React.FC = observer(() => {
     ];
   }, [handleMenuItemClick]);
 
-  return (
-    <Menubar model={menuItems} start={MenuStartContent} end={MenuEndContent} />
-  );
+  return <Menubar model={menuItems} start={MenuStartContent} end={MenuEndContent} />;
 });
 
 export default MainNavigation;

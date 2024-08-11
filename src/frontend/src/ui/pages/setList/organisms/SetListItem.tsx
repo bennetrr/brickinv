@@ -13,7 +13,12 @@ interface ISetListItemProps {
 
 const SetListItem: React.FC<ISetListItemProps> = observer(({ set, index }) => {
   return (
-    <div key={set.id} className={classNames('flex flex-col md:grid md:grid-cols-[max-content_1fr] p-4 gap-4', { 'border-t-2 border-[var(--surface-border)]': index !== 0 })}>
+    <div
+      key={set.id}
+      className={classNames('flex flex-col md:grid md:grid-cols-[max-content_1fr] p-4 gap-4', {
+        'border-t-2 border-[var(--surface-border)]': index !== 0
+      })}
+    >
       <img src={set.imageUri} alt="" className="self-center w-[16rem] h-auto rounded-2xl shadow-lg" />
 
       <div className="flex flex-col gap-2 items-start">
@@ -54,7 +59,7 @@ const SetListItem: React.FC<ISetListItemProps> = observer(({ set, index }) => {
 
         <div className="flex gap-4 mt-auto">
           <Link to={`/sets/${set.id}/overview`}>
-            <Button icon="pi pi-sliders-h" label="Set Overview" size="small"/>
+            <Button icon="pi pi-sliders-h" label="Set Overview" size="small" />
           </Link>
 
           <Link to={`/sets/${set.id}/parts`}>

@@ -7,7 +7,7 @@ export default function useAsyncEffect(effect: AsyncEffectCallback, deps: Depend
     const promise = effect();
 
     return () => {
-      promise.then((cleanup) => {
+      promise.then(cleanup => {
         if (typeof cleanup === 'function') {
           cleanup();
         }

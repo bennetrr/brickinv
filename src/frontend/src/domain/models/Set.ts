@@ -30,60 +30,65 @@ function compareParts(a: IPart, b: IPart): 1 | 0 | -1 {
   return 0;
 }
 
-const localeDateOptions: DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+const localeDateOptions: DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit'
+};
 
 interface ISetVolatile {
   hasChanges: boolean;
   parts: IPart[];
 }
 
-const Set = types.model('Set', {
-  id: types.identifier,
-  created: MSTDateTime,
-  updated: MSTDateTime,
-  setId: types.string,
-  setName: types.string,
-  releaseYear: types.integer,
-  imageUri: types.string,
-  totalParts: types.integer,
-  presentParts: types.integer,
-  forSale: types.boolean,
-  finished: types.boolean
-}).volatile<ISetVolatile>(() => ({
-  hasChanges: false,
-  parts: []
-})).views(self => ({
-  get partsSorted() {
-    return self.parts.slice().sort(compareParts);
-  },
+const Set = types
+  .model('Set', {
+    id: types.identifier,
+    created: MSTDateTime,
+    updated: MSTDateTime,
+    setId: types.string,
+    setName: types.string,
+    releaseYear: types.integer,
+    imageUri: types.string,
+    totalParts: types.integer,
+    presentParts: types.integer,
+    forSale: types.boolean,
+    finished: types.boolean
+  })
+  .volatile<ISetVolatile>(() => ({
+    hasChanges: false,
+    parts: []
+  }))
+  .views(self => ({
+    get partsSorted() {
+      return self.parts.slice().sort(compareParts);
+    },
 
-  getPart(id: string): IPart | undefined {
-    return self.parts.find(x => x.id === id);
-  },
+    getPart(id: string): IPart | undefined {
+      return self.parts.find(x => x.id === id);
+    },
 
-  get createdLocaleString() {
-    return self.created.toLocaleString(localeDateOptions);
-  },
+    get createdLocaleString() {
+      return self.created.toLocaleString(localeDateOptions);
+    },
 
-  get updatedLocaleString() {
-    return self.updated.toLocaleString(localeDateOptions);
-  }
-
-})).actions(self => ({
-  setForSale(value: boolean) {
-    self.forSale = value;
-    self.hasChanges = true;
-  }
-
-}));
+    get updatedLocaleString() {
+      return self.updated.toLocaleString(localeDateOptions);
+    }
+  }))
+  .actions(self => ({
+    setForSale(value: boolean) {
+      self.forSale = value;
+      self.hasChanges = true;
+    }
+  }));
 
 export default Set;
 
-export interface ISet extends Instance<typeof Set> {
-}
+export interface ISet extends Instance<typeof Set> {}
 
-export interface ISetSnapshotIn extends SnapshotIn<typeof Set> {
-}
+export interface ISetSnapshotIn extends SnapshotIn<typeof Set> {}
 
-export interface ISetSnapshotOut extends SnapshotOut<typeof Set> {
-}
+export interface ISetSnapshotOut extends SnapshotOut<typeof Set> {}

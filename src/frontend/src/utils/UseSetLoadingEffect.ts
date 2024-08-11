@@ -24,7 +24,8 @@ export default function useSetLoadingEffect(force: boolean = false): boolean {
         toast.show({
           severity: 'error',
           summary: 'Failed to load sets',
-          detail: 'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
+          detail:
+            'There is a problem with your session. Try reloading the page or signing out and back in. If that does not help, wait a few minutes and try again.'
         });
       } else {
         toast.show({

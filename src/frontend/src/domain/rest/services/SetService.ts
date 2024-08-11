@@ -1,18 +1,10 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { ISetSnapshotIn } from '../../models';
 import { CreateSetRequest, UpdateSetRequest } from '../requests';
-import {
-  NotFoundError,
-  RebrickableSetNotFoundError,
-  UnauthorizedError,
-  UnexpectedHttpError
-} from '../../exceptions';
+import { NotFoundError, RebrickableSetNotFoundError, UnauthorizedError, UnexpectedHttpError } from '../../exceptions';
 
 export default class SetService {
-  public constructor(
-    private readonly axiosInstance: AxiosInstance
-  ) {
-  }
+  public constructor(private readonly axiosInstance: AxiosInstance) {}
 
   /**
    * Get all sets from groups where the current user is the owner or a member.

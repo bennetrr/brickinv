@@ -4,12 +4,8 @@ import { UpdatePartRequest } from '../requests';
 import { UpdatePartResponse } from '../responses';
 import { NotFoundError, PresentCountOutOfRangeError, UnauthorizedError, UnexpectedHttpError } from '../../exceptions';
 
-
 export default class PartService {
-  public constructor(
-    private readonly axiosInstance: AxiosInstance
-  ) {
-  }
+  public constructor(private readonly axiosInstance: AxiosInstance) {}
 
   /**
    * Get all parts of the specified set.
@@ -66,7 +62,11 @@ export default class PartService {
    * @throws NotFoundError If the group or the recipient are not found.
    * @throws UnexpectedHttpError If an unexpected error occurred while making the API request.
    */
-  public async updatePart(setId: string, id: string, request: UpdatePartRequest): Promise<AxiosResponse<UpdatePartResponse>> {
+  public async updatePart(
+    setId: string,
+    id: string,
+    request: UpdatePartRequest
+  ): Promise<AxiosResponse<UpdatePartResponse>> {
     const response = await this.axiosInstance.patch(`/sets/${setId}/parts/${id}`, request);
 
     switch (response.status) {
