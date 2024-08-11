@@ -1,6 +1,3 @@
 export default class UpdateSetRequest {
-  constructor(
-    public readonly presentCount: number
-  ) {
-  }
+  constructor(public readonly presentCount: number) {}
 }

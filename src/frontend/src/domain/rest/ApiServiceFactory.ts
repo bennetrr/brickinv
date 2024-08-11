@@ -1,13 +1,24 @@
 import axios, { AxiosInstance } from 'axios';
+import { Clerk } from '@clerk/clerk-js';
 import { PartService, SetService } from './services';
 
 class ApiServiceFactory {
-  public readonly axiosInstance: AxiosInstance;
+  private readonly clerk: Clerk;
+  private readonly axiosInstance: AxiosInstance;
 
   public constructor() {
+    this.clerk = new Clerk(window.env.clerkPublishableKey);
+    void this.clerk.load();
+
     this.axiosInstance = axios.create({
       validateStatus: () => true,
       baseURL: window.env.apiBaseUrl
+    });
+
+    this.axiosInstance.interceptors.request.use(async config => {
+      const token = await this.clerk.session?.getToken();
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
     });
   }
 

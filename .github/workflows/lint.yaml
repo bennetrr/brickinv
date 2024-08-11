@@ -17,11 +17,24 @@ jobs:
         run: |
           npx eclint check .
 
+  prettier:
+    name: Lint frontend with prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run prettier
+        working-directory: src/frontend
+        run: |
+          npx prettier --check .
+
   eslint:
     name: Lint frontend with eslint
     runs-on: ubuntu-latest
     permissions:
       security-events: write
+      pull-requests: write
+      checks: write
       contents: read
     steps:
       - uses: actions/checkout@v4
@@ -36,18 +49,20 @@ jobs:
         with:
           node-version-file: src/frontend/package.json
           cache-dependency-path: src/frontend/pnpm-lock.yaml
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
         working-directory: src/frontend
         run: |
-          pnpm install
+          pnpm install --frozen-lockfile
 
       - name: Run eslint
-        uses: sibiraj-s/action-eslint@v3.0.1
+        working-directory: src/frontend
+        run: |
+          pnpm lint --format json --output-file result.json
+
+      - name: Upload eslint results
+        if: always()
+        uses: ldiego73/eslint-report-action@v1.1
         with:
-          working-directory: src/frontend
-          token: ${{ secrets.GITHUB_TOKEN }}
-          all-files: true
-          eslint-args: '--report-unused-disable-directives --max-warnings 0'
-          annotations: true
+          report: src/frontend/result.json

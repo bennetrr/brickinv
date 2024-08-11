@@ -1,37 +1,28 @@
-import React from 'react';
-import { observer, Provider as MobxProvider } from 'mobx-react';
+import React, { useRef } from 'react';
+import { observer } from 'mobx-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ApiServiceFactory, AppStore } from './domain';
+import { Toast } from 'primereact/toast';
+import { ToastProvider } from './utils';
 import appRoutes from './App.routes.tsx';
-import { useClerk } from '@clerk/clerk-react';
-import { useAsyncEffect } from './utils';
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { ConfirmPopup } from 'primereact/confirmpopup';
 
 const appRouter = createBrowserRouter(appRoutes);
-const appStore = AppStore.create();
 
-const App: React.FC = () => {
-  const clerk = useClerk();
-
-  useAsyncEffect(async () => {
-    const token = await clerk.session?.getToken()
-    console.log('Setting token to', token);
-
-    ApiServiceFactory.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-
-    if (token) {
-      await appStore.setStore.querySets();
-    }
-  }, [clerk.session]);
+const App: React.FC = observer(() => {
+  const toast = useRef<Toast>(null);
 
   return (
-    <MobxProvider
-      appStore={appStore}
-    >
-      <RouterProvider
-        router={appRouter}
-      />
-    </MobxProvider>
-  );
-};
+    <>
+      <ToastProvider value={toast.current}>
+        <RouterProvider router={appRouter} />
+      </ToastProvider>
 
-export default observer(App);
+      <Toast ref={toast} />
+      <ConfirmDialog />
+      <ConfirmPopup />
+    </>
+  );
+});
+
+export default App;

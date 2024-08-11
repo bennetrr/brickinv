@@ -31,9 +31,7 @@ export default [
       'react-refresh/only-export-components': 'warn'
     }
   },
-  ...fixupConfigRules(
-    compat.extends('plugin:react-hooks/recommended', 'plugin:mobx/recommended')
-  ),
+  ...fixupConfigRules(compat.extends('plugin:react-hooks/recommended', 'plugin:mobx/recommended')),
   {
     rules: {
       'react/react-in-jsx-scope': 'off'
