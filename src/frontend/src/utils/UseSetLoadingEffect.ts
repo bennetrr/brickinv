@@ -39,7 +39,7 @@ export default function useSetLoadingEffect(force: boolean = false): boolean {
     } finally {
       setLoading(false);
     }
-  }, [clerk.session?.id, setStore.items.length]);
+  }, [clerk.session?.id, setStore, setStore.items.length, toast]);
 
   return loading;
 }

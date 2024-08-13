@@ -43,7 +43,7 @@ export default function usePartLoadingEffect(set: ISet | undefined, force: boole
     } finally {
       setLoading(false);
     }
-  }, [clerk.session?.id, setStore.items.length, set]);
+  }, [clerk.session?.id, setStore, setStore.items.length, set, toast]);
 
   return loading;
 }
