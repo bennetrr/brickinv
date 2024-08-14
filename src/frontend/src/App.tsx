@@ -14,7 +14,7 @@ const App: React.FC = observer(() => {
 
   return (
     <>
-      <ToastProvider value={toast.current}>
+      <ToastProvider value={toast}>
         <RouterProvider router={appRouter} />
       </ToastProvider>
 
