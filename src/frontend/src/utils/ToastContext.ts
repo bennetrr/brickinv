@@ -1,7 +1,7 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, RefObject } from 'react';
 import { Toast, ToastMessage } from 'primereact/toast';
 
-const ToastContext = createContext<Toast | null>(null);
+const ToastContext = createContext<RefObject<Toast> | null>(null);
 export const ToastProvider = ToastContext.Provider;
 
 interface IToast {
@@ -31,30 +31,30 @@ export function useToast(): IToast {
 
   return {
     show(message: ToastMessage | ToastMessage[]) {
-      if (!toast) {
+      if (!toast?.current) {
         console.error('Toast is not initialized, but messages were sent:', message);
         return;
       }
 
-      toast.show(message);
+      toast.current.show(message);
     },
     clear() {
-      if (toast) {
-        toast.clear();
+      if (toast?.current) {
+        toast.current.clear();
       }
     },
     remove(message: ToastMessage | ToastMessage[]) {
-      if (toast) {
-        toast.remove(message);
+      if (toast?.current) {
+        toast.current.remove(message);
       }
     },
     replace(message: ToastMessage | ToastMessage[]) {
-      if (!toast) {
+      if (!toast?.current) {
         console.error('Toast is not initialized, but messages were sent:', message);
         return;
       }
 
-      toast.replace(message);
+      toast.current.replace(message);
     }
   }
 }
