@@ -109,6 +109,7 @@ const AddSetModal: React.FC<IAddSetModalProps> = observer(({ visible, setVisible
           placeholder="Set number"
           aria-label="Set number"
           value={setId}
+          onKeyDown={async e => {if (e.key === 'Enter') await handleSubmit()}}
           onChange={e => setSetId(e.target.value)}
         />
 
