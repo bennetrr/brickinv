@@ -1,8 +1,8 @@
 using System.Net.Mime;
 using Bennetr.BrickInv.Api.Dtos;
+using Bennetr.BrickInv.Api.Extensions;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.BrickInv.Api.Responses;
-using Bennetr.BrickInv.Api.Utilities;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,7 @@ public partial class SetController
     [HttpGet("{setId}/parts")]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts([FromRoute] string setId)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
+        var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         await context.Sets
             .Where(x => x.Id == setId)
@@ -51,7 +51,7 @@ public partial class SetController
     [HttpGet("{setId}/parts/{partId}")]
     public async Task<ActionResult<PartDto>> GetPart([FromRoute] string setId, [FromRoute] string partId)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
+        var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var part = await context.Parts
             .Where(x => x.Id == partId)
@@ -80,7 +80,7 @@ public partial class SetController
     [HttpPatch("{setId}/parts/{partId}")]
     public async Task<ActionResult<UpdatePartResponse>> UpdatePart([FromRoute] string setId, [FromRoute] string partId, [FromBody] UpdatePartRequest request)
     {
-        var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
+        var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var part = await context.Parts
             .Include(x => x.Set)
