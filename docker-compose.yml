@@ -9,8 +9,14 @@ services:
     volumes:
       - "mariadb:/var/lib/mysql"
       - "./setup.sql:/docker-entrypoint-initdb.d/setup.sql"
-  networks:
-    - internal
+    networks:
+      - internal
+
+  redis:
+    image: redis:7.4.1-alpine
+    restart: always
+    networks:
+      - internal
 
   frontend:
     image: ghcr.io/bennetrr/brickinv-frontend:0.0.0
