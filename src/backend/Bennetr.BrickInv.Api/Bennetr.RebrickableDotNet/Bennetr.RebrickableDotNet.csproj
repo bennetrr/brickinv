@@ -6,4 +6,9 @@
         <RootNamespace>Bennetr.RebrickableDotNet</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CachingFramework.Redis" Version="15.0.2" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    </ItemGroup>
+
 </Project>

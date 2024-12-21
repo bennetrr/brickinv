@@ -66,17 +66,22 @@ dotnet ef migrations add ${NAME} -c BrickInvContext -o ./Migrations/BrickInv
 
 ### Run development server against local API
 
-Start database:
+Start database and cache:
 
 ```bash
 # working directory: repository root
 docker run -d \
-  --name brickinv-mariadb-dev \
+  --name brickinv-dev-mariadb \
   --publish 3306:3306 \
   --env 'MARIADB_ROOT_PASSWORD=3gEju5UGRPbSbJ$r#wvYDn$g%6ryH5' \
   --volume brickinv-mariadb-dev:/var/lib/mysql \
   --volume ./setup.sql:/docker-entrypoint-initdb.d/setup.sql \
-  mariadb:11.3.2-jammy
+  mariadb:11.6.2
+
+docker run -d \
+  --name brickinv-dev-redis \
+  --publish 6379:6379 \
+  redis:7.4.1-alpine
 ```
 
 > [!NOTE]

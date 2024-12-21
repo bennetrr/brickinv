@@ -80,7 +80,10 @@ builder.Services
     .Configure<AppOptions>(builder.Configuration.GetSection("AppConfig"));
 
 // Rebrickable
-builder.Services.AddTransient<IRebrickableClient, RebrickableClient>();
+builder.Services.AddRebrickableApi(new SetupOptions
+{
+    RedisConnectionString = builder.Configuration.GetConnectionString("Redis")!
+});
 
 // Build
 var app = builder.Build();

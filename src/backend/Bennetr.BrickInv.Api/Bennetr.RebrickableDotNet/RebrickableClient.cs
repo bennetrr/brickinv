@@ -4,10 +4,11 @@ using System.Text.Json;
 using Bennetr.RebrickableDotNet.Models.Minifigs;
 using Bennetr.RebrickableDotNet.Models.Parts;
 using Bennetr.RebrickableDotNet.Models.Sets;
+using CachingFramework.Redis.Contracts.Providers;
 
 namespace Bennetr.RebrickableDotNet;
 
-public class RebrickableClient : IRebrickableClient
+public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
 {
     private static readonly Uri RebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
 
@@ -42,13 +43,23 @@ public class RebrickableClient : IRebrickableClient
 
     private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
     {
+        var cached = await cache.GetObjectAsync<TResult>($"rebrickable:${url}");
+
+        if (cached != null)
+        {
+            return cached;
+        }
+
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Authorization", $"key {apiKey}");
 
-        var result = await _httpClient.SendAsync(request);
-        result.EnsureSuccessStatusCode();
-        return
-            await result.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions) ??
-            throw new InvalidOperationException();
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content.ReadFromJsonAsync<TResult>(_jsonSerializerOptions)
+            ?? throw new FormatException("Unable to parse response from Rebrickable API");
+
+        await cache.SetObjectAsync($"rebrickable:${url}", result, TimeSpan.FromHours(6));
+        return result;
     }
 }
