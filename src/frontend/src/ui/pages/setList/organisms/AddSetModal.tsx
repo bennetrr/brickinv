@@ -82,6 +82,9 @@ const AddSetModal: React.FC<IAddSetModalProps> = observer(({ visible, setVisible
       severity: 'success',
       summary: 'Successfully created the set'
     });
+
+    setSetId('');
+    setForSale(false);
   }, [forSale, setId, setStore, setVisible, toast]);
 
   const handleAbort = useCallback(() => {
