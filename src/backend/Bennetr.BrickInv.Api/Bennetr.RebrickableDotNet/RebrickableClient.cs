@@ -5,6 +5,8 @@ using Bennetr.RebrickableDotNet.Models.Minifigs;
 using Bennetr.RebrickableDotNet.Models.Parts;
 using Bennetr.RebrickableDotNet.Models.Sets;
 using CachingFramework.Redis.Contracts.Providers;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace Bennetr.RebrickableDotNet;
 
@@ -63,18 +65,40 @@ public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
         return result;
     }
 
+    public async Task<Size?> GetImageDimensionsAsync(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return null;
+        }
+
+        if (await cache.KeyExistsAsync($"imgsize:${url}"))
+        {
+            return await cache.GetObjectAsync<Size>($"imgsize:${url}");
+        }
+
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = new MemoryStream();
+        await response.Content.CopyToAsync(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+        var image = await Image.IdentifyAsync(stream);
+
+        await cache.SetObjectAsync($"imgsize:${url}", image.Size, TimeSpan.FromHours(6));
+        return image.Size;
+    }
+
     private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
     {
-        var cached = await cache.GetObjectAsync<TResult>($"rebrickable:${url}");
-
-        if (cached != null)
+        if (await cache.KeyExistsAsync($"rebrickable:${url}"))
         {
-            return cached;
+            return await cache.GetObjectAsync<TResult>($"rebrickable:${url}");
         }
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Authorization", $"key {apiKey}");
-
         var response = await _httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
 

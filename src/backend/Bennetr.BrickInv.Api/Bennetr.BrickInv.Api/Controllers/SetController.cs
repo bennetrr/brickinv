@@ -120,6 +120,7 @@ public partial class SetController(
         }
 
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
+        var setImageSize = await rebrickable.GetImageDimensionsAsync(rebrickableSet.SetImgUrl);
 
         var set = new Models.Set
         {
@@ -130,28 +131,39 @@ public partial class SetController(
             SetName = rebrickableSet.Name,
             ReleaseYear = rebrickableSet.Year,
             ImageUri = new Uri(rebrickableSet.SetImgUrl),
+            ImageWidth = setImageSize?.Width ?? 0,
+            ImageHeight = setImageSize?.Height ?? 0,
             PresentParts = 0,
             Finished = false,
             ForSale = request.ForSale,
             OrganizationOrUserId = organizationOrUserId
         };
 
-        var parts = rebrickableParts
+        var parts = await Task.WhenAll(rebrickableParts
             .Where(x => !x.IsSpare)
-            .Select(x => new Part
+            .Select(async x =>
             {
-                Id = Guid.NewGuid().ToString(),
-                Set = set,
-                Created = DateTime.Now,
-                Updated = DateTime.Now,
-                PartId = x.Part.PartNum,
-                PartName = x.Part.Name,
-                PartColor = x.Color.Name,
-                ImageUri = x.Part.PartImgUrl is null ? null : new Uri(x.Part.PartImgUrl),
-                TotalCount = x.Quantity,
-                PresentCount = 0
+                var size = await rebrickable.GetImageDimensionsAsync(x.Part.PartImgUrl);
+                return new Part
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Set = set,
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now,
+                    PartId = x.Part.PartNum,
+                    PartName = x.Part.Name,
+                    PartColor = x.Color.Name,
+                    ImageUri = x.Part.PartImgUrl is null ? null : new Uri(x.Part.PartImgUrl),
+                    ImageWidth = size?.Width,
+                    ImageHeight = size?.Height,
+                    TotalCount = x.Quantity,
+                    PresentCount = 0
+                };
             })
-            .Concat(rebrickableMinifigs.Select(x => new Part
+            .Concat(rebrickableMinifigs.Select(async x =>
+            {
+                var size = await rebrickable.GetImageDimensionsAsync(x.SetImgUrl);
+                return new Part
                 {
                     Id = Guid.NewGuid().ToString(),
                     Set = set,
@@ -160,10 +172,13 @@ public partial class SetController(
                     PartId = x.SetNum,
                     PartName = x.SetName,
                     ImageUri = new Uri(x.SetImgUrl),
+                    ImageWidth = size?.Width,
+                    ImageHeight = size?.Height,
                     TotalCount = x.Quantity,
                     PresentCount = 0
-                }))
-            .ToList();
+                };
+            }))
+            .ToList());
 
         set.TotalParts = parts.Select(x => x.TotalCount).Sum();
 

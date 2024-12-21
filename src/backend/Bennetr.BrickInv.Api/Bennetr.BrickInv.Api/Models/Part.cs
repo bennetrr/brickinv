@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using SixLabors.ImageSharp;
 
 namespace Bennetr.BrickInv.Api.Models;
 
@@ -23,6 +24,10 @@ public class Part
     public string? PartColor { get; set; } = string.Empty;
 
     public Uri? ImageUri { get; set; }
+
+    public int? ImageWidth { get; set; }
+
+    public int? ImageHeight { get; set; }
 
     public int TotalCount { get; set; }
 

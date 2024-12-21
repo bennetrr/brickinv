@@ -16,6 +16,10 @@ public class PartDto
 
     public Uri? ImageUri { get; set; }
 
+    public int? ImageWidth { get; set; }
+
+    public int? ImageHeight { get; set; }
+
     public int TotalCount { get; set; }
 
     public int PresentCount { get; set; }

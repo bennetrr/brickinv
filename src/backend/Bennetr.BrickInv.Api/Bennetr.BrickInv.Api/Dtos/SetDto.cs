@@ -16,6 +16,10 @@ public class SetDto
 
     public Uri ImageUri { get; set; } = null!;
 
+    public int? ImageWidth { get; set; }
+
+    public int? ImageHeight { get; set; }
+
     public int TotalParts { get; set; }
 
     public int PresentParts { get; set; }
