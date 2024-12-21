@@ -4,7 +4,8 @@ namespace Bennetr.BrickInv.Api.Models;
 
 public class Part
 {
-    [MaxLength(36)] public string Id { get; set; } = string.Empty;
+    [MaxLength(36)]
+    public string Id { get; set; } = string.Empty;
 
     public Set Set { get; set; } = null!;
 

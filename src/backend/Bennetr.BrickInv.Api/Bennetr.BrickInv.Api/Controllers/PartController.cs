@@ -78,8 +78,7 @@ public partial class SetController
     [ProducesResponseType<string>(StatusCodes.Status401Unauthorized, MediaTypeNames.Text.Plain)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound, MediaTypeNames.Text.Plain)]
     [HttpPatch("{setId}/parts/{partId}")]
-    public async Task<ActionResult<UpdatePartResponse>> UpdatePart([FromRoute] string setId, [FromRoute] string partId,
-        [FromBody] UpdatePartRequest request)
+    public async Task<ActionResult<UpdatePartResponse>> UpdatePart([FromRoute] string setId, [FromRoute] string partId, [FromBody] UpdatePartRequest request)
     {
         var organizationOrUserId = await AuthorizationUtilities.GetOrganizationOrUserId(HttpContext);
 
@@ -91,7 +90,9 @@ public partial class SetController
             .FirstAsync();
 
         if (request.PresentCount < 0 || request.PresentCount > part.TotalCount)
+        {
             return BadRequest("presentCountOutOfRange");
+        }
 
         var oldPresentCount = part.PresentCount;
         part.PresentCount = request.PresentCount;

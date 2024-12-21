@@ -19,12 +19,12 @@ builder.Services.AddDefaultSetup(options);
 // Database
 builder.Services
     .AddDbContext<BrickInvContext>(opt => opt
-        .UseMySql(builder.Configuration.GetConnectionString("BrickInvDb"),
+        .UseMySql(
+            builder.Configuration.GetConnectionString("BrickInvDb"),
             new MariaDbServerVersion(new Version(11, 6, 2)))
         .LogTo(Console.WriteLine, builder.Environment.IsDevelopment() ? LogLevel.Debug : LogLevel.Warning)
         .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
-        .EnableDetailedErrors(builder.Environment.IsDevelopment())
-    );
+        .EnableDetailedErrors(builder.Environment.IsDevelopment()));
 
 // Authorization
 builder.Services.AddClerkApiClient(opt => { opt.SecretKey = builder.Configuration["Clerk:SecretKey"]!; });
@@ -46,9 +46,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnTokenValidated = context =>
             {
                 var azp = context.Principal?.FindFirstValue("azp");
+
                 // AuthorizedParty is the base URL of your frontend.
                 if (string.IsNullOrEmpty(azp) || !azp.Equals(builder.Configuration["AppConfig:AppBaseUrl"]))
+                {
                     context.Fail("AZP Claim is invalid or missing");
+                }
 
                 return Task.CompletedTask;
             }
@@ -66,7 +69,8 @@ if (builder.Environment.IsDevelopment())
             Version = "v2",
             Title = "BrickInv API"
         });
-        opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+        opt.IncludeXmlComments(Path.Combine(
+            AppContext.BaseDirectory,
             $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
     });
 }

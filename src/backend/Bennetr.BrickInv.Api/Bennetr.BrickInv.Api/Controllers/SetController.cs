@@ -111,7 +111,10 @@ public partial class SetController(
         }
         catch (HttpRequestException exc)
         {
-            if (exc.StatusCode == HttpStatusCode.NotFound) return NotFound("rebrickableSetNotFound");
+            if (exc.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound("rebrickableSetNotFound");
+            }
 
             throw;
         }
@@ -171,8 +174,7 @@ public partial class SetController(
         return CreatedAtAction(
             nameof(GetSet),
             new { setId = set.Id },
-            set.Adapt<SetDto>()
-        );
+            set.Adapt<SetDto>());
     }
 
     /// <summary>
@@ -234,7 +236,6 @@ public partial class SetController(
         return AcceptedAtAction(
             nameof(GetSet),
             new { setId = set.Id },
-            set.Adapt<SetDto>()
-        );
+            set.Adapt<SetDto>());
     }
 }
