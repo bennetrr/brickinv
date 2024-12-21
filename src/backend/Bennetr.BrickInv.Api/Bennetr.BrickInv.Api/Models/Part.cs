@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using SixLabors.ImageSharp;
 
 namespace Bennetr.BrickInv.Api.Models;
 
