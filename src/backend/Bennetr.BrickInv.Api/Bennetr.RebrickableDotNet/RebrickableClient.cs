@@ -6,7 +6,6 @@ using Bennetr.RebrickableDotNet.Models.Parts;
 using Bennetr.RebrickableDotNet.Models.Sets;
 using CachingFramework.Redis.Contracts.Providers;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace Bennetr.RebrickableDotNet;
 
