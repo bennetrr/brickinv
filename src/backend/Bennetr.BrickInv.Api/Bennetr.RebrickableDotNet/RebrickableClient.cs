@@ -9,26 +9,21 @@ namespace Bennetr.RebrickableDotNet;
 
 public class RebrickableClient : IRebrickableClient
 {
-    private readonly HttpClient _httpClient;
+    private static readonly Uri RebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
+
+    private readonly HttpClient _httpClient = new()
+    {
+        BaseAddress = RebrickableApiUrl,
+        DefaultRequestHeaders =
+        {
+            Accept = { new MediaTypeWithQualityHeaderValue("application/json") }
+        }
+    };
 
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
     };
-
-    private readonly Uri _rebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
-
-    public RebrickableClient()
-    {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = _rebrickableApiUrl,
-            DefaultRequestHeaders =
-            {
-                Accept = { new MediaTypeWithQualityHeaderValue("application/json") }
-            }
-        };
-    }
 
     public async Task<Set> GetSetAsync(string apiKey, string setId)
     {
