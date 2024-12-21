@@ -25,7 +25,7 @@ jobs:
           prefix: v
           create-tag: 'true'
           git-username: bennetrr
-          git-email: bennet@bennetr.me
+          git-email: 76742318+bennetrr@users.noreply.github.com
           mode: semantic
 
   build-frontend:
