@@ -139,13 +139,14 @@ pnpm dev:prod
 
 ### Setup
 
-Download the following files from the [latest release branch](https://github.com/bennetrr/brickinv/tree/release/v2.0):
+Download the following files from the [release branch](https://github.com/bennetrr/brickinv/tree/release):
 
 - `docker-compose.yml`
 - `setup.sql`
 - `src/frontend/public/env/env.template.js` as `env.js`
 - `backend.env`
 
+Replace the container tags in the `docker-compose.yml` file with the latest version.
 Replace the empty strings in the `env.js` and `backend.env` files with your own values.
 The configuration fields are documented in the [Configuration](#configuration) section.
 
