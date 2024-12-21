@@ -8,7 +8,7 @@ public interface IRebrickableClient
 {
     Task<Set> GetSetAsync(string apiKey, string setId);
 
-    Task<SetParts> GetSetPartsAsync(string apiKey, string setId);
+    Task<IEnumerable<SetPart>> GetSetPartsAsync(string apiKey, string setId);
 
-    Task<SetMinifigs> GetSetMinifigsAsync(string apiKey, string setId);
+    Task<IEnumerable<Minifig>> GetSetMinifigsAsync(string apiKey, string setId);
 }

@@ -100,8 +100,8 @@ public partial class SetController(
 
         // Get the set from Rebrickable
         Set rebrickableSet;
-        SetParts rebrickableParts;
-        SetMinifigs rebrickableMinifigs;
+        IEnumerable<SetPart> rebrickableParts;
+        IEnumerable<Minifig> rebrickableMinifigs;
 
         try
         {
@@ -136,7 +136,7 @@ public partial class SetController(
             OrganizationOrUserId = organizationOrUserId
         };
 
-        var parts = rebrickableParts.Results
+        var parts = rebrickableParts
             .Where(x => !x.IsSpare)
             .Select(x => new Part
             {
@@ -151,7 +151,7 @@ public partial class SetController(
                 TotalCount = x.Quantity,
                 PresentCount = 0
             })
-            .Concat(rebrickableMinifigs.Results.Select(x => new Part
+            .Concat(rebrickableMinifigs.Select(x => new Part
                 {
                     Id = Guid.NewGuid().ToString(),
                     Set = set,

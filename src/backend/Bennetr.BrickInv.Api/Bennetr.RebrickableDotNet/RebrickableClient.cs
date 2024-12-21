@@ -31,14 +31,36 @@ public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
         return await MakeRequest<Set>(apiKey, $"sets/{setId}/");
     }
 
-    public async Task<SetParts> GetSetPartsAsync(string apiKey, string setId)
+    public async Task<IEnumerable<SetPart>> GetSetPartsAsync(string apiKey, string setId)
     {
-        return await MakeRequest<SetParts>(apiKey, $"sets/{setId}/parts/?page_size=10000"); // TODO: Pagination
+        var url = $"sets/{setId}/parts/";
+        var result = new List<SetPart>();
+
+        do
+        {
+            var response = await MakeRequest<SetParts>(apiKey, url);
+            result.AddRange(response.Results);
+            url = response.Next;
+        }
+        while (url != null);
+
+        return result;
     }
 
-    public async Task<SetMinifigs> GetSetMinifigsAsync(string apiKey, string setId)
+    public async Task<IEnumerable<Minifig>> GetSetMinifigsAsync(string apiKey, string setId)
     {
-        return await MakeRequest<SetMinifigs>(apiKey, $"sets/{setId}/minifigs/?page_size=10000"); // TODO: Pagination
+        var url = $"sets/{setId}/minifigs/";
+        var result = new List<Minifig>();
+
+        do
+        {
+            var response = await MakeRequest<SetMinifigs>(apiKey, url);
+            result.AddRange(response.Results);
+            url = response.Next;
+        }
+        while (url != null);
+
+        return result;
     }
 
     private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
