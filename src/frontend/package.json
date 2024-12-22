@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev:local": "cp public/env/env.local.js public/env/env.js && vite",
-    "dev:prod": "cp public/env/env.prod.js public/env/env.js && vite",
+    "dev:dev": "cp public/env/env.dev.js public/env/env.js && vite",
     "build": "tsc && vite build",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
     "style": "prettier --check .",

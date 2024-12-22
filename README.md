@@ -124,9 +124,9 @@ docker stop brickinv-dev-mariadb brickinv-dev-redis
 docker rm -v brickinv-mariadb-dev brickinv-dev-redis
 ```
 
-### Run development server with production API
+### Run development server against development API
 
-To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.prod.js` and
+To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.dev.js` and
 replace the empty strings with your own values.
 The configuration fields are documented in the [Configuration](#frontend) section.
 
@@ -134,7 +134,7 @@ To start the frontend, run:
 
 ```bash
 # working directory: src/frontend
-pnpm dev:prod
+pnpm dev:dev
 ```
 
 ## Production
