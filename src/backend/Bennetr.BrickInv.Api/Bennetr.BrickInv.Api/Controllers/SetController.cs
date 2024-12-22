@@ -24,9 +24,9 @@ namespace Bennetr.BrickInv.Api.Controllers;
 public partial class SetController(
     BrickInvContext context,
     IRebrickableClient rebrickable,
-    IOptions<AppOptions> options) : ControllerBase
+    IOptions<RebrickableOptions> rebrickableOptions) : ControllerBase
 {
-    private readonly AppOptions _options = options.Value;
+    private readonly RebrickableOptions _rebrickableOptions = rebrickableOptions.Value;
 
     /// <summary>
     ///     Return all sets from groups where the current user is the owner or a member.
@@ -105,9 +105,9 @@ public partial class SetController(
 
         try
         {
-            rebrickableSet = await rebrickable.GetSetAsync(_options.RebrickableApiKey, setId);
-            rebrickableParts = await rebrickable.GetSetPartsAsync(_options.RebrickableApiKey, setId);
-            rebrickableMinifigs = await rebrickable.GetSetMinifigsAsync(_options.RebrickableApiKey, setId);
+            rebrickableSet = await rebrickable.GetSetAsync(_rebrickableOptions.ApiKey, setId);
+            rebrickableParts = await rebrickable.GetSetPartsAsync(_rebrickableOptions.ApiKey, setId);
+            rebrickableMinifigs = await rebrickable.GetSetMinifigsAsync(_rebrickableOptions.ApiKey, setId);
         }
         catch (HttpRequestException exc)
         {

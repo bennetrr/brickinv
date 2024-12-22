@@ -14,7 +14,7 @@ The frontend is configurable with the `env.js` file.
 
 | Name                  | Type     | Description                                                                              |
 |-----------------------|----------|------------------------------------------------------------------------------------------|
-| `apiBaseUrl`          | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:5105` |
+| `apiBaseUrl`          | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:4003` |
 | `clerkPublishableKey` | `string` | Publishable key of the Clerk application                                                 |
 
 ### Backend
@@ -22,12 +22,14 @@ The frontend is configurable with the `env.js` file.
 The backend is configurable with everything supported by ASP.NET.
 For development, the .NET user secret manager is recommended, for production a `.env` file.
 
-| `.env`-Name                    | `.json`-Name                  | Type     | Description                                                                          |
-|--------------------------------|-------------------------------|----------|--------------------------------------------------------------------------------------|
-| `AppConfig__RebrickableApiKey` | `AppConfig.RebrickableApiKey` | `string` | API key for Rebrickable, used for retrieving information about Lego sets             |
-| `AppConfig__AppBaseUrl`        | `AppConfig.AppBaseUrl`        | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:5137` |
-| `Clerk__SecretKey`             | `Clerk.SecretKey`             | `string` | Secret key of the Clerk application                                                  |
-| `Clerk__Authority`             | `Clerk.Authority`             | `string` | Instance URL of the Clerk application                                                |
+| Name                             | Type     | Description                                                                                                          |
+|----------------------------------|----------|----------------------------------------------------------------------------------------------------------------------|
+| `Authentication::ClerkSecretKey` | `string` | Secret key of the Clerk application                                                                                  |
+| `Authentication::Authority`      | `string` | Instance URL of the Clerk application                                                                                |
+| `Authentication::AppBaseUrl`     | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:4004`                                 |
+| `ConnectionStrings::Db`          | `string` | Connection string for main database, e.g. `Server=localhost;Port=4001;User=root;Password=brickinv;Database=brickinv` |
+| `ConnectionStrings::Redis`       | `string` | Connection string for Redis cache, e.g. `localhost:4002`                                                             |
+| `Rebrickable::ApiKey`            | `string` | API key for Rebrickable, used for retrieving information about Lego sets                                             |
 
 ## Development
 
@@ -61,7 +63,7 @@ The migration only needs to be created for the context that holds the changed mo
 
 ```bash
 # working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
-dotnet ef migrations add ${NAME} -c BrickInvContext -o ./Migrations/BrickInv
+dotnet ef migrations add {{NAME}} -c BrickInvContext -o ./Migrations/BrickInv
 ```
 
 ### Run development server against local API
@@ -72,21 +74,17 @@ Start database and cache:
 # working directory: repository root
 docker run -d \
   --name brickinv-dev-mariadb \
-  --publish 3306:3306 \
-  --env 'MARIADB_ROOT_PASSWORD=3gEju5UGRPbSbJ$r#wvYDn$g%6ryH5' \
+  --publish 4001:3306 \
+  --env 'MARIADB_ROOT_PASSWORD=brickinv' \
   --volume brickinv-mariadb-dev:/var/lib/mysql \
   --volume ./setup.sql:/docker-entrypoint-initdb.d/setup.sql \
   mariadb:11.6.2
 
 docker run -d \
   --name brickinv-dev-redis \
-  --publish 6379:6379 \
+  --publish 4002:6379 \
   redis:7.4.1-alpine
 ```
-
-> [!NOTE]
-> If you change the password or the port in the command above,
-> you need to update the `appsettings.Development.json` file!
 
 To configure the backend, use
 the [.NET User Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=windows#secret-manager)
@@ -106,7 +104,7 @@ Then, start the backend:
 dotnet run --launch-profile http
 ```
 
-The backend is exposed at `http://localhost:5105`
+The backend is exposed at `http://localhost:4003`
 
 To configure the frontend, copy `src/frontend/public/env/env.template.js` to `src/frontend/public/env/env.local.js` and
 replace the empty strings with your own values.
@@ -119,12 +117,11 @@ To start the frontend, run:
 pnpm dev:local
 ```
 
-To stop the database container and delete its data, run:
+To stop the database and cache containers and delete its data, run:
 
 ```bash
-docker stop brickinv-mariadb-dev
-docker rm brickinv-mariadb-dev
-docker volume rm brickinv-mariadb-dev
+docker stop brickinv-dev-mariadb brickinv-dev-redis
+docker rm -v brickinv-mariadb-dev brickinv-dev-redis
 ```
 
 ### Run development server with production API

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Wemogy.AspNet.Startup;
+using Wemogy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
@@ -20,20 +21,23 @@ builder.Services.AddDefaultSetup(options);
 builder.Services
     .AddDbContext<BrickInvContext>(opt => opt
         .UseMySql(
-            builder.Configuration.GetConnectionString("BrickInvDb"),
+            builder.Configuration.GetConnectionString("Db"),
             new MariaDbServerVersion(new Version(11, 6, 2)))
         .LogTo(Console.WriteLine, builder.Environment.IsDevelopment() ? LogLevel.Debug : LogLevel.Warning)
         .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
         .EnableDetailedErrors(builder.Environment.IsDevelopment()));
 
 // Authorization
-builder.Services.AddClerkApiClient(opt => { opt.SecretKey = builder.Configuration["Clerk:SecretKey"]!; });
+builder.Services.AddClerkApiClient(opt =>
+{
+    opt.SecretKey = builder.Configuration.GetSection("Authentication").GetRequiredValue("ClerkSecretKey");
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x =>
     {
         // Authority is the URL of your clerk instance
-        x.Authority = builder.Configuration["Clerk:Authority"];
+        x.Authority = builder.Configuration.GetSection("Authentication").GetRequiredValue("Authority");
         x.TokenValidationParameters = new TokenValidationParameters
         {
             // Disable audience validation as we are not using it
@@ -48,7 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 var azp = context.Principal?.FindFirstValue("azp");
 
                 // AuthorizedParty is the base URL of your frontend.
-                if (string.IsNullOrEmpty(azp) || !azp.Equals(builder.Configuration["AppConfig:AppBaseUrl"]))
+                if (string.IsNullOrEmpty(azp) || !azp.Equals(builder.Configuration.GetSection("Authentication").GetRequiredValue("AppBaseUrl")))
                 {
                     context.Fail("AZP Claim is invalid or missing");
                 }
@@ -77,7 +81,7 @@ if (builder.Environment.IsDevelopment())
 
 // Config
 builder.Services
-    .Configure<AppOptions>(builder.Configuration.GetSection("AppConfig"));
+    .Configure<RebrickableOptions>(builder.Configuration.GetSection("Rebrickable"));
 
 // Rebrickable
 builder.Services.AddRebrickableApi(new SetupOptions
