@@ -9,7 +9,7 @@ ARG DOTNET_EF_TARGET_ARCH
 
 WORKDIR /src
 COPY "Bennetr.BrickInv.Api/Bennetr.BrickInv.Api.csproj" "Bennetr.BrickInv.Api/"
-COPY "Bennetr.RebrickableDotNet/Bennetr.RebrickableDotNet.csproj" "Bennetr.RebrickableDotNet/"
+COPY "Bennetr.BrickInv.RebrickableClient/Bennetr.BrickInv.RebrickableClient.csproj" "Bennetr.BrickInv.RebrickableClient/"
 RUN dotnet restore -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api/Bennetr.BrickInv.Api.csproj"
 
 COPY . .
