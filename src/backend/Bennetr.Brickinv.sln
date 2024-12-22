@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.BrickInv.Api", "Bennetr.BrickInv.Api\Bennetr.BrickInv.Api.csproj", "{05EABDF4-71F5-4718-BD9C-96805863DB9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bennetr.BrickInv.RebrickableClient", "Bennetr.BrickInv.RebrickableClient\Bennetr.BrickInv.RebrickableClient.csproj", "{190EF543-4926-4250-8D33-633A28C3535C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05EABDF4-71F5-4718-BD9C-96805863DB9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05EABDF4-71F5-4718-BD9C-96805863DB9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05EABDF4-71F5-4718-BD9C-96805863DB9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05EABDF4-71F5-4718-BD9C-96805863DB9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{190EF543-4926-4250-8D33-633A28C3535C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{190EF543-4926-4250-8D33-633A28C3535C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{190EF543-4926-4250-8D33-633A28C3535C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{190EF543-4926-4250-8D33-633A28C3535C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

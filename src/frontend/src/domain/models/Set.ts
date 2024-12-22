@@ -52,6 +52,8 @@ const Set = types
     setName: types.string,
     releaseYear: types.integer,
     imageUri: types.string,
+    imageWidth: types.integer,
+    imageHeight: types.integer,
     totalParts: types.integer,
     presentParts: types.integer,
     forSale: types.boolean,

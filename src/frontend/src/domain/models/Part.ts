@@ -11,6 +11,8 @@ const Part = types
     partName: types.string,
     partColor: types.maybe(types.string),
     imageUri: types.maybe(types.string),
+    imageWidth: types.maybe(types.integer),
+    imageHeight: types.maybe(types.integer),
     totalCount: types.integer,
     presentCount: types.integer
   })

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
 import { classNames } from 'primereact/utils';
-import { IPart, ISet, UnauthorizedError, useAppStore } from '../../../../domain';
 import { Button } from 'primereact/button';
+import { IPart, ISet, UnauthorizedError, useAppStore } from '../../../../domain';
 import { useToast } from '../../../../utils';
 
 interface ISetListItemProps {
@@ -59,6 +59,8 @@ const PartListItem: React.FC<ISetListItemProps> = observer(({ set, part, index }
       <img
         src={part.imageUri}
         alt=""
+        width={part.imageWidth}
+        height={part.imageHeight}
         className={classNames('self-center w-[16rem] h-auto rounded-2xl shadow-lg', {
           'border-4 border-[#16a34a]': part.isComplete
         })}

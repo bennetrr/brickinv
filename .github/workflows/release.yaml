@@ -30,7 +30,8 @@ jobs:
 
   build-frontend:
     name: Build frontend containers
-    needs: [ setup ]
+    needs:
+      - setup
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -58,7 +59,8 @@ jobs:
 
   build-backend:
     name: Build backend containers
-    needs: [ setup ]
+    needs:
+      - setup
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -80,7 +82,7 @@ jobs:
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           name: bennetrr/brickinv-backend
           version: ${{ needs.setup.outputs.next-version-name }}
-          context: src/backend/Bennetr.BrickInv.Api/
+          context: src/backend/
           push: 'true'
           docker-platform: ${{ matrix.platform.docker }}
           dotnet-platform: ${{ matrix.platform.dotnet }}
@@ -88,7 +90,9 @@ jobs:
 
   merge-frontend:
     name: Merge frontend containers
-    needs: [ setup, build-frontend ]
+    needs:
+      - setup
+      - build-frontend
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -107,7 +111,9 @@ jobs:
 
   merge-backend:
     name: Merge backend containers
-    needs: [ setup, build-backend ]
+    needs:
+      - setup
+      - build-backend
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -124,44 +130,12 @@ jobs:
           name: bennetrr/brickinv-backend
           version: ${{ needs.setup.outputs.next-version-name }}
 
-  docker-compose:
-    name: Update versions in docker-compose.yml
-    needs:
-      - setup
-      - merge-frontend
-      - merge-backend
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Update versions in docker-compose.yml
-        run: |
-          sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):v[0-9]+\.[0-9]+\.[0-9]+/ghcr.io\/bennetrr\/brickinv-\1:${{ needs.setup.outputs.next-version-name }}/g' docker-compose.yml
-
-      - name: Save docker-compose.yml
-        id: save-docker-compose
-        run: |
-          {
-            echo 'docker-compose<<EOF'
-            cat docker-compose.yml
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: docker-compose.yml
-          push: true
-
   github-release:
     name: Create GitHub release
     needs:
       - setup
       - merge-frontend
       - merge-backend
-      - docker-compose
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -182,7 +156,6 @@ jobs:
       - setup
       - merge-frontend
       - merge-backend
-      - docker-compose
     runs-on: ubuntu-latest
     steps:
       - name: Install ssh keys

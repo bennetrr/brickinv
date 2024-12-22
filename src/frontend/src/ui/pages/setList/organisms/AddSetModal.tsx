@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { KeyboardEventHandler, useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
@@ -82,7 +82,21 @@ const AddSetModal: React.FC<IAddSetModalProps> = observer(({ visible, setVisible
       severity: 'success',
       summary: 'Successfully created the set'
     });
+
+    setSetId('');
+    setForSale(false);
   }, [forSale, setId, setStore, setVisible, toast]);
+
+  const onEnterPress: KeyboardEventHandler = useCallback(
+    async e => {
+      if (e.key !== 'Enter') {
+        return;
+      }
+
+      await handleSubmit();
+    },
+    [handleSubmit]
+  );
 
   const handleAbort = useCallback(() => {
     setVisible(false);
@@ -106,11 +120,17 @@ const AddSetModal: React.FC<IAddSetModalProps> = observer(({ visible, setVisible
           placeholder="Set number"
           aria-label="Set number"
           value={setId}
+          onKeyDown={onEnterPress}
           onChange={e => setSetId(e.target.value)}
         />
 
         <div className="flex items-center gap-2">
-          <InputSwitch checked={forSale} onChange={e => setForSale(e.value)} inputId="forSaleInput" />
+          <InputSwitch
+            checked={forSale}
+            onChange={e => setForSale(e.value)}
+            onKeyDown={onEnterPress}
+            inputId="forSaleInput"
+          />
           <label htmlFor="forSaleInput">For sale</label>
         </div>
       </div>

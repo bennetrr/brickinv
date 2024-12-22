@@ -19,7 +19,13 @@ const SetListItem: React.FC<ISetListItemProps> = observer(({ set, index }) => {
         'border-t-2 border-[var(--surface-border)]': index !== 0
       })}
     >
-      <img src={set.imageUri} alt="" className="self-center w-[16rem] h-auto rounded-2xl shadow-lg" />
+      <img
+        src={set.imageUri}
+        alt=""
+        width={set.imageWidth}
+        height={set.imageHeight}
+        className="self-center w-[16rem] h-auto rounded-2xl shadow-lg"
+      />
 
       <div className="flex flex-col gap-2 items-start">
         <div className="flex flex-col lg:flex-row lg:gap-3">

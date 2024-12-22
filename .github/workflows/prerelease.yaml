@@ -1,0 +1,93 @@
+name: Pre-release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    outputs:
+      next-version: ${{ steps.get-release-version.outputs.version }}
+      next-version-name: ${{ steps.get-release-version.outputs.version-name }}
+    steps:
+      - id: get-release-version
+        run: |
+          echo "version=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "version-name=pre-${{ github.sha }}" >> $GITHUB_OUTPUT
+          
+  build-backend:
+    name: Build backend containers
+    runs-on: ubuntu-latest
+    needs: 
+      - setup
+    permissions:
+      packages: write
+      contents: read
+    strategy:
+      matrix:
+        platform:
+          - { docker: linux/amd64, dotnet: amd64, dotnet-ef: linux-x64 }
+          - { docker: linux/arm64, dotnet: arm64, dotnet-ef: linux-arm64 }
+          - { docker: linux/arm64/v8, dotnet: arm64, dotnet-ef: linux-arm64 }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build container
+        uses: ./.github/actions/containers/build
+        with:
+          registry-server: ghcr.io
+          registry-user: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: bennetrr/brickinv-backend
+          version: ${{ needs.setup.outputs.next-version-name }}
+          context: src/backend/
+          push: 'true'
+          docker-platform: ${{ matrix.platform.docker }}
+          dotnet-platform: ${{ matrix.platform.dotnet }}
+          dotnet-ef-platform: ${{ matrix.platform.dotnet-ef }}
+
+  merge-backend:
+    name: Merge backend containers
+    needs:
+      - setup
+      - build-backend
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Merge and push container
+        uses: ./.github/actions/containers/merge
+        with:
+          registry-server: ghcr.io
+          registry-user: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: bennetrr/brickinv-backend
+          version: ${{ needs.setup.outputs.next-version-name }}
+
+  deploy:
+    # Thanks to https://www.programonaut.com/how-to-deploy-a-git-repository-to-a-server-using-github-actions/
+    name: Deploy to development
+    needs:
+      - setup
+      - merge-backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.DEPLOY_SSH_HOST }} > ~/.ssh/known_hosts
+      - name: Update containers
+        run: |
+          ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "
+            cd ${{ secrets.DEPLOY_DEV_WORKDIR }}
+            sed -i -E 's/ghcr\.io\/bennetrr\/brickinv-(frontend|backend):pre-[0-9a-f]{40}/ghcr.io\/bennetrr\/brickinv-\1:${{ needs.setup.outputs.next-version-name }}/g' docker-compose.yml
+            docker compose up -d
+            exit
+          "

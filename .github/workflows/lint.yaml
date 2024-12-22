@@ -7,16 +7,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  editorconfig:
-    name: Lint with editorconfig
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run eclint
-        run: |
-          npx eclint check .
-
   prettier:
     name: Lint frontend with prettier
     runs-on: ubuntu-latest

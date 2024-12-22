@@ -56,5 +56,5 @@ export function useToast(): IToast {
 
       toast.current.replace(message);
     }
-  }
+  };
 }
