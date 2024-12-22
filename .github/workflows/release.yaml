@@ -80,7 +80,7 @@ jobs:
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           name: bennetrr/brickinv-backend
           version: ${{ needs.setup.outputs.next-version-name }}
-          context: src/backend/Bennetr.BrickInv.Api/
+          context: src/backend/
           push: 'true'
           docker-platform: ${{ matrix.platform.docker }}
           dotnet-platform: ${{ matrix.platform.dotnet }}

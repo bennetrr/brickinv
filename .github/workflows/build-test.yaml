@@ -44,7 +44,7 @@ jobs:
         uses: ./.github/actions/containers/build
         with:
           push: 'false'
-          context: src/backend/Bennetr.BrickInv.Api/
+          context: src/backend/
           docker-platform: ${{ matrix.platform.docker }}
           dotnet-platform: ${{ matrix.platform.dotnet }}
           dotnet-ef-platform: ${{ matrix.platform.dotnet-ef }}

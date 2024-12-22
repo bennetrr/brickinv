@@ -52,7 +52,7 @@ pnpm install
 Install backend dependencies:
 
 ```bash
-# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
+# working directory: src/backend/Bennetr.BrickInv.Api
 dotnet restore
 ```
 
@@ -62,7 +62,7 @@ If any changes where made to the database models, a migration script needs to be
 The migration only needs to be created for the context that holds the changed models.
 
 ```bash
-# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
+# working directory: src/backend/Bennetr.BrickInv.Api
 dotnet ef migrations add {{NAME}} -c BrickInvContext -o ./Migrations/BrickInv
 ```
 
@@ -93,14 +93,14 @@ with the options from the [Configuration](#backend) section.
 Before starting the backend, you need to run the database migration scripts:
 
 ```bash
-# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
+# working directory: src/backend/Bennetr.BrickInv.Api
 dotnet ef database update --context BrickInvContext
 ```
 
 Then, start the backend:
 
 ```bash
-# working directory: src/backend/Bennetr.BrickInv.Api/Bennetr.BrickInv.Api
+# working directory: src/backend/Bennetr.BrickInv.Api
 dotnet run --launch-profile http
 ```
 
