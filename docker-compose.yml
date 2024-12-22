@@ -2,15 +2,21 @@ name: brickinv
 
 services:
   mariadb:
-    image: mariadb:11.3.2-jammy
+    image: mariadb:11.6.2
     restart: always
     environment:
-      MARIADB_ROOT_PASSWORD: 'wN%F3doRGFnh25MJ*D^N*vp*oV9ybp^zAwMkZaS%B3!yhsxv!#Kn@PCpo76zLRyu6EL#2$n8BzXpM&u*@h*kiVwY3m!5nUmf2VmMUmSVYm*bv48q2&pUKsRVe*Pe*9Yp'
+      MARIADB_ROOT_PASSWORD: "brickinv"
     volumes:
       - "mariadb:/var/lib/mysql"
       - "./setup.sql:/docker-entrypoint-initdb.d/setup.sql"
-  networks:
-    - internal
+    networks:
+      - internal
+
+  redis:
+    image: redis:7.4.1-alpine
+    restart: always
+    networks:
+      - internal
 
   frontend:
     image: ghcr.io/bennetrr/brickinv-frontend:0.0.0
