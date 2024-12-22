@@ -15,8 +15,8 @@ jobs:
     steps:
       - id: get-release-version
         run: |
-          echo "version=${{ github.sha }}" >> $GITHUB_ENV
-          echo "version-name=pre-${{ github.sha }}" >> $GITHUB_ENV
+          echo "version=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "version-name=pre-${{ github.sha }}" >> $GITHUB_OUTPUT
           
   build-backend:
     name: Build backend containers
