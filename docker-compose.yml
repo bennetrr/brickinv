@@ -19,7 +19,7 @@ services:
       - internal
 
   frontend:
-    image: ghcr.io/bennetrr/brickinv-frontend:0.0.0
+    image: ghcr.io/bennetrr/brickinv-frontend:v0.0.0
     restart: always
     networks:
       - reverse_proxy
@@ -27,7 +27,7 @@ services:
       - "./env.js:/usr/share/nginx/html/env/env.js"
 
   backend:
-    image: ghcr.io/bennetrr/brickinv-backend:0.0.0
+    image: ghcr.io/bennetrr/brickinv-backend:v0.0.0
     restart: always
     env_file:
       - backend.env
