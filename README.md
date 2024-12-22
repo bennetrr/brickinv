@@ -161,7 +161,7 @@ docker compose up -d
 ### Connections
 
 All services are exposed into the `reverse_proxy` network.
-The frontend is available under `brickinv-frontend-1:80`, the backend under `brickinv-backend-1:80`.
+The frontend is available under `brickinv-frontend-1:80`, the backend under `brickinv-backend-1:8080`.
 
 The application data is saved in the named volume `brickinv_mariadb`.
 
