@@ -12,7 +12,7 @@ COPY "Bennetr.BrickInv.Api/Bennetr.BrickInv.Api.csproj" "Bennetr.BrickInv.Api/"
 COPY "Bennetr.RebrickableDotNet/Bennetr.RebrickableDotNet.csproj" "Bennetr.RebrickableDotNet/"
 RUN dotnet restore -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api/Bennetr.BrickInv.Api.csproj"
 
-COPY ../backend_old/Bennetr.BrickInv.Api .
+COPY . .
 WORKDIR "/src/Bennetr.BrickInv.Api"
 
 
