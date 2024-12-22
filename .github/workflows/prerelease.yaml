@@ -83,7 +83,7 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.DEPLOY_SSH_HOST }} > ~/.ssh/known_hosts
-      - name: Pull
+      - name: Update containers
         run: |
           ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "
             cd ${{ secrets.DEPLOY_DEV_WORKDIR }}
