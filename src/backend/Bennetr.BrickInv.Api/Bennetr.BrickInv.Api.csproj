@@ -21,7 +21,15 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0"/>
+        <PackageReference Include="OpenTelemetry" Version="1.10.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.10.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.10.1" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.10.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.10.0" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2"/>
+        <PackageReference Include="Sentry" Version="5.0.0" />
+        <PackageReference Include="Sentry.OpenTelemetry" Version="5.0.0" />
+        <PackageReference Include="Sentry.Profiling" Version="5.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
         <PackageReference Include="Wemogy.AspNet" Version="5.0.0"/>
         <PackageReference Include="Wemogy.Configuration" Version="1.0.1"/>

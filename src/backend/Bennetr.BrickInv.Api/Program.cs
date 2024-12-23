@@ -8,11 +8,48 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Sentry.OpenTelemetry;
 using Wemogy.AspNet.Startup;
 using Wemogy.Configuration;
 
+const string serviceName = "brickinv-backend";
+
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
+
+// Telemetry
+if (!string.IsNullOrWhiteSpace(builder.Configuration.GetSection("Telemetry")["SentryDsn"]))
+{
+    // Order of initialization seems important:
+    // Sentry must be initialized before the OT TraceProvider, otherwise it does not work
+    SentrySdk.Init(opt =>
+    {
+        opt.Dsn = builder.Configuration.GetSection("Telemetry").GetRequiredValue("SentryDsn");
+        opt.AutoSessionTracking = true;
+        opt.TracesSampleRate = 1.0;
+        opt.ProfilesSampleRate = 1.0;
+        opt.AddIntegration(new ProfilingIntegration(TimeSpan.FromMilliseconds(500)));
+        opt.UseOpenTelemetry();
+    });
+
+    builder.Logging.AddOpenTelemetry(opt => opt
+        .SetResourceBuilder(
+            ResourceBuilder.CreateDefault()
+                .AddService(serviceName))
+        .AddConsoleExporter());
+
+    builder.Services.AddOpenTelemetry()
+        .ConfigureResource(resource => resource.AddService(serviceName))
+        .WithTracing(tracing => tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
+            .AddConsoleExporter()
+            .AddSentry());
+}
 
 // Default setup
 builder.Services.AddDefaultSetup(options);
