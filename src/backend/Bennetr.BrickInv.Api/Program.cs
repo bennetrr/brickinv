@@ -20,6 +20,8 @@ const string serviceName = "brickinv-backend";
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
 
+var version = builder.Configuration.GetRequiredValue("Version");
+
 // Telemetry
 if (!string.IsNullOrWhiteSpace(builder.Configuration.GetSection("Telemetry")["SentryDsn"]))
 {
