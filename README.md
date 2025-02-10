@@ -12,10 +12,11 @@ The frontend is configurable with the `env.js` file.
 > The contents of this file are available in `window.env` in the browser,
 > so don't store any confidential information in there.
 
-| Name                  | Type     | Description                                                                              |
-|-----------------------|----------|------------------------------------------------------------------------------------------|
-| `apiBaseUrl`          | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:4003` |
-| `clerkPublishableKey` | `string` | Publishable key of the Clerk application                                                 |
+| Name                  | Type      | Description                                                                              |
+|-----------------------|-----------|------------------------------------------------------------------------------------------|
+| `apiBaseUrl`          | `string`  | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:4003` |
+| `clerkPublishableKey` | `string`  | Publishable key of the Clerk application                                                 |
+| `sentryDsn`           | `string?` | DSN (Data Source Name) of the Sentry project. If omitted, telemetry is disabled          |
 
 ### Backend
 

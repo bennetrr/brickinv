@@ -1,8 +1,10 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { PrimeReactProvider } from 'primereact/api';
-import { ClerkProvider } from '@clerk/clerk-react';
+import { createRoutesFromChildren, matchRoutes, useLocation, useNavigationType } from 'react-router-dom';
 import { Provider as MobxProvider } from 'mobx-react';
+import { ClerkProvider } from '@clerk/clerk-react';
+import * as Sentry from '@sentry/react';
+import { PrimeReactProvider } from 'primereact/api';
 import { AppStore } from './domain';
 import App from './App.tsx';
 
@@ -16,6 +18,26 @@ if (!window.env.apiBaseUrl) {
 
 if (!window.env.clerkPublishableKey) {
   throw new Error('Missing Clerk Publishable Key!');
+}
+
+if (window.env.sentryDsn) {
+  Sentry.init({
+    dsn: window.env.sentryDsn,
+    integrations: [
+      Sentry.reactRouterV6BrowserTracingIntegration({
+        useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes
+      }),
+      Sentry.replayIntegration()
+    ],
+    tracesSampleRate: 1.0,
+    tracePropagationTargets: [/^https:\/\/(dev\.)?api\.brickinv\.ranft\.ing/],
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0
+  });
 }
 
 createRoot(document.getElementById('root')!).render(

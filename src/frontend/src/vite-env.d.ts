@@ -3,6 +3,7 @@
 export interface Environment {
   apiBaseUrl: string;
   clerkPublishableKey: string;
+  sentryDsn?: string;
 }
 
 declare global {
