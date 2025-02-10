@@ -34,12 +34,6 @@ jobs:
           - { docker: linux/arm64/v8, dotnet: arm64, dotnet-ef: linux-arm64 }
     steps:
       - uses: actions/checkout@v4
-        
-      - name: Replace version in appsettings.json
-        run: |
-          sudo apt install -y jq
-          jq '.Version = ">${{ needs.setup.outputs.next-version-name }}"' src/backend/Bennetr.BrickInv.Api/appsettings.json > appsettings.json.tmp
-          mv appsettings.json.tmp src/backend/Bennetr.BrickInv.Api/appsettings.json
 
       - name: Build container
         uses: ./.github/actions/containers/build

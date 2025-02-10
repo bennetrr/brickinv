@@ -4,6 +4,7 @@ EXPOSE 80
 
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build-base
+ARG VERSION
 ARG DOTNET_TARGET_ARCH
 ARG DOTNET_EF_TARGET_ARCH
 
@@ -17,11 +18,11 @@ WORKDIR "/src/Bennetr.BrickInv.Api"
 
 
 FROM build-base as build-app
-RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/build
+RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/build /p:Version=$VERSION
 
 
 FROM build-app AS publish-app
-RUN dotnet publish -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false /p:Version=$VERSION
 
 
 FROM build-base as build-migration

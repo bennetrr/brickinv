@@ -18,12 +18,12 @@ using Wemogy.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
 
-var version = builder.Configuration.GetRequiredValue("Version");
-
 // Swagger
-if (builder.Environment.IsDevelopment() || version.StartsWith("pre-"))
+if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 {
-    options.AddOpenApi(version, Path.Join(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+    options.AddOpenApi(
+        Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "v0.0.0",
+        Path.Join(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 }
 
 // Telemetry
@@ -40,11 +40,15 @@ if (!string.IsNullOrWhiteSpace(builder.Configuration.GetSection("Telemetry")["Se
     });
 
     builder.Logging.AddOpenTelemetry(opt => opt
-        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(Observability.Activity.Name))
+        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
+            serviceName: Observability.Activity.Name,
+            serviceVersion: Observability.Activity.Version))
         .AddConsoleExporter());
 
     builder.Services.AddOpenTelemetry()
-        .ConfigureResource(resource => resource.AddService(Observability.Activity.Name))
+        .ConfigureResource(resource => resource.AddService(
+            serviceName: Observability.Activity.Name,
+            serviceVersion: Observability.Activity.Version))
         .WithTracing(tracing => tracing
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
