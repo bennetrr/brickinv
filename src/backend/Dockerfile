@@ -17,7 +17,7 @@ COPY . .
 WORKDIR "/src/Bennetr.BrickInv.Api"
 
 
-FROM build-base as build-app
+FROM build-base AS build-app
 RUN dotnet build -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/build /p:Version=$VERSION
 
 
@@ -25,7 +25,7 @@ FROM build-app AS publish-app
 RUN dotnet publish -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false /p:Version=$VERSION
 
 
-FROM build-base as build-migration
+FROM build-base AS build-migration
 ENV PATH="${PATH}:/root/.dotnet/tools"
 RUN dotnet tool install --global dotnet-ef
 
