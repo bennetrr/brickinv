@@ -4,7 +4,6 @@ EXPOSE 80
 
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build-base
-ARG VERSION
 ARG DOTNET_TARGET_ARCH
 ARG DOTNET_EF_TARGET_ARCH
 
@@ -15,6 +14,7 @@ RUN dotnet restore -a $DOTNET_TARGET_ARCH "Bennetr.BrickInv.Api/Bennetr.BrickInv
 
 COPY . .
 WORKDIR "/src/Bennetr.BrickInv.Api"
+ARG VERSION
 
 
 FROM build-base AS build-app
