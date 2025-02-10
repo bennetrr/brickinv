@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -12,6 +13,7 @@ namespace Bennetr.BrickInv.RebrickableClient;
 public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
 {
     private static readonly Uri RebrickableApiUrl = new("https://rebrickable.com/api/v3/lego/");
+    private static readonly ActivitySource Activity = new("rebrickable-client");
 
     private readonly HttpClient _httpClient = new()
     {
@@ -29,11 +31,14 @@ public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
 
     public async Task<Set> GetSetAsync(string apiKey, string setId)
     {
+        using var activity = Activity.StartActivity();
         return await MakeRequest<Set>(apiKey, $"sets/{setId}/");
     }
 
     public async Task<IEnumerable<SetPart>> GetSetPartsAsync(string apiKey, string setId)
     {
+        using var activity = Activity.StartActivity();
+
         var url = $"sets/{setId}/parts/";
         var result = new List<SetPart>();
 
@@ -50,6 +55,8 @@ public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
 
     public async Task<IEnumerable<Minifig>> GetSetMinifigsAsync(string apiKey, string setId)
     {
+        using var activity = Activity.StartActivity();
+
         var url = $"sets/{setId}/minifigs/";
         var result = new List<Minifig>();
 
@@ -66,6 +73,8 @@ public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
 
     public async Task<Size?> GetImageDimensionsAsync(string? url)
     {
+        using var activity = Activity.StartActivity();
+
         if (string.IsNullOrWhiteSpace(url))
         {
             return null;
@@ -73,6 +82,7 @@ public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
 
         if (await cache.KeyExistsAsync($"imgsize:${url}"))
         {
+            activity?.AddTag("cached", true);
             return await cache.GetObjectAsync<Size>($"imgsize:${url}");
         }
 
@@ -91,8 +101,11 @@ public class RebrickableClient(ICacheProvider cache) : IRebrickableClient
 
     private async Task<TResult> MakeRequest<TResult>(string apiKey, string url)
     {
+        using var activity = Activity.StartActivity();
+
         if (await cache.KeyExistsAsync($"rebrickable:${url}"))
         {
+            activity?.AddTag("cached", true);
             return await cache.GetObjectAsync<TResult>($"rebrickable:${url}");
         }
 

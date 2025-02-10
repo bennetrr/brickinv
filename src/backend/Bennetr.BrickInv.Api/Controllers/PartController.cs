@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Extensions;
+using Bennetr.BrickInv.Api.Monitoring;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.BrickInv.Api.Responses;
 using Mapster;
@@ -24,6 +25,7 @@ public partial class SetController
     [HttpGet("{setId}/parts")]
     public async Task<ActionResult<IEnumerable<PartDto>>> GetParts([FromRoute] string setId)
     {
+        using var activity = Observability.Activity.StartActivity();
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         await context.Sets
@@ -51,6 +53,7 @@ public partial class SetController
     [HttpGet("{setId}/parts/{partId}")]
     public async Task<ActionResult<PartDto>> GetPart([FromRoute] string setId, [FromRoute] string partId)
     {
+        using var activity = Observability.Activity.StartActivity();
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var part = await context.Parts
@@ -80,6 +83,7 @@ public partial class SetController
     [HttpPatch("{setId}/parts/{partId}")]
     public async Task<ActionResult<UpdatePartResponse>> UpdatePart([FromRoute] string setId, [FromRoute] string partId, [FromBody] UpdatePartRequest request)
     {
+        using var activity = Observability.Activity.StartActivity();
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var part = await context.Parts

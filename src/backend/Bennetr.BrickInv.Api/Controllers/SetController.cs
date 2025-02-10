@@ -3,6 +3,7 @@ using System.Net.Mime;
 using Bennetr.BrickInv.Api.Contexts;
 using Bennetr.BrickInv.Api.Dtos;
 using Bennetr.BrickInv.Api.Extensions;
+using Bennetr.BrickInv.Api.Monitoring;
 using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.Api.Requests;
 using Bennetr.BrickInv.RebrickableClient;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using SixLabors.ImageSharp;
 using Part = Bennetr.BrickInv.Api.Models.Part;
 
 namespace Bennetr.BrickInv.Api.Controllers;
@@ -39,6 +41,7 @@ public partial class SetController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDto>>> GetSets()
     {
+        using var activity = Observability.Activity.StartActivity();
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var sets = await context.Sets
@@ -61,6 +64,7 @@ public partial class SetController(
     [HttpGet("{setId}")]
     public async Task<ActionResult<SetDto>> GetSet([FromRoute] string setId)
     {
+        using var activity = Observability.Activity.StartActivity();
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var set = await context.Sets
@@ -94,6 +98,8 @@ public partial class SetController(
     [HttpPost]
     public async Task<ActionResult<SetDto>> CreateSet([FromBody] CreateSetRequest request)
     {
+        using var activity = Observability.Activity.StartActivity();
+
         // Prepare the set id
         var setId = request.SetId.Trim();
         setId = setId.Contains('-') ? setId : $"{setId}-1";
@@ -102,12 +108,16 @@ public partial class SetController(
         Set rebrickableSet;
         IEnumerable<SetPart> rebrickableParts;
         IEnumerable<Minifig> rebrickableMinifigs;
+        Size? setImageSize;
 
         try
         {
+            using var rebrickableActivity = Observability.Activity.StartActivity("GetRebrickableData");
+
             rebrickableSet = await rebrickable.GetSetAsync(_rebrickableOptions.ApiKey, setId);
             rebrickableParts = await rebrickable.GetSetPartsAsync(_rebrickableOptions.ApiKey, setId);
             rebrickableMinifigs = await rebrickable.GetSetMinifigsAsync(_rebrickableOptions.ApiKey, setId);
+            setImageSize = await rebrickable.GetImageDimensionsAsync(rebrickableSet.SetImgUrl);
         }
         catch (HttpRequestException exc)
         {
@@ -120,8 +130,8 @@ public partial class SetController(
         }
 
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
-        var setImageSize = await rebrickable.GetImageDimensionsAsync(rebrickableSet.SetImgUrl);
 
+        var dataConversionActivity = Observability.Activity.StartActivity("DataConversion");
         var set = new Models.Set
         {
             Id = Guid.NewGuid().ToString(),
@@ -181,6 +191,7 @@ public partial class SetController(
             .ToList());
 
         set.TotalParts = parts.Select(x => x.TotalCount).Sum();
+        dataConversionActivity?.Stop();
 
         context.Sets.Add(set);
         context.Parts.AddRange(parts);
@@ -204,6 +215,7 @@ public partial class SetController(
     [HttpDelete("{setId}")]
     public async Task<IActionResult> DeleteSet([FromRoute] string setId)
     {
+        using var activity = Observability.Activity.StartActivity();
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var set = await context.Sets
@@ -237,6 +249,7 @@ public partial class SetController(
     [HttpPatch("{setId}")]
     public async Task<ActionResult<SetDto>> UpdateSet([FromRoute] string setId, [FromBody] UpdateSetRequest request)
     {
+        using var activity = Observability.Activity.StartActivity();
         var organizationOrUserId = await HttpContext.GetOrganizationOrUserId();
 
         var set = await context.Sets

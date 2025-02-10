@@ -1,21 +1,61 @@
 using System.Reflection;
 using System.Security.Claims;
 using Bennetr.BrickInv.Api.Contexts;
+using Bennetr.BrickInv.Api.Monitoring;
 using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.RebrickableClient;
 using Clerk.Net.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Sentry.OpenTelemetry;
 using Wemogy.AspNet.Startup;
 using Wemogy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
 
-// Default setup
-builder.Services.AddDefaultSetup(options);
+// Swagger
+if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+{
+    options.AddOpenApi(
+        Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "v0.0.0",
+        Path.Join(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+}
+
+// Telemetry
+if (!string.IsNullOrWhiteSpace(builder.Configuration.GetSection("Telemetry")["SentryDsn"]))
+{
+    builder.WebHost.UseSentry(opt =>
+    {
+        opt.Dsn = builder.Configuration.GetSection("Telemetry").GetRequiredValue("SentryDsn");
+        opt.AutoSessionTracking = true;
+        opt.TracesSampleRate = 1.0;
+        opt.ProfilesSampleRate = 1.0;
+        opt.AddIntegration(new ProfilingIntegration(TimeSpan.FromMilliseconds(500)));
+        opt.UseOpenTelemetry();
+    });
+
+    builder.Logging.AddOpenTelemetry(opt => opt
+        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
+            serviceName: Observability.Activity.Name,
+            serviceVersion: Observability.Activity.Version))
+        .AddConsoleExporter());
+
+    builder.Services.AddOpenTelemetry()
+        .ConfigureResource(resource => resource.AddService(
+            serviceName: Observability.Activity.Name,
+            serviceVersion: Observability.Activity.Version))
+        .WithTracing(tracing => tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
+            .AddConsoleExporter()
+            .AddSentry());
+}
 
 // Database
 builder.Services
@@ -62,23 +102,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Swagger
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(opt =>
-    {
-        opt.SwaggerDoc("v2", new OpenApiInfo
-        {
-            Version = "v2",
-            Title = "BrickInv API"
-        });
-        opt.IncludeXmlComments(Path.Combine(
-            AppContext.BaseDirectory,
-            $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-    });
-}
-
 // Config
 builder.Services
     .Configure<RebrickableOptions>(builder.Configuration.GetSection("Rebrickable"));
@@ -90,13 +113,8 @@ builder.Services.AddRebrickableApi(new SetupOptions
 });
 
 // Build
+builder.Services.AddDefaultSetup(options);
+
 var app = builder.Build();
 app.UseDefaultSetup(app.Environment, options);
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(opt => { opt.SwaggerEndpoint("/swagger/v2/swagger.json", "v2"); });
-}
-
 app.Run();

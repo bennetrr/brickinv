@@ -12,24 +12,26 @@ The frontend is configurable with the `env.js` file.
 > The contents of this file are available in `window.env` in the browser,
 > so don't store any confidential information in there.
 
-| Name                  | Type     | Description                                                                              |
-|-----------------------|----------|------------------------------------------------------------------------------------------|
-| `apiBaseUrl`          | `string` | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:4003` |
-| `clerkPublishableKey` | `string` | Publishable key of the Clerk application                                                 |
+| Name                  | Type      | Description                                                                              |
+|-----------------------|-----------|------------------------------------------------------------------------------------------|
+| `apiBaseUrl`          | `string`  | Base URL of the BrickInv API, e.g. `https://api.brickinv.com` or `http://localhost:4003` |
+| `clerkPublishableKey` | `string`  | Publishable key of the Clerk application                                                 |
+| `sentryDsn`           | `string?` | DSN (Data Source Name) of the Sentry project. If omitted, telemetry is disabled          |
 
 ### Backend
 
 The backend is configurable with everything supported by ASP.NET.
 For development, the .NET user secret manager is recommended, for production a `.env` file.
 
-| Name                            | Type     | Description                                                                                                          |
-|---------------------------------|----------|----------------------------------------------------------------------------------------------------------------------|
-| `Authentication:ClerkSecretKey` | `string` | Secret key of the Clerk application                                                                                  |
-| `Authentication:Authority`      | `string` | Instance URL of the Clerk application                                                                                |
-| `Authentication:AppBaseUrl`     | `string` | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:4004`                                 |
-| `ConnectionStrings:Db`          | `string` | Connection string for main database, e.g. `Server=localhost;Port=4001;User=root;Password=brickinv;Database=brickinv` |
-| `ConnectionStrings:Redis`       | `string` | Connection string for Redis cache, e.g. `localhost:4002`                                                             |
-| `Rebrickable:ApiKey`            | `string` | API key for Rebrickable, used for retrieving information about Lego sets                                             |
+| Name                            | Type      | Description                                                                                                          |
+|---------------------------------|-----------|----------------------------------------------------------------------------------------------------------------------|
+| `Authentication:ClerkSecretKey` | `string`  | Secret key of the Clerk application                                                                                  |
+| `Authentication:Authority`      | `string`  | Instance URL of the Clerk application                                                                                |
+| `Authentication:AppBaseUrl`     | `string`  | Base URL of the BrickInv App, e.g. `https://brickinv.com` or `http://localhost:4004`                                 |
+| `ConnectionStrings:Db`          | `string`  | Connection string for main database, e.g. `Server=localhost;Port=4001;User=root;Password=brickinv;Database=brickinv` |
+| `ConnectionStrings:Redis`       | `string`  | Connection string for Redis cache, e.g. `localhost:4002`                                                             |
+| `Rebrickable:ApiKey`            | `string`  | API key for Rebrickable, used for retrieving information about Lego sets                                             |
+| `Telemetry:SentryDsn`           | `string?` | DSN (Data Source Name) of the Sentry project. If omitted, telemetry is disabled                                      |
 
 ## Development
 
