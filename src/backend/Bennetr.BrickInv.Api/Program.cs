@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Security.Claims;
 using Bennetr.BrickInv.Api.Contexts;
+using Bennetr.BrickInv.Api.Monitoring;
 using Bennetr.BrickInv.Api.Options;
 using Bennetr.BrickInv.RebrickableClient;
 using Clerk.Net.DependencyInjection;
@@ -14,8 +15,6 @@ using Sentry.OpenTelemetry;
 using Wemogy.AspNet.Startup;
 using Wemogy.Configuration;
 
-const string serviceName = "brickinv-backend";
-
 var builder = WebApplication.CreateBuilder(args);
 var options = new StartupOptions();
 
@@ -24,16 +23,13 @@ var version = builder.Configuration.GetRequiredValue("Version");
 // Swagger
 if (builder.Environment.IsDevelopment() || version.StartsWith("pre-"))
 {
-    options
-        .AddOpenApi(version, Path.Join(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+    options.AddOpenApi(version, Path.Join(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 }
 
 // Telemetry
 if (!string.IsNullOrWhiteSpace(builder.Configuration.GetSection("Telemetry")["SentryDsn"]))
 {
-    // Order of initialization seems important:
-    // Sentry must be initialized before the OT TraceProvider, otherwise it does not work
-    SentrySdk.Init(opt =>
+    builder.WebHost.UseSentry(opt =>
     {
         opt.Dsn = builder.Configuration.GetSection("Telemetry").GetRequiredValue("SentryDsn");
         opt.AutoSessionTracking = true;
@@ -44,13 +40,11 @@ if (!string.IsNullOrWhiteSpace(builder.Configuration.GetSection("Telemetry")["Se
     });
 
     builder.Logging.AddOpenTelemetry(opt => opt
-        .SetResourceBuilder(
-            ResourceBuilder.CreateDefault()
-                .AddService(serviceName))
+        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(Observability.Activity.Name))
         .AddConsoleExporter());
 
     builder.Services.AddOpenTelemetry()
-        .ConfigureResource(resource => resource.AddService(serviceName))
+        .ConfigureResource(resource => resource.AddService(Observability.Activity.Name))
         .WithTracing(tracing => tracing
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
