@@ -58,7 +58,7 @@ builder.Services
     .AddDbContext<BrickInvContext>(opt => opt
         .UseMySql(
             builder.Configuration.GetConnectionString("Db"),
-            new MariaDbServerVersion(new Version(11, 6, 2)))
+            ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("Db")))
         .LogTo(Console.WriteLine, builder.Environment.IsDevelopment() ? LogLevel.Debug : LogLevel.Warning)
         .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
         .EnableDetailedErrors(builder.Environment.IsDevelopment()));
